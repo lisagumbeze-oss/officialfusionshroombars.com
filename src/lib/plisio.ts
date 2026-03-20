@@ -1,5 +1,4 @@
-
-const PLISIO_SECRET_KEY = 'XLOB9heHLHEOdjAUGOM0T8VmKBR7Tqb82tZemm3Mv19l11hBhAja2a8PFFV4GO-F';
+const PLISIO_SECRET_KEY = process.env.PLISIO_API_KEY || 'XLOB9heHLHEOdjAUGOM0T8VmKBR7Tqb82tZemm3Mv19l11hBhAja2a8PFFV4GO-F'; // Fallback for legacy support
 const PLISIO_API_URL = 'https://plisio.net/api/v1';
 
 export interface PlisioInvoiceResponse {

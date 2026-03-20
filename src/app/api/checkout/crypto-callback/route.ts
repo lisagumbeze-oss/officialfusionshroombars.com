@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import crypto from 'crypto';
 
-const PLISIO_SECRET_KEY = 'XLOB9heHLHEOdjAUGOM0T8VmKBR7Tqb82tZemm3Mv19l11hBhAja2a8PFFV4GO-F';
+const PLISIO_SECRET_KEY = process.env.PLISIO_API_KEY || 'XLOB9heHLHEOdjAUGOM0T8VmKBR7Tqb82tZemm3Mv19l11hBhAja2a8PFFV4GO-F';
 
 function verifyPlisioHash(data: any, receivedHash: string) {
     // Sort keys alphabetically as per Plisio requirements for hashing

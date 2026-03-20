@@ -70,16 +70,16 @@ export default async function Home() {
         <div className={styles.heroOverlay}></div>
         <div className={styles.heroContent}>
           <Reveal delay={0.2}>
-            <p className={styles.subtitle}>FUSION MUSHROOM BARS OFFICIAL</p>
+            <p className={styles.subtitle}>ELEVATED WELLNESS. ARTISANAL MASTERY.</p>
           </Reveal>
           <Reveal delay={0.4}>
             <h1 className={styles.title}>
-              The Gold Standard of Fusion Edibles
+              Experience the Fusion of Nature & Science
             </h1>
           </Reveal>
           <Reveal delay={0.6}>
             <p className={styles.heroText}>
-              Fusion Shroom Bars are the highest quality Belgian chocolate psilocybin bars on the market. Buy authentic magic mushroom chocolate bars online with precise dosing, lab-tested purity, and discreet worldwide shipping to the USA, UK, Canada, and Australia.
+              Discover a new standard in psychedelic exploration. Fusion Shroom Bars combine world-class Belgian chocolate with the purest organic psilocybin extracts. Precisely dosed and meticulously crafted for those who demand uncompromising quality and a refined journey.
             </p>
           </Reveal>
           <Reveal delay={0.8}>
@@ -131,16 +131,16 @@ export default async function Home() {
             </div>
             <div className={styles.teaserText}>
               <Reveal delay={0.2}>
-                <h2>Masterful Fusion. Pure Perfection.</h2>
+                <h2>Artisanal Precision. Extraordinary Results.</h2>
               </Reveal>
               <Reveal delay={0.4}>
                 <p>
-                  Our mission at Fusion is to provide a safe, consistent, and undeniably delicious way to explore the world of psilocybin. Each bar is a masterpiece of <a href="https://en.wikipedia.org/wiki/Belgian_chocolate" target="_blank" rel="noopener noreferrer" style={{ color: '#c9a44a', textDecoration: 'underline' }}>Belgian confectionery</a> expertise and modern extraction science.
+                  At Fusion, we believe that the path to expanded consciousness should be as refined as the destination. Our bars are born from a fusion of <a href="https://en.wikipedia.org/wiki/Belgian_chocolate" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', textDecoration: 'underline' }}>artisanal Belgian chocolate</a> and rigorous scientific extraction.
                 </p>
               </Reveal>
               <Reveal delay={0.5}>
                 <p>
-                  Whether you seek spiritual growth, creative breakthroughs, or simply a refined weekend escape, Fusion Shroom Bars deliver the precision you deserve.
+                  Each square represents our commitment to consistency, safety, and absolute gourmet excellence. Elevate your cognitive performance or find deeper spiritual resonance with the most trusted name in psilocybin edibles.
                 </p>
               </Reveal>
               <Reveal delay={0.6}>
@@ -247,44 +247,44 @@ export default async function Home() {
         </Reveal>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', padding: '1rem 0' }}>
           <Reveal delay={0.1}>
-            <div style={{ padding: '2rem', borderRadius: '16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <div style={{ color: '#c9a44a', marginBottom: '1rem', display: 'flex', gap: '4px' }}>
+            <div style={{ padding: '2rem', borderRadius: '16px', background: '#f9fafb', border: '1px solid rgba(0,0,0,0.05)' }}>
+              <div style={{ color: 'var(--primary)', marginBottom: '1rem', display: 'flex', gap: '4px' }}>
                 {"\u2605\u2605\u2605\u2605\u2605"}
               </div>
-              <p style={{ color: '#eaeaea', fontStyle: 'italic', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-                "I've tried a lot of brands, but Fusion is by far the most consistent. The dosage is incredibly precise, and the Belgian chocolate actually tastes gourmet. Highly recommend the Cookies and Cream."
+              <p style={{ color: '#4b5563', fontStyle: 'italic', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+                "The consistency is what sets Fusion apart. The effects are exactly as described every single time, and the light theme of the new site is just as clean as their extraction process!"
               </p>
               <div>
-                <strong style={{ display: 'block', fontSize: '1rem' }}>Michael T.</strong>
-                <span style={{ fontSize: '0.8rem', color: '#999' }}>Verified Buyer &middot; Los Angeles, CA</span>
+                <strong style={{ display: 'block', fontSize: '1rem', color: '#1a1a1a' }}>Michael T.</strong>
+                <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>Verified Buyer &middot; Los Angeles, CA</span>
               </div>
             </div>
           </Reveal>
           <Reveal delay={0.2}>
-            <div style={{ padding: '2rem', borderRadius: '16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <div style={{ color: '#c9a44a', marginBottom: '1rem', display: 'flex', gap: '4px' }}>
+            <div style={{ padding: '2rem', borderRadius: '16px', background: '#f9fafb', border: '1px solid rgba(0,0,0,0.05)' }}>
+              <div style={{ color: 'var(--primary)', marginBottom: '1rem', display: 'flex', gap: '4px' }}>
                 {"\u2605\u2605\u2605\u2605\u2605"}
               </div>
-              <p style={{ color: '#eaeaea', fontStyle: 'italic', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-                "Absolutely life-changing for my microdosing routine. 1-2 squares a day has done more for my anxiety and focus than anything else. 10/10 customer support and fast stealth shipping."
+              <p style={{ color: '#4b5563', fontStyle: 'italic', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+                "Life-changing for my focus. I love the new branding—it feels much more in line with the premium quality of the bars. Fast shipping and excellent packaging."
               </p>
               <div>
-                <strong style={{ display: 'block', fontSize: '1rem' }}>Sarah L.</strong>
-                <span style={{ fontSize: '0.8rem', color: '#999' }}>Verified Buyer &middot; Austin, TX</span>
+                <strong style={{ display: 'block', fontSize: '1rem', color: '#1a1a1a' }}>Sarah L.</strong>
+                <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>Verified Buyer &middot; Austin, TX</span>
               </div>
             </div>
           </Reveal>
           <Reveal delay={0.3}>
-            <div style={{ padding: '2rem', borderRadius: '16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <div style={{ color: '#c9a44a', marginBottom: '1rem', display: 'flex', gap: '4px' }}>
+            <div style={{ padding: '2rem', borderRadius: '16px', background: '#f9fafb', border: '1px solid rgba(0,0,0,0.05)' }}>
+              <div style={{ color: 'var(--primary)', marginBottom: '1rem', display: 'flex', gap: '4px' }}>
                 {"\u2605\u2605\u2605\u2605\u2605"}
               </div>
-              <p style={{ color: '#eaeaea', fontStyle: 'italic', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-                "Ordered Neau Tropics initially but they were out, so the team recommended Fusion Dark Chocolate. Honestly? Even better. Cleanest trip I've ever had, absolutely zero stomach issues."
+              <p style={{ color: '#4b5563', fontStyle: 'italic', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+                "The cleanest experience I've had. The attention to detail in both the product and the new design is impressive. Fusion remains the only shop I trust."
               </p>
               <div>
-                <strong style={{ display: 'block', fontSize: '1rem' }}>David K.</strong>
-                <span style={{ fontSize: '0.8rem', color: '#999' }}>Verified Buyer &middot; New York, NY</span>
+                <strong style={{ display: 'block', fontSize: '1rem', color: '#1a1a1a' }}>David K.</strong>
+                <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>Verified Buyer &middot; New York, NY</span>
               </div>
             </div>
           </Reveal>

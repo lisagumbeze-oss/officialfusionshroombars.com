@@ -12,9 +12,10 @@
 
 .scrolled {
     height: 65px;
-    background: rgba(5, 5, 5, 0.8) !important;
+    background: rgba(255, 255, 255, 0.8) !important;
     backdrop-filter: blur(20px) !important;
     border-bottom: 1px solid var(--surface-border);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
 }
 
 .container {
@@ -35,8 +36,8 @@
 
 .brandLogo {
     object-fit: contain;
-    mix-blend-mode: screen;
-    filter: brightness(1.1) contrast(1.1);
+    mix-blend-mode: normal;
+    filter: none;
     transition: transform 0.2s ease;
 }
 
@@ -117,12 +118,12 @@
         left: 0;
         width: 100%;
         height: calc(100vh - 80px);
-        background: var(--surface);
+        background: #ffffff;
         flex-direction: column;
         padding: 2rem;
         gap: 1.5rem;
         border-bottom: 1px solid var(--surface-border);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         z-index: 999;
         overflow-y: auto;
     }

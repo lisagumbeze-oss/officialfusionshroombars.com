@@ -7,18 +7,18 @@
 @tailwind utilities;
 
 :root {
-  --background: #1e1438;
-  --foreground: #ffffff;
-  --primary: #b066ff;
-  --primary-glow: rgba(176, 102, 255, 0.4);
-  --secondary: #ff6b96;
-  --surface: #2b1f4a;
-  --surface-border: rgba(255, 255, 255, 0.12);
-  --text-muted: #b4a8c2;
-  --glass: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+  --primary: #7c3aed;
+  --primary-glow: rgba(124, 58, 237, 0.15);
+  --secondary: #ec4899;
+  --surface: #f9fafb;
+  --surface-border: rgba(0, 0, 0, 0.05);
+  --text-muted: #6b7280;
+  --glass: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.08);
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --grid-bg: radial-gradient(circle at 50% 50%, rgba(176, 102, 255, 0.08) 0%, transparent 70%);
+  --grid-bg: radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.03) 0%, transparent 70%);
 }
 
 * {
@@ -98,11 +98,11 @@ button {
 }
 
 .premium-gradient {
-  background: linear-gradient(135deg, #b066ff 0%, #8a3ee0 100%);
+  background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
 }
 
 .text-gradient {
-  background: linear-gradient(to right, #ffffff, #b066ff);
+  background: linear-gradient(to right, #1a1a1a, #7c3aed);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -121,9 +121,9 @@ button {
 
 .card-hover:hover {
   transform: translateY(-8px);
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(176, 102, 255, 0.35);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(176, 102, 255, 0.15);
+  background: #ffffff;
+  border-color: rgba(124, 58, 237, 0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 0 20px rgba(124, 58, 237, 0.05);
 }
 
 @keyframes fadeIn {
@@ -157,7 +157,7 @@ button {
 
 /* Blog Content Styling */
 .blog-content-body {
-    color: #9ca3af;
+    color: #4b5563;
     font-size: 1.1rem;
     line-height: 1.8;
 }
@@ -166,7 +166,7 @@ button {
 .blog-content-body h2,
 .blog-content-body h3,
 .blog-content-body h4 {
-    color: #ffffff;
+    color: #1a1a1a;
     font-weight: 800;
     margin-top: 2.5rem;
     margin-bottom: 1.25rem;

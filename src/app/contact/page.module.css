@@ -14,7 +14,7 @@
   text-transform: uppercase;
   letter-spacing: 4px;
   margin-bottom: 1rem;
-  background: linear-gradient(90deg, #fff, var(--primary));
+  background: linear-gradient(90deg, #1a1a1a, var(--primary));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -64,10 +64,11 @@
 }
 
 .infoCard {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: #ffffff;
+  border: 1px solid var(--surface-border);
   padding: 2rem;
   border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
   transition: all 0.3s;
 }
 
@@ -86,14 +87,15 @@
 
 .infoCard p {
   font-size: 1.1rem;
-  color: white;
+  color: #1a1a1a;
 }
 
 .formSection {
-  background: rgba(255, 255, 255, 0.03);
+  background: #ffffff;
   padding: 3rem;
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.05);
 }
 
 .form {
@@ -128,11 +130,11 @@
 }
 
 .inputGroup input, .inputGroup textarea {
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #f9fafb;
+  border: 1px solid var(--surface-border);
   padding: 0.8rem 1rem;
   border-radius: 8px;
-  color: white;
+  color: #1a1a1a;
   font-size: 1rem;
   transition: border-color 0.3s;
 }

@@ -20,10 +20,10 @@ export default function AboutPage() {
             <section className={styles.hero}>
                 <div className={styles.container}>
                     <Reveal>
-                        <h1>ABOUT FUSION SHROOM BARS</h1>
+                        <h1>ARTISANAL MASTERY</h1>
                     </Reveal>
                     <Reveal delay={0.2}>
-                        <p className={styles.lead}>Leading the industry in premium psychedelic edibles since 2021.</p>
+                        <p className={styles.lead}>Defining the new standard for premium wellness and refined botanical experiences.</p>
                     </Reveal>
                 </div>
             </section>
@@ -34,29 +34,29 @@ export default function AboutPage() {
                     <div className={styles.grid}>
                         <div className={styles.textBlock}>
                             <Reveal>
-                                <h2>A Legacy of Innovation</h2>
+                                <h2>A Vision of Excellence</h2>
                             </Reveal>
                             <Reveal delay={0.2}>
                                 <p>
-                                    Fusion Shroom Bars began with a vision to revolutionize the psychedelic experience. By marrying world-class Belgian confectionery with advanced herbal extraction techniques, we've created a product that stands alone at the intersection of luxury and consciousness.
+                                    Fusion Shroom Bars represents the pinnacle of artisanal craftsmanship and scientific precision. Our journey began with a simple yet ambitious goal: to elevate the botanical experience through uncompromising quality and sophisticated delivery.
                                 </p>
                             </Reveal>
                             <Reveal delay={0.3}>
                                 <p>
-                                    Our team consists of master chocolatiers and mycological experts dedicated to the highest standards of safety and purity. We don't just sell edibles; we facilitate journeys.
+                                    Today, we are proud to be the trusted choice for those who seek more than just a product—they seek a journey refined by mastery and guided by clarity.
                                 </p>
                             </Reveal>
                             <Reveal delay={0.4}>
-                                <h2>Precision Science Meets Artisanal Craft</h2>
+                                <h2>The Fusion Standard</h2>
                             </Reveal>
                             <Reveal delay={0.5}>
                                 <p>
-                                    At our state-of-the-art facility, every Fusion bar undergoes a rigorous infusion process. We use 100% organic psilocybin extract, distilled to eliminate the nausea-inducing chitin found in raw mushrooms while preserving the full spectrum of beneficial compounds.
+                                    At the heart of every Fusion product is our proprietary extraction process. By utilizing advanced laboratory techniques, we ensure a clean, pure, and consistent profile that honors the power of nature while meeting the demands of modern wellness.
                                 </p>
                             </Reveal>
                             <Reveal delay={0.6}>
                                 <p>
-                                    The result? A predictable, fast-acting, and exceptionally delicious experience that allows you to focus on what matters: the journey ahead.
+                                    We believe that true wellness is an art form. From our responsibly sourced cacao to our precision-dosed infusions, every element is chosen to provide a predictably exceptional experience.
                                 </p>
                             </Reveal>
                         </div>
@@ -64,12 +64,11 @@ export default function AboutPage() {
                             <Reveal delay={0.3}>
                                 <Image 
                                     src="/images/fusion-boxes.jpg" 
-                                    alt="Fusion Shroom Bars Collection - Premium Belgian Psilocybin Mushroom Chocolate Bars and Gummies" 
+                                    alt="Fusion Shroom Bars Collection - Premium Artisanal Wellness Products" 
                                     width={600} 
                                     height={600} 
-                                    style={{ objectFit: 'cover', borderRadius: '15px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }} 
+                                    style={{ objectFit: 'cover', borderRadius: '15px', boxShadow: '0 20px 40px rgba(0,0,0,0.08)' }} 
                                 />
-
                             </Reveal>
                         </div>
                     </div>
@@ -80,28 +79,28 @@ export default function AboutPage() {
             <section className={styles.values}>
                 <div className={styles.container}>
                     <Reveal>
-                        <h2 className={styles.centeredTitle}>WHY CHOOSE FUSION?</h2>
+                        <h2 className={styles.centeredTitle}>UNCOMPROMISING COMMITMENT</h2>
                     </Reveal>
                     <div className={styles.valuesGrid}>
                         <Reveal delay={0.2}>
                             <div className={styles.valueCard}>
                                 <div className={styles.icon}>🔬</div>
-                                <h3>Lab Tested</h3>
-                                <p>Every batch is tested for purity and potency to ensure your safety and experience.</p>
+                                <h3>Pure Extraction</h3>
+                                <p>Our laboratory-grade processes ensure unparalleled purity and consistency in every batch.</p>
                             </div>
                         </Reveal>
                         <Reveal delay={0.4}>
                             <div className={styles.valueCard}>
-                                <div className={styles.icon}>🍫</div>
-                                <h3>Belgian Chocolate</h3>
-                                <p>We use only the finest responsibly sourced cacao for a smooth, rich finish.</p>
+                                <div className={styles.icon}>🌟</div>
+                                <h3>Artisanal Belgian</h3>
+                                <p>Crafted with premium cacao by master chocolatiers for a profile that is as rich as it is effective.</p>
                             </div>
                         </Reveal>
                         <Reveal delay={0.6}>
                             <div className={styles.valueCard}>
-                                <div className={styles.icon}>📦</div>
-                                <h3>Discreet Shipping</h3>
-                                <p>Your privacy is our priority. All orders are packed in plain, unmarked boxes.</p>
+                                <div className={styles.icon}>🛡️</div>
+                                <h3>Secure Privacy</h3>
+                                <p>Excellence extends to our service. Your journey begins with discreet, professional delivery.</p>
                             </div>
                         </Reveal>
                     </div>
@@ -112,15 +111,15 @@ export default function AboutPage() {
             <Reveal>
                 <section className={styles.cta}>
                     <div className={styles.container}>
-                        <h2>Ready to start your journey?</h2>
-                        <Link href="/shop" className="premium-gradient">EXPLORE THE SHOP</Link>
+                        <h2>Embark on a Refined Journey</h2>
+                        <Link href="/shop" className={styles.ctaButton}>EXPLORE THE COLLECTION</Link>
                         <div style={{ marginTop: '2rem', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'center' }}>
-                            <Link href="/faq" style={{ color: '#c9a44a', textDecoration: 'underline', fontSize: '0.9rem' }}>Read our FAQ</Link>
-                            <Link href="/contact" style={{ color: '#c9a44a', textDecoration: 'underline', fontSize: '0.9rem' }}>Contact Us 24/7</Link>
-                            <Link href="/blog" style={{ color: '#c9a44a', textDecoration: 'underline', fontSize: '0.9rem' }}>Visit the Blog</Link>
+                            <Link href="/faq" style={{ color: '#7c3aed', textDecoration: 'none', fontWeight: '600', fontSize: '0.9rem' }}>Read our FAQ</Link>
+                            <Link href="/contact" style={{ color: '#7c3aed', textDecoration: 'none', fontWeight: '600', fontSize: '0.9rem' }}>Contact Us 24/7</Link>
+                            <Link href="/blog" style={{ color: '#7c3aed', textDecoration: 'none', fontWeight: '600', fontSize: '0.9rem' }}>Visit the Blog</Link>
                         </div>
-                        <p style={{ marginTop: '1.5rem', color: '#888', fontSize: '0.8rem', maxWidth: '600px', margin: '1.5rem auto 0', lineHeight: 1.6 }}>
-                            Our products use organic <a href="https://en.wikipedia.org/wiki/Psilocybin" target="_blank" rel="noopener noreferrer" style={{ color: '#c9a44a' }}>psilocybin</a> extract, precision-infused into world-class <a href="https://en.wikipedia.org/wiki/Belgian_chocolate" target="_blank" rel="noopener noreferrer" style={{ color: '#c9a44a' }}>Belgian chocolate</a>.
+                        <p style={{ marginTop: '1.5rem', color: '#6b7280', fontSize: '0.8rem', maxWidth: '600px', margin: '1.5rem auto 0', lineHeight: 1.6 }}>
+                            Our artisanal products are precision-infused into world-class <a href="https://en.wikipedia.org/wiki/Belgian_chocolate" target="_blank" rel="noopener noreferrer" style={{ color: '#7c3aed' }}>Belgian chocolate</a> for a sophisticated wellness experience.
                         </p>
                     </div>
                 </section>

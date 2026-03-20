@@ -100,14 +100,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
       </head>
-      <body className="bg-background-dark text-white">
+      <body className="bg-background text-foreground">
         <GoogleAnalytics ga_id="G-403953413" />
         <CartProvider>
           <LayoutWrapper>

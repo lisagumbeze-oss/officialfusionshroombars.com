@@ -62,9 +62,9 @@
 }
 
 .newsletter input {
-    background: var(--background);
+    background: #ffffff;
     border: 1px solid var(--surface-border);
-    color: white;
+    color: #1a1a1a;
     padding: 0.75rem;
     flex: 1;
     border-radius: 4px 0 0 4px;
@@ -109,5 +109,6 @@
 .payments span {
     margin-left: 1rem;
     font-weight: 700;
-    opacity: 0.5;
+    color: #1a1a1a;
+    opacity: 0.3;
 }

@@ -28,8 +28,8 @@
 .heroOverlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%),
-              linear-gradient(to bottom, rgba(13, 10, 20, 0) 0%, rgba(13, 10, 20, 0.5) 75%, #0d0a14 100%);
+  background: radial-gradient(circle at center, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 100%),
+              linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 75%, #ffffff 100%);
   z-index: 1;
 }
 
@@ -53,7 +53,7 @@
   text-transform: uppercase;
   letter-spacing: 2px;
   margin-bottom: 2rem;
-  background: linear-gradient(90deg, #fff, rgba(255,255,255,0.5));
+  background: linear-gradient(90deg, #1a1a1a, var(--primary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -64,7 +64,7 @@
 
 .heroText {
   font-size: clamp(1rem, 4vw, 1.25rem);
-  color: #ccc;
+  color: #4b5563;
   line-height: 1.6;
   margin-bottom: 3rem;
   max-width: 700px;
@@ -90,22 +90,22 @@
 }
 
 .primaryBtn {
-  background: white;
-  color: black;
+  background: var(--primary);
+  color: white;
 }
 
 .primaryBtn:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(255,255,255,0.2);
+  box-shadow: 0 10px 20px rgba(124, 58, 237, 0.2);
 }
 
 .secondaryBtn {
-  color: white;
-  border: 1px solid rgba(255,255,255,0.2);
+  color: var(--primary);
+  border: 1px solid var(--primary);
 }
 
 .secondaryBtn:hover {
-  background: rgba(255,255,255,0.1);
+  background: rgba(124, 58, 237, 0.05);
 }
 
 .trustBadges {
@@ -120,12 +120,12 @@
 }
 
 .badge {
-  background: rgba(15, 15, 15, 0.95);
-  border: 1px solid rgba(255,255,255,0.05);
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.05);
   padding: 2.5rem 2rem;
   border-radius: 15px;
   text-align: center;
-  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
 }
 
 .badgeIcon {
@@ -138,12 +138,12 @@
   font-size: 0.85rem;
   letter-spacing: 2px;
   margin-bottom: 0.5rem;
-  color: white;
+  color: #1a1a1a;
 }
 
 .badge p {
   font-size: 0.8rem;
-  color: #666;
+  color: #6b7280;
   margin: 0;
 }
 
@@ -179,12 +179,13 @@
   font-size: 2.5rem;
   margin-bottom: 2rem;
   letter-spacing: 2px;
+  color: #1a1a1a;
 }
 
 .teaserText p {
   font-size: 1.1rem;
   line-height: 1.8;
-  color: #aaa;
+  color: #4b5563;
   margin-bottom: 2rem;
 }
 
@@ -252,17 +253,18 @@
 }
 
 .productCard {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.05);
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.05);
   border-radius: 20px;
   overflow: hidden;
   transition: all 0.3s;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
 }
 
 .productCard:hover {
   transform: translateY(-10px);
   border-color: var(--primary);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  box-shadow: 0 10px 30px rgba(124, 58, 237, 0.1);
 }
 
 .productImageWrapper {
@@ -315,7 +317,7 @@
 .newPrice {
   font-weight: bold;
   font-size: 1.1rem;
-  color: white;
+  color: #1a1a1a;
 }
 
 .buttonGroup {
@@ -353,17 +355,18 @@
 .finalCta {
   padding: 10rem 0;
   text-align: center;
-  background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('/images/art-fusion.png') center/cover;
+  background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('/images/art-fusion.png') center/cover;
 }
 
 .ctaContent h2 {
   font-size: 3rem;
   margin-bottom: 2rem;
   letter-spacing: 3px;
+  color: #1a1a1a;
 }
 
 .ctaContent p {
-  color: #aaa;
+  color: #6b7280;
   max-width: 600px;
   margin: 0 auto 3rem;
   font-size: 1.1rem;

@@ -70,18 +70,19 @@ export default async function BlogPage({
     const categories = ['All Stories', 'Wellness & Microdosing', 'Product Launch', 'Science & Research', 'Community Stories', 'Lifestyle'];
 
     return (
-        <div className="min-h-screen" style={{ background: '#0a0510', color: '#fff', fontFamily: "'Inter', sans-serif" }}>
+        <div className="min-h-screen" style={{ background: '#ffffff', color: '#1a1a1a', fontFamily: "'Inter', sans-serif" }}>
             <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px 24px 60px' }}>
-                <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', fontWeight: 900, letterSpacing: '-0.02em', marginBottom: '32px', lineHeight: 1.1 }}>Fusion Shroom Bars Blog: Psilocybin Science, Wellness &amp; Microdosing Insights</h1>
+                <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', fontWeight: 900, letterSpacing: '-0.02em', marginBottom: '32px', lineHeight: 1.1, color: '#1a1a1a' }}>Fusion Shroom Bars Blog: Artisanal Insights & Wellness Mastery</h1>
 
                 {/* =================== HERO FEATURED SECTION =================== */}
                 {featuredPost && (
                     <section style={{
                         position: 'relative',
-                        borderRadius: '20px',
+                        borderRadius: '24px',
                         overflow: 'hidden',
                         marginBottom: '48px',
                         minHeight: '420px',
+                        boxShadow: '0 20px 40px rgba(0,0,0,0.05)',
                     }}>
                         <Image
                             src={featuredPost.image || '/images/art-fusion.png'}
@@ -93,11 +94,11 @@ export default async function BlogPage({
                         {/* Gradient overlay */}
                         <div style={{
                             position: 'absolute', inset: 0,
-                            background: 'linear-gradient(to top, #0a0510 0%, rgba(10,5,16,0.7) 40%, rgba(10,5,16,0.3) 70%, transparent 100%)',
+                            background: 'linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 40%, rgba(255,255,255,0.2) 70%, transparent 100%)',
                         }} />
                         <div style={{
                             position: 'absolute', inset: 0,
-                            background: 'linear-gradient(to right, rgba(10,5,16,0.6) 0%, transparent 60%)',
+                            background: 'linear-gradient(to right, rgba(255,255,255,0.4) 0%, transparent 60%)',
                         }} />
 
                         {/* Content */}
@@ -117,6 +118,7 @@ export default async function BlogPage({
                                 textTransform: 'uppercase',
                                 letterSpacing: '0.15em',
                                 marginBottom: '16px',
+                                color: '#fff',
                             }}>
                                 Featured Story
                             </span>
@@ -126,17 +128,18 @@ export default async function BlogPage({
                                 lineHeight: 1.1,
                                 marginBottom: '12px',
                                 letterSpacing: '-0.02em',
+                                color: '#1a1a1a',
                             }}>
                                 {featuredPost.title}
                             </h2>
                             <p style={{
-                                color: '#a0a0b0',
+                                color: '#4b5563',
                                 fontSize: '14px',
                                 lineHeight: 1.6,
                                 marginBottom: '20px',
                                 maxWidth: '480px',
                             }}>
-                                {featuredPost.excerpt || 'Discover the latest insights and research on functional mushroom bars.'}
+                                {featuredPost.excerpt || 'Discover the latest insights into our artisanal process and wellness philosophy.'}
                             </p>
                             <Link
                                 href={`/blog/${featuredPost.slug}`}
@@ -154,6 +157,7 @@ export default async function BlogPage({
                                     color: '#fff',
                                     textDecoration: 'none',
                                     transition: 'transform 0.2s',
+                                    boxShadow: '0 10px 20px rgba(124, 58, 237, 0.2)',
                                 }}
                             >
                                 Read Featured Story <ArrowRight size={14} />
@@ -183,9 +187,9 @@ export default async function BlogPage({
                                     fontWeight: 700,
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.08em',
-                                    border: category === cat ? '2px solid #7c3aed' : '2px solid rgba(255,255,255,0.12)',
-                                    background: category === cat ? '#7c3aed' : 'transparent',
-                                    color: '#fff',
+                                    border: category === cat ? '2px solid #7c3aed' : '2px solid rgba(0,0,0,0.08)',
+                                    background: category === cat ? '#7c3aed' : '#fff',
+                                    color: category === cat ? '#fff' : '#4b5563',
                                     textDecoration: 'none',
                                     transition: 'all 0.2s',
                                 }}
@@ -196,7 +200,7 @@ export default async function BlogPage({
                     </div>
                     <form action="/blog" method="GET" style={{ position: 'relative', width: '260px', maxWidth: '100%' }}>
                         {category !== 'All Stories' && <input type="hidden" name="category" value={category} />}
-                        <Search style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#555' }} size={16} />
+                        <Search style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} size={16} />
                         <input
                             type="text"
                             name="search"
@@ -206,9 +210,9 @@ export default async function BlogPage({
                                 width: '100%',
                                 padding: '10px 16px 10px 40px',
                                 borderRadius: '999px',
-                                background: 'rgba(255,255,255,0.05)',
-                                border: '1px solid rgba(255,255,255,0.1)',
-                                color: '#fff',
+                                background: '#f9fafb',
+                                border: '1px solid rgba(0,0,0,0.08)',
+                                color: '#1a1a1a',
                                 fontSize: '13px',
                                 outline: 'none',
                             }}
@@ -224,6 +228,7 @@ export default async function BlogPage({
                             fontSize: '20px',
                             fontWeight: 900,
                             letterSpacing: '-0.01em',
+                            color: '#1a1a1a',
                         }}>
                             {search ? `Search results for "${search}"` : category !== 'All Stories' ? `${category} Insights` : 'Latest Insights'}
                         </h3>
@@ -237,10 +242,11 @@ export default async function BlogPage({
                         }}>
                             {displayPosts.map((post: any) => (
                                 <article key={post.id} style={{
-                                    borderRadius: '16px',
+                                    borderRadius: '20px',
                                     overflow: 'hidden',
-                                    background: 'rgba(255,255,255,0.03)',
-                                    border: '1px solid rgba(255,255,255,0.06)',
+                                    background: '#ffffff',
+                                    border: '1px solid rgba(0,0,0,0.05)',
+                                    boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
                                     transition: 'transform 0.3s, border-color 0.3s',
                                 }}>
                                     <Link href={`/blog/${post.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -263,40 +269,42 @@ export default async function BlogPage({
                                                     fontWeight: 800,
                                                     textTransform: 'uppercase',
                                                     letterSpacing: '0.1em',
+                                                    color: '#fff',
                                                 }}>
                                                     {post.category}
                                                 </span>
                                             )}
                                         </div>
-                                        <div style={{ padding: '20px' }}>
+                                        <div style={{ padding: '24px' }}>
                                             <div style={{
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 gap: '8px',
                                                 fontSize: '10px',
                                                 fontWeight: 600,
-                                                color: '#666',
+                                                color: '#6b7280',
                                                 textTransform: 'uppercase',
                                                 letterSpacing: '0.06em',
                                                 marginBottom: '10px',
                                             }}>
                                                 <span>{new Date(post.createdAt).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}</span>
-                                                <span style={{ width: '3px', height: '3px', borderRadius: '50%', background: '#444' }} />
+                                                <span style={{ width: '3px', height: '3px', borderRadius: '50%', background: '#d1d5db' }} />
                                                 <span>5 min read</span>
                                             </div>
                                             <h4 style={{
-                                                fontSize: '17px',
+                                                fontSize: '18px',
                                                 fontWeight: 800,
                                                 lineHeight: 1.3,
-                                                marginBottom: '8px',
+                                                marginBottom: '10px',
+                                                color: '#1a1a1a',
                                             }}>
                                                 {post.title}
                                             </h4>
                                             <p style={{
-                                                color: '#888',
-                                                fontSize: '13px',
+                                                color: '#4b5563',
+                                                fontSize: '14px',
                                                 lineHeight: 1.6,
-                                                marginBottom: '16px',
+                                                marginBottom: '18px',
                                                 display: '-webkit-box',
                                                 WebkitLineClamp: 3,
                                                 WebkitBoxOrient: 'vertical' as const,
@@ -312,9 +320,9 @@ export default async function BlogPage({
                                                 fontWeight: 800,
                                                 textTransform: 'uppercase',
                                                 letterSpacing: '0.08em',
-                                                color: '#fff',
+                                                color: '#7c3aed',
                                             }}>
-                                                Read More <ArrowRight size={12} style={{ color: '#7c3aed' }} />
+                                                Read Full Story <ArrowRight size={12} />
                                             </span>
                                         </div>
                                     </Link>
@@ -322,9 +330,9 @@ export default async function BlogPage({
                             ))}
                         </div>
                     ) : (
-                        <div style={{ textAlign: 'center', padding: '100px 0', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '20px' }}>
-                            <p style={{ color: '#555', fontSize: '18px', fontWeight: 700 }}>No stories found matching your criteria.</p>
-                            <Link href="/blog" style={{ color: '#7c3aed', textDecoration: 'underline', marginTop: '10px', display: 'inline-block' }}>Clear all filters</Link>
+                        <div style={{ textAlign: 'center', padding: '100px 0', border: '1px solid rgba(0,0,0,0.05)', borderRadius: '24px', background: '#f9fafb' }}>
+                            <p style={{ color: '#6b7280', fontSize: '18px', fontWeight: 700 }}>No stories found matching your criteria.</p>
+                            <Link href="/blog" style={{ color: '#7c3aed', textDecoration: 'none', fontWeight: '800', marginTop: '10px', display: 'inline-block' }}>Clear all filters</Link>
                         </div>
                     )}
 
@@ -335,19 +343,20 @@ export default async function BlogPage({
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            gap: '6px',
+                            gap: '8px',
                         }}>
                             {page > 1 && (
                                 <Link 
                                     href={`/blog?page=${page - 1}${search ? `&search=${encodeURIComponent(search)}` : ''}${category !== 'All Stories' ? `&category=${encodeURIComponent(category)}` : ''}`}
                                     style={{
-                                        width: '36px', height: '36px', borderRadius: '8px',
-                                        background: 'transparent', border: '1px solid rgba(255,255,255,0.1)',
-                                        color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        width: '40px', height: '40px', borderRadius: '12px',
+                                        background: '#fff', border: '1px solid rgba(0,0,0,0.08)',
+                                        color: '#1a1a1a', display: 'flex', alignItems: 'center', justifyContent: 'center',
                                         textDecoration: 'none',
+                                        boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
                                     }}
                                 >
-                                    <ChevronLeft size={16} />
+                                    <ChevronLeft size={18} />
                                 </Link>
                             )}
                             
@@ -356,12 +365,13 @@ export default async function BlogPage({
                                     key={n} 
                                     href={`/blog?page=${n}${search ? `&search=${encodeURIComponent(search)}` : ''}${category !== 'All Stories' ? `&category=${encodeURIComponent(category)}` : ''}`}
                                     style={{
-                                        width: '36px', height: '36px', borderRadius: '8px',
-                                        background: n === page ? '#7c3aed' : 'transparent',
-                                        border: n === page ? '1px solid #7c3aed' : '1px solid rgba(255,255,255,0.1)',
-                                        color: '#fff', fontSize: '13px', fontWeight: 700,
+                                        width: '40px', height: '40px', borderRadius: '12px',
+                                        background: n === page ? '#7c3aed' : '#fff',
+                                        border: n === page ? '1px solid #7c3aed' : '1px solid rgba(0,0,0,0.08)',
+                                        color: n === page ? '#fff' : '#1a1a1a', fontSize: '14px', fontWeight: 700,
                                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                                         textDecoration: 'none',
+                                        boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
                                     }}
                                 >
                                     {n}
@@ -372,13 +382,14 @@ export default async function BlogPage({
                                 <Link 
                                     href={`/blog?page=${page + 1}${search ? `&search=${encodeURIComponent(search)}` : ''}${category !== 'All Stories' ? `&category=${encodeURIComponent(category)}` : ''}`}
                                     style={{
-                                        width: '36px', height: '36px', borderRadius: '8px',
-                                        background: 'transparent', border: '1px solid rgba(255,255,255,0.1)',
-                                        color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        width: '40px', height: '40px', borderRadius: '12px',
+                                        background: '#fff', border: '1px solid rgba(0,0,0,0.08)',
+                                        color: '#1a1a1a', display: 'flex', alignItems: 'center', justifyContent: 'center',
                                         textDecoration: 'none',
+                                        boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
                                     }}
                                 >
-                                    <ChevronRight size={16} />
+                                    <ChevronRight size={18} />
                                 </Link>
                             )}
                         </div>
@@ -389,26 +400,28 @@ export default async function BlogPage({
                 <section style={{
                     marginTop: '80px',
                     padding: '60px 32px',
-                    borderRadius: '24px',
-                    background: 'linear-gradient(135deg, rgba(124,58,237,0.15) 0%, rgba(124,58,237,0.03) 100%)',
+                    borderRadius: '32px',
+                    background: 'linear-gradient(135deg, rgba(124,58,237,0.05) 0%, rgba(255,255,255,1) 100%)',
                     border: '1px solid rgba(124,58,237,0.1)',
                     textAlign: 'center',
+                    boxShadow: '0 20px 40px rgba(124,58,237,0.03)',
                 }}>
                     <h2 style={{
                         fontSize: 'clamp(1.6rem, 4vw, 2.4rem)',
                         fontWeight: 900,
                         marginBottom: '12px',
+                        color: '#1a1a1a',
                     }}>
-                        Join the Fungi Revolution
+                        Artisanal Insights in Your Inbox
                     </h2>
                     <p style={{
-                        color: '#888',
+                        color: '#6b7280',
                         maxWidth: '500px',
                         margin: '0 auto 28px',
-                        fontSize: '14px',
+                        fontSize: '15px',
                         lineHeight: 1.6,
                     }}>
-                        Subscribe for exclusive insights into mushroom science, early access to new limited flavors, and wellness tips delivered to your inbox.
+                        Subscribe for exclusive insights into nosso artisanal process, early access to new collections, and refined wellness tips.
                     </p>
                     <form style={{
                         display: 'flex',
@@ -424,21 +437,22 @@ export default async function BlogPage({
                             style={{
                                 flex: 1,
                                 minWidth: '200px',
-                                padding: '12px 20px',
+                                padding: '14px 24px',
                                 borderRadius: '999px',
-                                background: 'rgba(0,0,0,0.4)',
-                                border: '1px solid rgba(255,255,255,0.1)',
-                                color: '#fff',
-                                fontSize: '13px',
+                                background: '#fff',
+                                border: '1px solid rgba(0,0,0,0.08)',
+                                color: '#1a1a1a',
+                                fontSize: '14px',
                                 outline: 'none',
+                                boxShadow: '0 2px 10px rgba(0,0,0,0.02)',
                             }}
                         />
                         <button style={{
-                            padding: '12px 28px',
+                            padding: '14px 32px',
                             borderRadius: '999px',
                             background: '#7c3aed',
                             color: '#fff',
-                            fontSize: '12px',
+                            fontSize: '13px',
                             fontWeight: 800,
                             textTransform: 'uppercase',
                             letterSpacing: '0.08em',
@@ -446,9 +460,10 @@ export default async function BlogPage({
                             cursor: 'pointer',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '6px',
+                            gap: '8px',
+                            boxShadow: '0 10px 20px rgba(124, 58, 237, 0.2)',
                         }}>
-                            Subscribe <Mail size={14} />
+                            Subscribe <Mail size={16} />
                         </button>
                     </form>
                 </section>

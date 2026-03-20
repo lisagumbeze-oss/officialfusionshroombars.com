@@ -12,7 +12,7 @@
 .shopHeader h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
-    background: linear-gradient(to right, #fff, var(--text-muted));
+    background: linear-gradient(to right, #1a1a1a, var(--primary), var(--secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -81,14 +81,14 @@
 
 .productCard:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 30px rgba(76, 29, 149, 0.08);
     border-color: var(--primary);
 }
 
 .productImagePlaceholder {
     width: 100%;
     aspect-ratio: 1;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    background: var(--surface);
     border-radius: 8px;
     margin-bottom: 1.5rem;
     position: relative;

@@ -11,7 +11,7 @@
 .hero {
   padding: 8rem 0;
   text-align: center;
-  background: linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.6)), url('/images/hero-fusion.png');
+  background: linear-gradient(rgba(253, 252, 251, 0.6), rgba(253, 252, 251, 0.6)), url('/images/hero-fusion.png');
   background-size: cover;
   background-position: center;
 }
@@ -83,7 +83,7 @@
 
 .values {
   padding: 6rem 0;
-  background: #f9fafb;
+  background: var(--surface);
 }
 
 .centeredTitle {
@@ -152,7 +152,7 @@
 }
 
 .valueCard {
-  background: #ffffff;
+  background: var(--surface);
   padding: 3rem 2rem;
   border-radius: 15px;
   text-align: center;

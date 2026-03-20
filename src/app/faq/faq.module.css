@@ -6,7 +6,7 @@
 .hero {
     padding: 8rem 0 4rem;
     text-align: center;
-    background: radial-gradient(circle at center, rgba(160, 30, 241, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle at center, rgba(217, 119, 6, 0.08) 0%, transparent 70%);
 }
 
 .container {

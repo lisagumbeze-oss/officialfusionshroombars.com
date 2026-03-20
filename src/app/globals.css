@@ -7,18 +7,18 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
+  --background: #fdfcfb;
   --foreground: #1a1a1a;
-  --primary: #7c3aed;
-  --primary-glow: rgba(124, 58, 237, 0.15);
-  --secondary: #ec4899;
-  --surface: #f9fafb;
-  --surface-border: rgba(0, 0, 0, 0.05);
+  --primary: #4c1d95;
+  --primary-glow: rgba(76, 29, 149, 0.1);
+  --secondary: #d97706;
+  --surface: #fbf9f6;
+  --surface-border: rgba(76, 29, 149, 0.08);
   --text-muted: #6b7280;
-  --glass: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass: rgba(253, 252, 251, 0.85);
+  --glass-border: rgba(76, 29, 149, 0.12);
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --grid-bg: radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.03) 0%, transparent 70%);
+  --grid-bg: radial-gradient(circle at 50% 50%, rgba(217, 119, 6, 0.04) 0%, transparent 70%);
 }
 
 * {
@@ -98,11 +98,11 @@ button {
 }
 
 .premium-gradient {
-  background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
+  background: linear-gradient(135deg, #4c1d95 0%, #d97706 100%);
 }
 
 .text-gradient {
-  background: linear-gradient(to right, #1a1a1a, #7c3aed);
+  background: linear-gradient(to right, #1a1a1a, #4c1d95, #d97706);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -122,8 +122,8 @@ button {
 .card-hover:hover {
   transform: translateY(-8px);
   background: #ffffff;
-  border-color: rgba(124, 58, 237, 0.2);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 0 20px rgba(124, 58, 237, 0.05);
+  border-color: rgba(76, 29, 149, 0.2);
+  box-shadow: 0 20px 40px rgba(76, 29, 149, 0.06), 0 0 20px rgba(217, 119, 6, 0.03);
 }
 
 @keyframes fadeIn {

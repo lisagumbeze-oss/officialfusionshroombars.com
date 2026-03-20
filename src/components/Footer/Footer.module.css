@@ -62,9 +62,9 @@
 }
 
 .newsletter input {
-    background: #ffffff;
+    background: var(--background);
     border: 1px solid var(--surface-border);
-    color: #1a1a1a;
+    color: var(--foreground);
     padding: 0.75rem;
     flex: 1;
     border-radius: 4px 0 0 4px;

@@ -12,7 +12,7 @@
 
 .scrolled {
     height: 65px;
-    background: rgba(255, 255, 255, 0.8) !important;
+    background: var(--glass) !important;
     backdrop-filter: blur(20px) !important;
     border-bottom: 1px solid var(--surface-border);
     box-shadow: 0 4px 20px rgba(0,0,0,0.03);
@@ -118,7 +118,7 @@
         left: 0;
         width: 100%;
         height: calc(100vh - 80px);
-        background: #ffffff;
+        background: var(--background);
         flex-direction: column;
         padding: 2rem;
         gap: 1.5rem;

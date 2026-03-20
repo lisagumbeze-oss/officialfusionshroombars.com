@@ -10,7 +10,7 @@ import LayoutWrapper from "@/components/LayoutWrapper";
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://officialfusionshroombar.com"),
+  metadataBase: new URL("https://officialfusionshroombars.com"),
   manifest: '/manifest.json',
   title: {
     default: "Official Fusion Shroom Bars | Authentic Fusion Mushroom Chocolate",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://officialfusionshroombar.com",
+    url: "https://officialfusionshroombars.com",
     siteName: "Official Fusion Shroom Bars",
     title: "Official Fusion Shroom Bars | Premium Magic Mushroom Chocolate & Gummies",
     description: "The Gold Standard in Mushroom Infusions. Gourmet chocolate and gummies with premium psilocybin extract.",
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://officialfusionshroombar.com',
+    canonical: 'https://officialfusionshroombars.com',
   },
 };
 
@@ -80,8 +80,8 @@ const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "Official Fusion Shroom Bars",
-  "url": "https://officialfusionshroombar.com",
-  "logo": "https://officialfusionshroombar.com/logo.png", // Assuming logo.png exists
+  "url": "https://officialfusionshroombars.com",
+  "logo": "https://officialfusionshroombars.com/logo.png", // Assuming logo.png exists
   "sameAs": [
     "https://twitter.com/fusionshroombar", // Placeholders
     "https://instagram.com/officialfusionshroombar"
@@ -90,7 +90,7 @@ const organizationJsonLd = {
     "@type": "ContactPoint",
     "telephone": "",
     "contactType": "customer service",
-    "email": "support@officialfusionshroombar.com"
+    "email": "order@officialfusionshroombars.com"
   }
 };
 

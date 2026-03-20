@@ -54,7 +54,7 @@ export default function LegalModal({ isOpen, onClose, type }: LegalModalProps) {
           <h3>1. Returns</h3>
           <p>Due to the nature of our products, we do not accept returns. All sales are final.</p>
           <h3>2. Damaged Goods</h3>
-          <p>If your order arrives damaged, please send a photo to order@officialfusionshroombar.com within 24 hours for a replacement.</p>
+          <p>If your order arrives damaged, please send a photo to order@officialfusionshroombars.com within 24 hours for a replacement.</p>
           <h3>3. Shipping Issues</h3>
           <p>If your package is lost in transit, we will reship your order once after verification. We are not responsible for incorrect addresses provided by the customer.</p>
         </>

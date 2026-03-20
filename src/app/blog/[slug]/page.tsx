@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         description: post.seoDescription || post.excerpt || post.content.substring(0, 160),
         keywords: post.seoKeywords || undefined,
         alternates: {
-            canonical: `https://officialfusionshroombar.com/blog/${slug}`,
+            canonical: `https://officialfusionshroombars.com/blog/${slug}`,
         },
         openGraph: {
             title: post.seoTitle || post.title,
@@ -82,12 +82,12 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         "author": [{
             "@type": "Organization",
             "name": "Fusion Shroom Bars",
-            "url": "https://officialfusionshroombar.com"
+            "url": "https://officialfusionshroombars.com"
         }],
         "description": post.excerpt || post.content.substring(0, 160),
         "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": `https://officialfusionshroombar.com/blog/${post.slug}`
+            "@id": `https://officialfusionshroombars.com/blog/${post.slug}`
         }
     };
 

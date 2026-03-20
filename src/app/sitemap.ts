@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import prisma from '@/lib/prisma';
 
-const BASE_URL = 'https://officialfusionshroombar.com';
+const BASE_URL = 'https://officialfusionshroombars.com';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Static pages with their priorities and change frequencies

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     title: 'Neau Tropics Mushroom Chocolates | Buy Neau Tropics Online',
     description: 'Learn why Neau Tropics mushroom chocolates have become the most sought-after artisanal psilocybin edibles. Discover their unique flavor pairings, dosage precision, and how to verify authenticity.',
     alternates: {
-        canonical: 'https://officialfusionshroombar.com/neau-tropics',
+        canonical: 'https://officialfusionshroombars.com/neau-tropics',
     },
 };
 

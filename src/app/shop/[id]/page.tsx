@@ -22,14 +22,14 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         description: product.seoDescription || product.description.substring(0, 160),
         keywords: product.seoKeywords || undefined,
         alternates: {
-            canonical: `https://officialfusionshroombar.com/shop/${product.slug}`,
+            canonical: `https://officialfusionshroombars.com/shop/${product.slug}`,
         },
         openGraph: {
             title: product.seoTitle || `${product.name} | Official Fusion Shroom Bars`,
             description: product.seoDescription || product.description.substring(0, 160),
             images: product.image ? [product.image] : [],
             type: 'website',
-            url: `https://officialfusionshroombar.com/shop/${product.slug}`,
+            url: `https://officialfusionshroombars.com/shop/${product.slug}`,
             siteName: 'Official Fusion Shroom Bars',
         },
         twitter: {
@@ -89,7 +89,7 @@ export default async function ProductPage({
         "@context": "https://schema.org",
         "@type": "Product",
         "name": product.name,
-        "image": product.image.startsWith('http') ? product.image : `https://officialfusionshroombar.com${product.image}`,
+        "image": product.image.startsWith('http') ? product.image : `https://officialfusionshroombars.com${product.image}`,
         "description": product.description,
         "sku": product.id.toString(),
         "brand": {
@@ -103,7 +103,7 @@ export default async function ProductPage({
         },
         "offers": {
             "@type": "Offer",
-            "url": `https://officialfusionshroombar.com/shop/${product.slug}`,
+            "url": `https://officialfusionshroombars.com/shop/${product.slug}`,
             "priceCurrency": "USD",
             "price": product.price,
             "availability": "https://schema.org/InStock",
@@ -115,9 +115,9 @@ export default async function ProductPage({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://officialfusionshroombar.com" },
-            { "@type": "ListItem", "position": 2, "name": "Shop", "item": "https://officialfusionshroombar.com/shop" },
-            { "@type": "ListItem", "position": 3, "name": product.category, "item": `https://officialfusionshroombar.com/shop?category=${encodeURIComponent(product.category)}` },
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://officialfusionshroombars.com" },
+            { "@type": "ListItem", "position": 2, "name": "Shop", "item": "https://officialfusionshroombars.com/shop" },
+            { "@type": "ListItem", "position": 3, "name": product.category, "item": `https://officialfusionshroombars.com/shop?category=${encodeURIComponent(product.category)}` },
             { "@type": "ListItem", "position": 4, "name": product.name }
         ]
     };

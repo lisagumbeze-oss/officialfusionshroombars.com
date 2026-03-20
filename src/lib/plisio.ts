@@ -19,7 +19,7 @@ export async function createPlisioInvoice(order: {
     customerEmail: string;
 }) {
     // Note: In production, NEXT_PUBLIC_BASE_URL should be set in .env
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://officialfusionshroombar.com';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://officialfusionshroombars.com';
     const callbackUrl = `${baseUrl}/api/checkout/crypto-callback`;
     const successUrl = `${baseUrl}/orders/confirmation?id=${order.id}`;
     

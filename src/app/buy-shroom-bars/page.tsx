@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     title: 'Buy Shroom Bars Online | Safe & Discrete Delivery | Fusion',
     description: 'Looking to buy shroom bars online? Learn how to spot genuine psilocybin chocolate, avoid counterfeits, and securely order premium lab-tested bars directly to your door.',
     alternates: {
-        canonical: 'https://officialfusionshroombar.com/buy-shroom-bars',
+        canonical: 'https://officialfusionshroombars.com/buy-shroom-bars',
     },
 };
 

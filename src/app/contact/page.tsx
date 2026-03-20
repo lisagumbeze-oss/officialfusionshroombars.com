@@ -44,11 +44,11 @@ export default function ContactPage() {
                 <div className={styles.contactInfo}>
                     <div className={styles.infoCard}>
                         <h3>Email Us</h3>
-                        <p>order@officialfusionshroombar.com</p>
+                        <p>order@officialfusionshroombars.com</p>
                     </div>
                     <div className={styles.infoCard}>
                         <h3>Visit Us</h3>
-                        <p>23563 Baxter Rd, Wildomar, CA, 92595</p>
+                        <p>6736 S Sherbourne Dr, Los Angeles, CA 90056, USA</p>
                     </div>
                     <div className={styles.infoCard}>
                         <h3>Support Hours</h3>

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     title: 'Microdosing Chocolate: The Complete Guide to Gentle Psilocybin | Fusion',
     description: 'Learn how microdosing chocolate can elevate your mood, focus, and creativity. A comprehensive guide to protocols, dosage, benefits, and premium psilocybin edibles.',
     alternates: {
-        canonical: 'https://officialfusionshroombar.com/microdosing-chocolate',
+        canonical: 'https://officialfusionshroombars.com/microdosing-chocolate',
     },
 };
 

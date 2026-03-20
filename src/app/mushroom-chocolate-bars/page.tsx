@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     title: 'Mushroom Chocolate Bars: The Ultimate Guide to Psilocybin Edibles',
     description: 'Discover everything you need to know about mushroom chocolate bars. Learn about the benefits of combining psilocybin with cocoa, how to dose safely, and where to find premium edibles.',
     alternates: {
-        canonical: 'https://officialfusionshroombar.com/mushroom-chocolate-bars',
+        canonical: 'https://officialfusionshroombars.com/mushroom-chocolate-bars',
     },
 };
 

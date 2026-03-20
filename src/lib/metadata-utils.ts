@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import prisma from './prisma';
 
-const BASE_URL = 'https://officialfusionshroombar.com';
+const BASE_URL = 'https://officialfusionshroombars.com';
 
 export async function getPageMetadata(path: string, fallback: Metadata): Promise<Metadata> {
   // Build canonical URL from the path

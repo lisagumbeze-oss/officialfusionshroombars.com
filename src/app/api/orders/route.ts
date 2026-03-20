@@ -79,9 +79,9 @@ export async function POST(request: Request) {
             try {
                 // 1. Email to Customer
                 await resend.emails.send({
-                    from: 'Fusion Shroom Bars <order@officialfusionshroombar.com>', 
+                    from: 'Fusion Shroom Bars <order@officialfusionshroombars.com>', 
                     to: customerEmail,
-                    replyTo: 'order@officialfusionshroombar.com',
+                    replyTo: 'order@officialfusionshroombars.com',
                     subject: `Order Confirmation #${order.id.slice(-6).toUpperCase()} - Fusion Shroom Bars`,
                     html: `
                         <div style="background-color: #0c0c0c; color: #ffffff; font-family: 'Inter', Arial, sans-serif; padding: 40px; line-height: 1.6;">
@@ -133,9 +133,9 @@ export async function POST(request: Request) {
                 });
 
                 // 2. Notification to Admin
-                const adminEmail = process.env.ADMIN_EMAIL || 'order@officialfusionshroombar.com';
+                const adminEmail = process.env.ADMIN_EMAIL || 'order@officialfusionshroombars.com';
                 await resend.emails.send({
-                    from: 'Fusion System <order@officialfusionshroombar.com>', 
+                    from: 'Fusion System <order@officialfusionshroombars.com>', 
                     to: adminEmail,
                     subject: `New Order Received! 💰 $${totalAmount.toFixed(2)}`,
                     html: `
@@ -173,7 +173,7 @@ export async function POST(request: Request) {
                                     </div>
 
                                     <div style="text-align: center;">
-                                        <a href="https://officialfusionshroombar.com/admin" style="display: inline-block; background: #ffffff; color: #a855f7; text-decoration: none; padding: 14px 28px; border-radius: 6px; font-weight: 900; font-size: 13px; text-transform: uppercase;">Open Admin Panel</a>
+                                        <a href="https://officialfusionshroombars.com/admin" style="display: inline-block; background: #ffffff; color: #a855f7; text-decoration: none; padding: 14px 28px; border-radius: 6px; font-weight: 900; font-size: 13px; text-transform: uppercase;">Open Admin Panel</a>
                                     </div>
                                 </div>
                             </div>

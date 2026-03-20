@@ -4,7 +4,7 @@ export const faqData = [
     questions: [
       {
         question: "Is this the official Fusion Chocolate Bar website?",
-        answer: "Yes. https://officialfusionshroombar.com is an authorized source for authentic Fusion products. Beware of imitation sites and always ensure you are shopping on our official domain."
+        answer: "Yes. https://officialfusionshroombars.com is an authorized source for authentic Fusion products. Beware of imitation sites and always ensure you are shopping on our official domain."
       },
       {
         question: "Is it safe to order from your website?",

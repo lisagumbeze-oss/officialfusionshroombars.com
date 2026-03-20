@@ -28,6 +28,6 @@ export default function robots(): MetadataRoute.Robots {
                 ],
             },
         ],
-        sitemap: 'https://officialfusionshroombar.com/sitemap.xml',
+        sitemap: 'https://officialfusionshroombars.com/sitemap.xml',
     };
 }

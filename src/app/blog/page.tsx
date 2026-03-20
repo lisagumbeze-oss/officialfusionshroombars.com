@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     title: 'Blog | Fusion Shroom Bars',
     description: 'Insights, news, and education from the world of premium psilocybin. Discover the science and soul behind every official Fusion Shroom Bar.',
     alternates: {
-        canonical: 'https://officialfusionshroombar.com/blog',
+        canonical: 'https://officialfusionshroombars.com/blog',
     },
     openGraph: {
         title: 'Blog | Fusion Shroom Bars',

@@ -27,10 +27,10 @@ const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "Official Fusion Shroom Bars",
-  "url": "https://officialfusionshroombar.com",
+  "url": "https://officialfusionshroombars.com",
   "potentialAction": {
     "@type": "SearchAction",
-    "target": "https://officialfusionshroombar.com/shop?query={search_term_string}",
+    "target": "https://officialfusionshroombars.com/shop?query={search_term_string}",
     "query-input": "required name=search_term_string"
   }
 };

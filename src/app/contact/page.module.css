@@ -61,7 +61,7 @@
   align-items: center;
   width: 50px;
   height: 50px;
-  background: rgba(88, 28, 135, 0.2);
+  background: rgba(92, 64, 51, 0.2);
   color: #b45309;
   border-radius: 50%;
   margin-bottom: 1.5rem;
@@ -128,8 +128,8 @@
 
 .inputGroup input:focus, .inputGroup textarea:focus {
   outline: none;
-  border-color: #581c87;
-  box-shadow: 0 0 0 2px rgba(88, 28, 135, 0.2);
+  border-color: #5C4033;
+  box-shadow: 0 0 0 2px rgba(92, 64, 51, 0.2);
 }
 
 .form button {

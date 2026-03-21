@@ -133,7 +133,7 @@ export default function CommentForm({ blogPostId }: CommentFormProps) {
                         disabled={status === 'submitting'}
                         style={{
                             padding: '12px 32px',
-                            background: '#7c3aed',
+                            background: '#8B5E34',
                             color: '#fff',
                             border: 'none',
                             borderRadius: '999px',

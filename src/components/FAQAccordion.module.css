@@ -14,7 +14,7 @@
 
 .accordionItem.open {
     border-color: var(--primary);
-    background: rgba(124, 58, 237, 0.02);
+    background: rgba(139, 94, 52, 0.02);
 }
 
 .accordionItem:hover .question,

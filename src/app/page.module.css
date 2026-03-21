@@ -87,7 +87,7 @@
 
 /* 2. Infinite Marquee */
 .marqueeContainer {
-  background: #3b0e7a; /* primary */
+  background: var(--primary); /* Configured dynamically to Coffee Brown */
   color: #ffffff;
   padding: 1.5rem 0;
   overflow: hidden;

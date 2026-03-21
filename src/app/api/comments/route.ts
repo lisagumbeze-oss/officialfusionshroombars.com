@@ -53,7 +53,7 @@ export async function POST(request: Request) {
                                 <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; color: #374151; margin: 20px 0;">
                                     ${content}
                                 </div>
-                                <a href="https://officialfusionshroombars.com/admin" style="display: inline-block; background: #7c3aed; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 999px; font-weight: bold;">Moderate Comment</a>
+                                <a href="https://officialfusionshroombars.com/admin" style="display: inline-block; background: #8B5E34; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 999px; font-weight: bold;">Moderate Comment</a>
                             </div>
                         </div>
                     `

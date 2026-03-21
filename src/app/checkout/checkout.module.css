@@ -67,7 +67,7 @@
 .inputGroup input:focus, .select:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 10px rgba(157, 59, 234, 0.2);
+    box-shadow: 0 0 10px rgba(139, 94, 52, 0.2);
 }
 
 .shippingSection {
@@ -96,7 +96,7 @@
 
 .shippingOption.selected {
     border-color: var(--primary);
-    background: rgba(157, 59, 234, 0.1);
+    background: rgba(139, 94, 52, 0.1);
 }
 
 .shippingInfo {
@@ -140,7 +140,7 @@
 .totalRow {
     margin-top: 1.5rem;
     padding-top: 1.5rem;
-    border-top: 2px solid rgba(157, 59, 234, 0.3);
+    border-top: 2px solid rgba(139, 94, 52, 0.3);
     font-size: 1.25rem;
     font-weight: 700;
     color: white;
@@ -166,15 +166,15 @@
 
 .methodOption.selected {
     border-color: var(--primary);
-    background: rgba(157, 59, 234, 0.1);
+    background: rgba(139, 94, 52, 0.1);
 }
 
 .paymentInstructions {
     margin-top: 1.5rem;
     padding: 1.5rem;
-    background: rgba(157, 59, 234, 0.05);
+    background: rgba(139, 94, 52, 0.05);
     border-radius: 12px;
-    border: 1px solid rgba(157, 59, 234, 0.2);
+    border: 1px solid rgba(139, 94, 52, 0.2);
     font-size: 0.95rem;
     line-height: 1.6;
 }
@@ -195,7 +195,7 @@
     font-weight: 800;
     letter-spacing: 2px;
     cursor: pointer;
-    box-shadow: 0 10px 20px rgba(157, 59, 234, 0.2);
+    box-shadow: 0 10px 20px rgba(139, 94, 52, 0.2);
     transition: all 0.3s;
 }
 

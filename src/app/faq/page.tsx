@@ -73,7 +73,7 @@ export default function FAQPage() {
                         Our support team is available around the clock. You can also browse our shop or read the blog for more information.
                     </p>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
-                        <Link href="/contact" style={{ padding: '0.7rem 1.5rem', borderRadius: '999px', background: '#7c3aed', color: '#fff', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 700 }}>Contact Us 24/7</Link>
+                        <Link href="/contact" style={{ padding: '0.7rem 1.5rem', borderRadius: '999px', background: '#8B5E34', color: '#fff', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 700 }}>Contact Us 24/7</Link>
                         <Link href="/shop" style={{ padding: '0.7rem 1.5rem', borderRadius: '999px', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 700 }}>Browse Products</Link>
                         <Link href="/blog" style={{ padding: '0.7rem 1.5rem', borderRadius: '999px', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 700 }}>Read Our Blog</Link>
                         <Link href="/about" style={{ padding: '0.7rem 1.5rem', borderRadius: '999px', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 700 }}>About Fusion</Link>

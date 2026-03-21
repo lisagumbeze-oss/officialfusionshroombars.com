@@ -24,7 +24,7 @@ export default function RelatedProducts({ products }: RelatedProductsProps) {
                 }}
             >
                 <style dangerouslySetInnerHTML={{ __html: `
-                    .related-card:hover { transform: translateY(-5px); border-color: rgba(124, 58, 237, 0.3) !important; box-shadow: 0 10px 30px rgba(124, 58, 237, 0.1); }
+                    .related-card:hover { transform: translateY(-5px); border-color: rgba(139, 94, 52, 0.3) !important; box-shadow: 0 10px 30px rgba(139, 94, 52, 0.1); }
                     @media (max-width: 768px) {
                         .related-grid {
                             display: flex !important;

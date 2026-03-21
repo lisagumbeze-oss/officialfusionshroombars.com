@@ -228,9 +228,3 @@ button {
     margin: 2.5rem 0;
 }
 
-/* Shift Smartsupp widget above MobileBottomNav on mobile devices */
-@media (max-width: 768px) {
-  iframe[name^="smartsupp"], div[id^="smartsupp"], #smartsupp-widget-container {
-    transform: translateY(-75px) !important;
-  }
-}

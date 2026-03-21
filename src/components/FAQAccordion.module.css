@@ -17,6 +17,16 @@
     background: rgba(124, 58, 237, 0.02);
 }
 
+.accordionItem:hover .question,
+.accordionItem.open .question {
+    color: #ffffff;
+}
+
+.accordionItem:hover .icon,
+.accordionItem.open .icon {
+    color: #ffffff;
+}
+
 .question {
     width: 100%;
     padding: 1.5rem 2rem;

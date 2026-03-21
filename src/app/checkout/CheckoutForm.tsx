@@ -154,7 +154,21 @@ export default function CheckoutForm({
                             }}
                         >
                             <option value="United States">United States (USA)</option>
-                            <option value="International">International (Worldwide)</option>
+                            <option value="Canada">Canada</option>
+                            <option value="United Kingdom">United Kingdom</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Germany">Germany</option>
+                            <option value="France">France</option>
+                            <option value="Italy">Italy</option>
+                            <option value="Spain">Spain</option>
+                            <option value="Netherlands">Netherlands</option>
+                            <option value="Sweden">Sweden</option>
+                            <option value="Switzerland">Switzerland</option>
+                            <option value="New Zealand">New Zealand</option>
+                            <option value="Japan">Japan</option>
+                            <option value="Brazil">Brazil</option>
+                            <option value="Mexico">Mexico</option>
+                            <option value="International">Other (International)</option>
                         </select>
                     </div>
                     <div className={styles.inputRow}>

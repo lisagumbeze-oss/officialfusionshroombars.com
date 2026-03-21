@@ -4,6 +4,7 @@ import styles from './page.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Reveal } from '@/components/Reveal';
+import { FlaskConical, Award, ShieldCheck } from 'lucide-react';
 
 export async function generateMetadata(): Promise<Metadata> {
     const fallback: Metadata = {
@@ -31,46 +32,56 @@ export default function AboutPage() {
             {/* Content Section */}
             <section className={styles.contentSection}>
                 <div className={styles.container}>
-                    <div className={styles.grid}>
-                        <div className={styles.textBlock}>
-                            <Reveal>
-                                <h2>A Vision of Excellence</h2>
-                            </Reveal>
-                            <Reveal delay={0.2}>
-                                <p>
-                                    Fusion Shroom Bars represents the pinnacle of artisanal craftsmanship and scientific precision. Our journey began with a simple yet ambitious goal: to elevate the botanical experience through uncompromising quality and sophisticated delivery.
-                                </p>
-                            </Reveal>
-                            <Reveal delay={0.3}>
-                                <p>
-                                    Today, we are proud to be the trusted choice for those who seek more than just a product—they seek a journey refined by mastery and guided by clarity.
-                                </p>
-                            </Reveal>
-                            <Reveal delay={0.4}>
-                                <h2>The Fusion Standard</h2>
-                            </Reveal>
-                            <Reveal delay={0.5}>
-                                <p>
-                                    At the heart of every Fusion product is our proprietary extraction process. By utilizing advanced laboratory techniques, we ensure a clean, pure, and consistent profile that honors the power of nature while meeting the demands of modern wellness.
-                                </p>
-                            </Reveal>
-                            <Reveal delay={0.6}>
-                                <p>
-                                    We believe that true wellness is an art form. From our responsibly sourced cacao to our precision-dosed infusions, every element is chosen to provide a predictably exceptional experience.
-                                </p>
-                            </Reveal>
-                        </div>
-                        <div className={styles.imageBlock}>
-                            <Reveal delay={0.3}>
-                                <Image 
-                                    src="/images/fusion-boxes.jpg" 
-                                    alt="Fusion Shroom Bars Collection - Premium Artisanal Wellness Products" 
-                                    width={600} 
-                                    height={600} 
-                                    style={{ objectFit: 'cover', borderRadius: '15px', boxShadow: '0 20px 40px rgba(0,0,0,0.08)' }} 
-                                />
-                            </Reveal>
-                        </div>
+                    <div className={styles.cardContainer}>
+                        
+                        {/* Card 1 */}
+                        <Reveal>
+                            <div className={styles.infoCard}>
+                                <div className={styles.cardImage}>
+                                    <Image src="/images/fusion_ingredients.png" alt="A Vision of Excellence" fill style={{ objectFit: 'cover' }} />
+                                </div>
+                                <div className={styles.cardText}>
+                                    <h2>A Vision of Excellence</h2>
+                                    <p>
+                                        Fusion Shroom Bars represents the pinnacle of artisanal craftsmanship and scientific precision. Our journey began with a simple yet ambitious goal: to elevate the botanical experience through uncompromising quality and sophisticated delivery.
+                                    </p>
+                                    <p style={{ marginTop: '1.5rem' }}>
+                                        Today, we are proud to be the trusted choice for those who seek more than just a product—they seek a journey refined by mastery and guided by clarity.
+                                    </p>
+                                </div>
+                            </div>
+                        </Reveal>
+
+                        {/* Card 2 */}
+                        <Reveal delay={0.2}>
+                            <div className={`${styles.infoCard} ${styles.infoCardReverse}`}>
+                                <div className={styles.cardImage}>
+                                    <Image src="/images/fusion-boxes.jpg" alt="The Fusion Standard" fill style={{ objectFit: 'cover' }} />
+                                </div>
+                                <div className={styles.cardText}>
+                                    <h2>The Fusion Standard</h2>
+                                    <p>
+                                        At the heart of every Fusion product is our proprietary extraction process. By utilizing advanced laboratory techniques, we ensure a clean, pure, and consistent profile that honors the power of nature while meeting the demands of modern wellness.
+                                    </p>
+                                </div>
+                            </div>
+                        </Reveal>
+
+                        {/* Card 3 */}
+                        <Reveal delay={0.3}>
+                            <div className={styles.infoCard}>
+                                <div className={styles.cardImage}>
+                                    <Image src="/images/fusion_lifestyle.png" alt="Artisanal Experience" fill style={{ objectFit: 'cover' }} />
+                                </div>
+                                <div className={styles.cardText}>
+                                    <h2>Artisanal Experience</h2>
+                                    <p>
+                                        We believe that true wellness is an art form. From our responsibly sourced cacao to our precision-dosed infusions, every element is chosen to provide a predictably exceptional experience.
+                                    </p>
+                                </div>
+                            </div>
+                        </Reveal>
+
                     </div>
                 </div>
             </section>
@@ -84,21 +95,21 @@ export default function AboutPage() {
                     <div className={styles.valuesGrid}>
                         <Reveal delay={0.2}>
                             <div className={styles.valueCard}>
-                                <div className={styles.icon}>🔬</div>
+                                <div className={styles.icon}><FlaskConical size={32} /></div>
                                 <h3>Pure Extraction</h3>
                                 <p>Our laboratory-grade processes ensure unparalleled purity and consistency in every batch.</p>
                             </div>
                         </Reveal>
                         <Reveal delay={0.4}>
                             <div className={styles.valueCard}>
-                                <div className={styles.icon}>🌟</div>
+                                <div className={styles.icon}><Award size={32} /></div>
                                 <h3>Artisanal Belgian</h3>
                                 <p>Crafted with premium cacao by master chocolatiers for a profile that is as rich as it is effective.</p>
                             </div>
                         </Reveal>
                         <Reveal delay={0.6}>
                             <div className={styles.valueCard}>
-                                <div className={styles.icon}>🛡️</div>
+                                <div className={styles.icon}><ShieldCheck size={32} /></div>
                                 <h3>Secure Privacy</h3>
                                 <p>Excellence extends to our service. Your journey begins with discreet, professional delivery.</p>
                             </div>
@@ -113,13 +124,13 @@ export default function AboutPage() {
                     <div className={styles.container}>
                         <h2>Embark on a Refined Journey</h2>
                         <Link href="/shop" className={styles.ctaButton}>EXPLORE THE COLLECTION</Link>
-                        <div style={{ marginTop: '2rem', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'center' }}>
-                            <Link href="/faq" style={{ color: '#7c3aed', textDecoration: 'none', fontWeight: '600', fontSize: '0.9rem' }}>Read our FAQ</Link>
-                            <Link href="/contact" style={{ color: '#7c3aed', textDecoration: 'none', fontWeight: '600', fontSize: '0.9rem' }}>Contact Us 24/7</Link>
-                            <Link href="/blog" style={{ color: '#7c3aed', textDecoration: 'none', fontWeight: '600', fontSize: '0.9rem' }}>Visit the Blog</Link>
+                        <div className={styles.links}>
+                            <Link href="/faq">Read our FAQ</Link>
+                            <Link href="/contact">Contact Us 24/7</Link>
+                            <Link href="/blog">Visit the Blog</Link>
                         </div>
-                        <p style={{ marginTop: '1.5rem', color: '#6b7280', fontSize: '0.8rem', maxWidth: '600px', margin: '1.5rem auto 0', lineHeight: 1.6 }}>
-                            Our artisanal products are precision-infused into world-class <a href="https://en.wikipedia.org/wiki/Belgian_chocolate" target="_blank" rel="noopener noreferrer" style={{ color: '#7c3aed' }}>Belgian chocolate</a> for a sophisticated wellness experience.
+                        <p className={styles.disclaimer}>
+                            Our artisanal products are precision-infused into world-class <a href="https://en.wikipedia.org/wiki/Belgian_chocolate" target="_blank" rel="noopener noreferrer" style={{ color: '#b45309' }}>Belgian chocolate</a> for a sophisticated wellness experience.
                         </p>
                     </div>
                 </section>

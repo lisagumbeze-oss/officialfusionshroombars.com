@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './Footer.module.css';
 import LegalModal from '../Legal/LegalModal';
 
@@ -12,7 +13,9 @@ export default function Footer() {
         <footer className={styles.footer}>
             <div className={styles.container}>
                 <div className={styles.column}>
-                    <h3>FUSION<span>SHROOMBARS</span></h3>
+                    <div style={{ marginBottom: '1.5rem' }}>
+                        <Image src="/images_transparent.png" alt="Fusion Shroom Bars Logo" width={180} height={45} />
+                    </div>
                     <p>Official Fusion Shroom Bars. Gourmet psychedelic edibles infused with high-quality magic mushrooms.</p>
                 </div>
                 <div className={styles.column}>

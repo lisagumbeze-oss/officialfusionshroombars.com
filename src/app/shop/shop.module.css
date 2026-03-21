@@ -10,10 +10,13 @@
 }
 
 .shopHeader h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    background: linear-gradient(to right, #1a1a1a, var(--primary), var(--secondary));
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -46,7 +49,8 @@
 
 .filterGroup select {
     padding: 0.5rem 1rem;
-    color: var(--foreground);
+    color: #ffffff;
+    background: var(--surface);
     border: 1px solid var(--surface-border);
     border-radius: 4px;
     outline: none;
@@ -57,13 +61,13 @@
 
 .filterGroup select option {
     background: var(--surface);
-    color: var(--foreground);
+    color: #ffffff;
 }
 
 /* Reused Product Grid Styles */
 .productGrid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 2.5rem;
 }
 
@@ -73,17 +77,19 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    background: var(--surface);
-    border: 1px solid var(--surface-border);
-    border-radius: 12px;
-    padding: 1.5rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: var(--background);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.4s ease;
+    overflow: hidden;
+    position: relative;
 }
 
 .productCard:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(76, 29, 149, 0.08);
-    border-color: var(--primary);
+    transform: translateY(-8px);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.15);
 }
 
 .productImagePlaceholder {
@@ -109,10 +115,12 @@
 }
 
 .productTitle {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-    color: var(--foreground);
+    font-size: 1.3rem;
+    margin-bottom: 0.8rem;
+    color: #fff;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .categoryTag {
@@ -142,8 +150,9 @@
 }
 
 .newPrice {
-    font-weight: 700;
-    font-size: 1.2rem;
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: #fff;
 }
 
 .buttonGroup {
@@ -166,16 +175,19 @@
 }
 
 .cartBtn {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    color: #fff;
 }
 
 .cartBtn:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: #b45309;
+    border-color: #b45309;
 }
 
 .cartBtn :global(.added) {
-    background: #00ca00 !important;
+    background: #10b981 !important;
+    border-color: #10b981 !important;
 }
 
 .addToCartBtn {

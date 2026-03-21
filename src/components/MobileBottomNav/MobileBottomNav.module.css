@@ -1,0 +1,62 @@
+.bottomNav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1000;
+  /* Safe area padding for modern flush phones */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.spacer {
+  display: none;
+  height: 65px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .bottomNav {
+    display: block;
+  }
+  .spacer {
+    display: block;
+  }
+}
+
+.navContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 65px;
+  max-width: 100%;
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #a1a1aa; /* text-muted */
+  text-decoration: none;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  gap: 5px;
+  flex: 1;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+.navItem:hover {
+  color: #ffffff;
+}
+
+.navItem.active {
+  color: var(--primary); /* purple */
+}

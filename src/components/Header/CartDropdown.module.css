@@ -5,9 +5,9 @@
 }
 
 .cartTrigger {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: white;
+  background: #ffffff;
+  border: 1px solid #ffffff;
+  color: var(--primary);
   padding: 0.6rem;
   border-radius: 50%;
   cursor: pointer;
@@ -19,9 +19,10 @@
 }
 
 .cartTrigger:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--primary);
   border-color: var(--primary);
-  box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(88, 28, 135, 0.4);
 }
 
 .badge {
@@ -29,17 +30,24 @@
   top: -5px;
   right: -5px;
   background: var(--primary);
-  color: white;
-  font-size: 0.7rem;
-  font-weight: bold;
-  height: 18px;
-  min-width: 18px;
-  border-radius: 9px;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  height: 20px;
+  min-width: 20px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 4px;
-  border: 2px solid #000;
+  padding: 0 5px;
+  border: 2px solid #ffffff;
+  transition: all 0.3s ease;
+}
+
+.cartTrigger:hover .badge {
+  background: #ffffff;
+  color: var(--primary);
+  border-color: var(--primary);
 }
 
 .dropdown {

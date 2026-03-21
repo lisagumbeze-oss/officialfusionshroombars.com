@@ -25,7 +25,7 @@ export default async function Shop({
 }) {
     const { category, sort, page } = await searchParams;
     const currentPage = parseInt(page || '1', 10);
-    const pageSize = 24;
+    const pageSize = 28;
 
     // Build query
     const where: any = { isActive: true };

@@ -107,8 +107,6 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                         <span className={styles.newPrice}>${product.price.toFixed(2)}</span>
                     </div>
 
-                    <p className={styles.description}>{product.description}</p>
-
                     <div className={styles.actionArea}>
                         <AddToCartSection product={product} />
 
@@ -121,39 +119,42 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                         </div>
                     </div>
 
-                    {/* Details Tabs directly embedded into scrolling view */}
-                    <div className={styles.detailsTabs}>
-                        <div className={styles.tabHeaders}>
-                            <button className={styles.activeTab}>Discover</button>
-                        </div>
-                        <div className={styles.tabContent}>
-                            <h3>Product Overview</h3>
-                            <p>{product.description}</p>
-
-                            {effects && (
-                                <>
-                                    <h4>Expected Experience</h4>
-                                    <ul>
-                                        {effects.map((effect: string) => <li key={effect}>{effect}</li>)}
-                                    </ul>
-                                </>
-                            )}
-
-                            {ingredients && (
-                                <>
-                                    <h4>Pure Ingredients</h4>
-                                    <ul>
-                                        {ingredients.map((ing: string) => <li key={ing}>{ing}</li>)}
-                                    </ul>
-                                </>
-                            )}
-                        </div>
-                    </div>
                 </div>
             </div>
 
             {/* Below the fold: Reviews & Related */}
             <div className={styles.standardLayout}>
+                {/* Full Width Discover Section */}
+                <div className={styles.detailsTabs}>
+                    <div className={styles.tabHeaders}>
+                        <button className={styles.activeTab}>Discover</button>
+                    </div>
+                    <div className={styles.tabContent}>
+                        <div 
+                            className={styles.htmlDesc} 
+                            dangerouslySetInnerHTML={{ __html: product.description }} 
+                        />
+
+                        {effects && (
+                            <>
+                                <h4>Expected Experience</h4>
+                                <ul>
+                                    {effects.map((effect: string) => <li key={effect}>{effect}</li>)}
+                                </ul>
+                            </>
+                        )}
+
+                        {ingredients && (
+                            <>
+                                <h4>Pure Ingredients</h4>
+                                <ul>
+                                    {ingredients.map((ing: string) => <li key={ing}>{ing}</li>)}
+                                </ul>
+                            </>
+                        )}
+                    </div>
+                </div>
+
                 {relatedProducts.length > 0 && (
                     <div style={{ marginBottom: '6rem' }}>
                         <h2 className={styles.sectionTitle}>Curated For You</h2>

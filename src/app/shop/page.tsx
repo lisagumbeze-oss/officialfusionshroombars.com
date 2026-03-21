@@ -87,19 +87,21 @@ export default async function Shop({
                     <div className={styles.productGrid}>
                         {products.map((product: any) => (
                             <div key={product.id} className={styles.productCard}>
-                                <div className={styles.productImagePlaceholder}>
-                                    <Image 
-                                        src={product.image} 
-                                        alt={product.name} 
-                                        fill 
-                                        style={{ objectFit: 'cover' }}
-                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                    />
-                                    {product.regularPrice && product.regularPrice > product.price && (
-                                        <span className={styles.saleTag}>SALE</span>
-                                    )}
-                                </div>
-                                <h3 className={styles.productTitle}>{product.name}</h3>
+                                <Link href={`/shop/${product.slug}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+                                    <div className={styles.productImagePlaceholder}>
+                                        <Image 
+                                            src={product.image} 
+                                            alt={product.name} 
+                                            fill 
+                                            style={{ objectFit: 'cover' }}
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                        />
+                                        {product.regularPrice && product.regularPrice > product.price && (
+                                            <span className={styles.saleTag}>SALE</span>
+                                        )}
+                                    </div>
+                                    <h3 className={styles.productTitle}>{product.name}</h3>
+                                </Link>
                                 <div className={styles.categoryTag}>{product.category}</div>
                                 <div className={styles.price}>
                                     {product.regularPrice && (

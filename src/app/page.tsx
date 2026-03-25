@@ -45,13 +45,13 @@ export default async function Home() {
           <div className={styles.mobileHeroTextOverlay}>
             <Reveal>
               <span className={styles.heroTag}>The New Standard</span>
-              <h1 className={styles.heroTitle}>Elevate<br/>Your<br/>Senses.</h1>
+              <h1 className={styles.heroTitle}>Fusion<br/>Mushroom<br/>Bars.</h1>
             </Reveal>
           </div>
           <div className={styles.mobileHeroContentBottom}>
             <Reveal delay={0.2}>
               <p className={styles.heroDesc}>
-                Discover a new echelon of wellness. Premium artisanal chocolate infused with pure, rigorously tested psilocybin extracts for profound focus and deep calm.
+                Discover the pinnacle of psilocybin edibles. Premium magic mushroom chocolate, powerful disposables, and precision-dosed gummies crafted for profound focus and deep calm.
               </p>
             </Reveal>
             <Reveal delay={0.4}>
@@ -186,6 +186,21 @@ export default async function Home() {
             </div>
           </Link>
 
+        </div>
+      </section>
+
+      {/* 5. SEO Text Block */}
+      <section style={{ padding: '6rem 2rem', background: '#050505', color: '#a1a1aa', textAlign: 'center' }}>
+        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+          <h2 style={{ color: '#fff', fontSize: '1.5rem', marginBottom: '1.5rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
+            The Premier Destination for Fusion Mushroom Bars
+          </h2>
+          <p style={{ lineHeight: '1.8', marginBottom: '1rem' }}>
+            When you <strong style={{color: '#fff'}}>buy Fusion bars online</strong>, you expect the highest quality and most reliable experience. Official Fusion Shroom Bars represent the gold standard in <strong style={{color: '#fff'}}>magic mushroom chocolate bars</strong> and <strong style={{color: '#fff'}}>psilocybin gummies</strong>. Our proprietary extraction processes ensure that each artisanal chocolate square and gummy provides a precise, consistent, and elevated journey.
+          </p>
+          <p style={{ lineHeight: '1.8' }}>
+            Whether you are looking for the profound effects of the <strong style={{color: '#fff'}}>Fusion x Whole Melt disposables</strong> or prefer the rich flavor of our premium shroom chocolate edibles, our products are rigorously lab-tested for purity and potency. Experience the difference of authentic Fusion chocolate today.
+          </p>
         </div>
       </section>
     </div>

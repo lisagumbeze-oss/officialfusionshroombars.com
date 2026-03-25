@@ -11,8 +11,8 @@ export const faqData = [
         answer: "Absolutely. All transactions on our website are encrypted and secure. We prioritize customer privacy and use industry-standard security protocols to protect your data."
       },
       {
-        question: "Where can I buy authentic Fusion Mushroom Bars?",
-        answer: "Authentic Fusion Mushroom Bars are available through our official website. We ship to all states in the US, as well as Canada, UK, and Australia."
+        question: "Where can I buy authentic Fusion Mushroom Bars online?",
+        answer: "You can buy authentic Fusion Mushroom Bars online directly through our official website. We ship our premium magic mushroom chocolate and psilocybin gummies to all states in the US, as well as Canada, UK, and Australia."
       }
     ]
   },
@@ -20,8 +20,8 @@ export const faqData = [
     category: "Product Details",
     questions: [
       {
-        question: "What components are incorporated into the production of your chocolate products?",
-        answer: "Our chocolates are created using top-tier, conscientiously obtained components, such as superior-quality cocoa, newly sourced dairy products and genuine flavor essences. A large number of our product selections are produced without the inclusion of artificial additives or conserving agents."
+        question: "Are Fusion Mushroom Bars safe and lab tested?",
+        answer: "Yes, all Fusion Shroom Bars and psilocybin gummies are rigorously triple lab-tested for purity and potency. Our premium shroom chocolate is created using top-tier, conscientiously obtained components, such as superior-quality cocoa, ensuring a clean and consistent experience without the inclusion of artificial additives."
       },
       {
         question: "Are there any plant-based or non-dairy choices available for purchase?",

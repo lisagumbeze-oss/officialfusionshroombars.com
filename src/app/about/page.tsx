@@ -43,7 +43,7 @@ export default function AboutPage() {
                                 <div className={styles.cardText}>
                                     <h2>A Vision of Excellence</h2>
                                     <p>
-                                        Fusion Shroom Bars represents the pinnacle of artisanal craftsmanship and scientific precision. Our journey began with a simple yet ambitious goal: to elevate the botanical experience through uncompromising quality and sophisticated delivery.
+                                        Fusion Shroom Bars represents the pinnacle of artisanal craftsmanship and scientific precision. Our journey began with a simple yet ambitious goal: to elevate the botanical experience and create the world's most reliable <strong style={{color: '#fff'}}>magic mushroom chocolate bars</strong> and <strong style={{color: '#fff'}}>psilocybin edibles</strong> through uncompromising quality and sophisticated delivery.
                                     </p>
                                     <p style={{ marginTop: '1.5rem' }}>
                                         Today, we are proud to be the trusted choice for those who seek more than just a product—they seek a journey refined by mastery and guided by clarity.

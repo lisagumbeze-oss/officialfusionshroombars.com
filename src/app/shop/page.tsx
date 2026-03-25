@@ -73,6 +73,9 @@ export default async function Shop({
             <header className={styles.shopHeader}>
                 <h1>Shop Fusion Shroom Bars &amp; Mushroom Chocolate Online</h1>
                 <p>Buy authentic Fusion mushroom chocolate bars, Neau Tropics, and psilocybin gummies. Lab-tested premium edibles with discreet worldwide shipping.</p>
+                <div style={{ marginTop: '1.5rem', color: '#a1a1aa', maxWidth: '800px', margin: '1.5rem auto 0', fontSize: '0.95rem', lineHeight: '1.6' }}>
+                    Welcome to the ultimate destination for premium psilocybin edibles. Whether you are looking for the profound journey of our signature <strong style={{color: '#fff'}}>Fusion Mushroom Bars</strong>, the convenience of <strong style={{color: '#fff'}}>Fusion gummies</strong>, or the cutting-edge <strong style={{color: '#fff'}}>Fusion x Whole Melt disposables</strong>, every product in our collection is crafted with clinical precision and triple-verified for purity. 
+                </div>
             </header>
 
             <ShopFilters categories={categories as string[]} />

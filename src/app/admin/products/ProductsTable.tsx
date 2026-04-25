@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { Search, X, Edit2, Package, Trash2 } from 'lucide-react';
 import styles from '../admin.module.css';
 import Image from 'next/image';
+import MediaPicker from '@/components/admin/MediaPicker';
+import { ImageIcon } from 'lucide-react';
 
 export default function ProductsTable({ 
     products, 
@@ -18,6 +20,11 @@ export default function ProductsTable({
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedProduct, setSelectedProduct] = useState<any>(null);
     const [isAdding, setIsAdding] = useState(false);
+    
+    // Media Picker State
+    const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
+    const [mediaTarget, setMediaTarget] = useState<string>('image');
+    const [formValues, setFormValues] = useState<any>({});
 
     const filteredProducts = products.filter(p => 
         p.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -61,6 +68,7 @@ export default function ProductsTable({
                                     <th style={{ padding: '1rem' }}>Product</th>
                                     <th style={{ padding: '1rem' }}>Category</th>
                                     <th style={{ padding: '1rem' }}>Price</th>
+                                    <th style={{ padding: '1rem' }}>Stock</th>
                                     <th style={{ padding: '1rem' }}>Status</th>
                                     <th style={{ padding: '1rem' }}>Actions</th>
                                 </tr>
@@ -84,6 +92,15 @@ export default function ProductsTable({
                                         <td style={{ padding: '1rem', fontWeight: 'bold' }}>
                                             ${product.price.toFixed(2)}
                                             {product.regularPrice && <span style={{ textDecoration: 'line-through', color: '#666', fontSize: '0.8rem', marginLeft: '0.5rem' }}>${product.regularPrice.toFixed(2)}</span>}
+                                        </td>
+                                        <td style={{ padding: '1rem' }}>
+                                            <span style={{ 
+                                                color: product.stock <= 5 ? '#ff4444' : product.stock <= 15 ? '#ffcc00' : '#fff',
+                                                fontWeight: product.stock <= 15 ? 'bold' : 'normal'
+                                            }}>
+                                                {product.stock} units
+                                            </span>
+                                            {product.isSubscribable && <div style={{ fontSize: '0.65rem', color: '#a855f7', fontWeight: 'bold', marginTop: '4px' }}>SUBSCRIPTION READY</div>}
                                         </td>
                                         <td style={{ padding: '1rem' }}>
                                             <span className={product.isActive ? styles.activeBadge : styles.inactiveBadge}>
@@ -137,7 +154,14 @@ export default function ProductsTable({
                             </button>
                         </div>
 
-                        <form action={(formData) => { updateProductAction(formData); setSelectedProduct(null); }} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                        <form 
+                            action={(formData) => { 
+                                updateProductAction(formData); 
+                                setSelectedProduct(null); 
+                                setFormValues({});
+                            }} 
+                            style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
+                        >
                             <input type="hidden" name="id" value={selectedProduct.id} />
                             
                             <div className={styles.inputGroup}>
@@ -156,14 +180,34 @@ export default function ProductsTable({
                                 </div>
                             </div>
 
-                            <div className={styles.inputGroup}>
-                                <label>Category</label>
-                                <input type="text" name="category" defaultValue={selectedProduct.category} required />
+                            <div style={{ display: 'flex', gap: '1rem' }}>
+                                <div className={styles.inputGroup} style={{ flex: 1 }}>
+                                    <label>Category</label>
+                                    <input type="text" name="category" defaultValue={selectedProduct.category} required />
+                                </div>
+                                <div className={styles.inputGroup} style={{ flex: 1 }}>
+                                    <label>Stock Quantity</label>
+                                    <input type="number" name="stock" defaultValue={selectedProduct.stock || 0} required />
+                                </div>
                             </div>
 
                             <div className={styles.inputGroup}>
                                 <label>Image URL</label>
-                                <input type="url" name="image" defaultValue={selectedProduct.image} required />
+                                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                    <input 
+                                        type="url" name="image" 
+                                        value={formValues.image !== undefined ? formValues.image : selectedProduct.image} 
+                                        onChange={(e) => setFormValues({...formValues, image: e.target.value})}
+                                        required 
+                                    />
+                                    <button 
+                                        type="button"
+                                        onClick={() => { setMediaTarget('image'); setIsMediaPickerOpen(true); }}
+                                        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', padding: '0 1rem', borderRadius: '4px', cursor: 'pointer' }}
+                                    >
+                                        <ImageIcon size={16} />
+                                    </button>
+                                </div>
                             </div>
 
                             <div className={styles.inputGroup}>
@@ -176,24 +220,43 @@ export default function ProductsTable({
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                     {[0, 1, 2, 3, 4].map(i => {
                                         const gallery = selectedProduct.gallery ? JSON.parse(selectedProduct.gallery) : [];
+                                        const val = formValues[`gallery_${i}`] !== undefined ? formValues[`gallery_${i}`] : (gallery[i] || '');
                                         return (
-                                            <input 
-                                                key={i}
-                                                type="url" 
-                                                name={`gallery_${i}`} 
-                                                defaultValue={gallery[i] || ''} 
-                                                placeholder={`Gallery Image ${i + 1} URL`} 
-                                            />
+                                            <div key={i} style={{ display: 'flex', gap: '0.5rem' }}>
+                                                <input 
+                                                    type="url" 
+                                                    name={`gallery_${i}`} 
+                                                    value={val}
+                                                    onChange={(e) => setFormValues({...formValues, [`gallery_${i}`]: e.target.value})}
+                                                    placeholder={`Gallery Image ${i + 1} URL`} 
+                                                    style={{ flex: 1 }}
+                                                />
+                                                <button 
+                                                    type="button"
+                                                    onClick={() => { setMediaTarget(`gallery_${i}`); setIsMediaPickerOpen(true); }}
+                                                    style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', padding: '0 0.75rem', borderRadius: '4px', cursor: 'pointer' }}
+                                                >
+                                                    <ImageIcon size={14} />
+                                                </button>
+                                            </div>
                                         );
                                     })}
                                 </div>
                             </div>
 
-                            <div className={styles.inputGroup}>
-                                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                                    <input type="checkbox" name="isActive" defaultChecked={selectedProduct.isActive} style={{ width: 'auto' }} />
-                                    <span>Product is Active (Visible on site)</span>
-                                </label>
+                            <div style={{ display: 'flex', gap: '1rem' }}>
+                                <div className={styles.inputGroup} style={{ flex: 1 }}>
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                                        <input type="checkbox" name="isActive" defaultChecked={selectedProduct.isActive} style={{ width: 'auto' }} />
+                                        <span>Active (Visible)</span>
+                                    </label>
+                                </div>
+                                <div className={styles.inputGroup} style={{ flex: 1 }}>
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                                        <input type="checkbox" name="isSubscribable" defaultChecked={selectedProduct.isSubscribable} style={{ width: 'auto' }} />
+                                        <span>Allow Subscription</span>
+                                    </label>
+                                </div>
                             </div>
 
                             <details style={{ background: 'rgba(255,255,255,0.03)', padding: '1rem', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)' }}>
@@ -258,9 +321,15 @@ export default function ProductsTable({
                                 </div>
                             </div>
 
-                            <div className={styles.inputGroup}>
-                                <label>Category</label>
-                                <input type="text" name="category" placeholder="Chocolate Bars" required />
+                            <div style={{ display: 'flex', gap: '1rem' }}>
+                                <div className={styles.inputGroup} style={{ flex: 1 }}>
+                                    <label>Category</label>
+                                    <input type="text" name="category" placeholder="Chocolate Bars" required />
+                                </div>
+                                <div className={styles.inputGroup} style={{ flex: 1 }}>
+                                    <label>Stock Quantity</label>
+                                    <input type="number" name="stock" placeholder="100" required />
+                                </div>
                             </div>
 
                             <div className={styles.inputGroup}>
@@ -287,11 +356,19 @@ export default function ProductsTable({
                                 </div>
                             </div>
 
-                            <div className={styles.inputGroup}>
-                                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                                    <input type="checkbox" name="isActive" defaultChecked style={{ width: 'auto' }} />
-                                    <span>Product is Active (Visible on site)</span>
-                                </label>
+                            <div style={{ display: 'flex', gap: '1rem' }}>
+                                <div className={styles.inputGroup} style={{ flex: 1 }}>
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                                        <input type="checkbox" name="isActive" defaultChecked style={{ width: 'auto' }} />
+                                        <span>Active (Visible)</span>
+                                    </label>
+                                </div>
+                                <div className={styles.inputGroup} style={{ flex: 1 }}>
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                                        <input type="checkbox" name="isSubscribable" style={{ width: 'auto' }} />
+                                        <span>Allow Subscription</span>
+                                    </label>
+                                </div>
                             </div>
 
                             <details style={{ background: 'rgba(255,255,255,0.03)', padding: '1rem', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)' }}>
@@ -323,6 +400,15 @@ export default function ProductsTable({
                     </div>
                 </>
             )}
+
+            <MediaPicker 
+                isOpen={isMediaPickerOpen}
+                onClose={() => setIsMediaPickerOpen(false)}
+                onSelect={(url) => {
+                    setFormValues({ ...formValues, [mediaTarget]: url });
+                    setIsMediaPickerOpen(false);
+                }}
+            />
         </section>
     );
 }

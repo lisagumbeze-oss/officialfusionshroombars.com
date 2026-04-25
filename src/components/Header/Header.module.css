@@ -73,6 +73,80 @@
     gap: 1rem;
 }
 
+.searchWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.searchForm {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 100%;
+    margin-right: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    padding: 0.25rem 0.5rem 0.25rem 1.25rem;
+    width: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.searchOpen .searchForm {
+    width: 250px;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.searchInput {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 0.9rem;
+    outline: none;
+    width: 100%;
+}
+
+.searchSubmit {
+    background: transparent;
+    border: none;
+    color: #a1a1aa;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    min-height: unset;
+    min-width: unset;
+}
+
+.searchSubmit:hover {
+    color: #fff;
+}
+
+.searchToggle {
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background 0.2s;
+    min-height: unset;
+    min-width: unset;
+}
+
+.searchToggle:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
 .cartBtn {
     background: none;
     border: none;

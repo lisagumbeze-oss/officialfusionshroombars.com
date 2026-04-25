@@ -1,0 +1,28 @@
+.banner {
+    background: rgba(168, 85, 247, 0.1);
+    border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    color: #a855f7;
+    text-align: center;
+}
+
+.icon {
+    color: #a855f7;
+}
+
+.banner strong {
+    color: #fff;
+    text-transform: capitalize;
+}
+
+@media (max-width: 600px) {
+    .banner {
+        font-size: 0.75rem;
+        padding: 0.5rem;
+    }
+}

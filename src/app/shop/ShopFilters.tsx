@@ -32,6 +32,18 @@ export default function ShopFilters({ categories }: { categories: string[] }) {
         router.push(`/shop?${params.toString()}`);
     };
 
+    const handlePriceChange = (min?: string, max?: string) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.delete('page');
+        if (min === undefined) params.delete('min');
+        else params.set('min', min);
+        
+        if (max === undefined) params.delete('max');
+        else params.set('max', max);
+        
+        router.push(`/shop?${params.toString()}`);
+    };
+
     return (
         <div className={styles.filters}>
             <div className={styles.filterGroup}>
@@ -46,6 +58,26 @@ export default function ShopFilters({ categories }: { categories: string[] }) {
                         <option key={cat} value={cat}>{cat}</option>
                     ))}
                 </select>
+            </div>
+            <div className={styles.filterGroup}>
+                <label>Price Range:</label>
+                <div className={styles.priceInputs}>
+                    <input 
+                        type="number" 
+                        placeholder="Min" 
+                        defaultValue={searchParams.get('min') || ''} 
+                        onBlur={(e) => handlePriceChange(e.target.value || undefined, searchParams.get('max') || undefined)}
+                        className="glass-morphism"
+                    />
+                    <span>-</span>
+                    <input 
+                        type="number" 
+                        placeholder="Max" 
+                        defaultValue={searchParams.get('max') || ''} 
+                        onBlur={(e) => handlePriceChange(searchParams.get('min') || undefined, e.target.value || undefined)}
+                        className="glass-morphism"
+                    />
+                </div>
             </div>
             <div className={styles.filterGroup}>
                 <label>Sort By:</label>

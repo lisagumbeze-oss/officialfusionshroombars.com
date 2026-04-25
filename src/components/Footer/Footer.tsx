@@ -8,6 +8,29 @@ import LegalModal from '../Legal/LegalModal';
 
 export default function Footer() {
     const [legalType, setLegalType] = useState<'terms' | 'privacy' | 'refund' | null>(null);
+    const [vaultEmail, setVaultEmail] = useState('');
+    const [vaultPoints, setVaultPoints] = useState<number | null>(null);
+    const [isChecking, setIsChecking] = useState(false);
+
+    const handleCheckPoints = async () => {
+        if (!vaultEmail) return;
+        setIsChecking(true);
+        try {
+            const res = await fetch('/api/loyalty/points', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: vaultEmail })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setVaultPoints(data.points);
+            }
+        } catch (error) {
+            console.error('Points check failed:', error);
+        } finally {
+            setIsChecking(false);
+        }
+    };
 
     return (
         <footer className={styles.footer}>
@@ -40,10 +63,24 @@ export default function Footer() {
                     <button onClick={() => setLegalType('refund')} className={styles.legalBtn}>Refund Policy</button>
                 </div>
                 <div className={styles.column}>
-                    <h4>SUPPORT</h4>
-                    <Link href="/faq" className={styles.footerLink}>Frequently Asked Questions</Link>
-                    <p>order@officialfusionshroombars.com</p>
-                    <p>6736 S Sherbourne Dr, Los Angeles, CA 90056, USA</p>
+                    <h4>FUSION VAULT</h4>
+                    <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>Check your reward points</p>
+                    <div className={styles.vaultInput}>
+                        <input 
+                            type="email" 
+                            placeholder="Email address" 
+                            value={vaultEmail}
+                            onChange={(e) => setVaultEmail(e.target.value)}
+                        />
+                        <button onClick={handleCheckPoints} disabled={isChecking}>
+                            {isChecking ? '...' : 'CHECK'}
+                        </button>
+                    </div>
+                    {vaultPoints !== null && (
+                        <p className={styles.vaultResult}>
+                            Points: <strong>{vaultPoints}</strong>
+                        </p>
+                    )}
                 </div>
             </div>
             <div className={styles.bottom}>

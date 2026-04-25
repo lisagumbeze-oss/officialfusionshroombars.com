@@ -8,6 +8,11 @@ import { CartProvider } from "@/context/CartContext";
 import Script from "next/script";
 import LayoutWrapper from "@/components/LayoutWrapper";
 import GoogleAnalytics from '@/components/GoogleAnalytics';
+import { ToastProvider } from "@/context/ToastContext";
+import { WishlistProvider } from "@/context/WishlistContext";
+import { RecentlyViewedProvider } from "@/context/RecentlyViewedContext";
+import SocialProof from "@/components/SocialProof/SocialProof";
+import GeoDelivery from "@/components/GeoDelivery/GeoDelivery";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://officialfusionshroombars.com"),
@@ -108,12 +113,21 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background text-foreground">
+        <GeoDelivery />
         <GoogleAnalytics ga_id="G-403953413" />
-        <CartProvider>
-          <LayoutWrapper>
-            {children}
-          </LayoutWrapper>
-        </CartProvider>
+        <ToastProvider>
+          <WishlistProvider>
+            <RecentlyViewedProvider>
+              <CartProvider>
+                <LayoutWrapper>
+                  {children}
+                </LayoutWrapper>
+              </CartProvider>
+            </RecentlyViewedProvider>
+          </WishlistProvider>
+        </ToastProvider>
+        
+        <SocialProof />
         
         {/* Smartsupp Live Chat script */}
         <Script id="smartsupp-chat" strategy="afterInteractive">

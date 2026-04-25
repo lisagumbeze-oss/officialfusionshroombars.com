@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { 
     Plus, Trash2, Edit, Save, X, ArrowLeft, Bold, Italic, 
     Underline, List, ListOrdered, Quote, Link as LinkIcon, 
@@ -9,6 +9,8 @@ import {
     Clock, Brain, Search, Sparkles
 } from 'lucide-react';
 import Image from 'next/image';
+import MediaPicker from '@/components/admin/MediaPicker';
+import RichTextEditor from '@/components/admin/RichTextEditor';
 
 export default function BlogManagement() {
     const [posts, setPosts] = useState<any[]>([]);
@@ -33,6 +35,9 @@ export default function BlogManagement() {
         imageAlt: ''
     });
     const [tagInput, setTagInput] = useState('');
+    const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
+    const [mediaTarget, setMediaTarget] = useState<'featured' | 'content'>('featured');
+    const editorRef = useRef<any>(null);
 
     // List Filtering State
     const [searchQuery, setSearchQuery] = useState('');
@@ -179,6 +184,15 @@ export default function BlogManagement() {
             const newPos = start + before.length + selectedText.length + after.length;
             textarea.setSelectionRange(newPos, newPos);
         }, 0);
+    };
+
+    const handleMediaSelect = (url: string) => {
+        if (mediaTarget === 'featured') {
+            setFormData({ ...formData, image: url });
+        } else {
+            editorRef.current?.insertImage(url);
+        }
+        setIsMediaPickerOpen(false);
     };
 
     // --- LIST VIEW ---
@@ -530,31 +544,14 @@ export default function BlogManagement() {
                         <div className="space-y-3">
                             <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Content</label>
                             <div className="rounded-3xl border border-white/5 bg-white/[0.02] overflow-hidden min-h-[650px] flex flex-col focus-within:border-primary/30 transition-all shadow-2xl">
-                                <div className="flex items-center gap-1 p-4 border-b border-white/5 bg-white/[0.02]">
-                                    <button className="p-3 hover:bg-white/5 rounded-xl text-slate-400 hover:text-white transition-all" onClick={() => insertMarkdown('**', '**')} title="Bold"><Bold size={18} /></button>
-                                    <button className="p-3 hover:bg-white/5 rounded-xl text-slate-400 hover:text-white transition-all" onClick={() => insertMarkdown('*', '*')} title="Italic"><Italic size={18} /></button>
-                                    <button className="p-3 hover:bg-white/5 rounded-xl text-slate-400 hover:text-white transition-all" onClick={() => insertMarkdown('<u>', '</u>')} title="Underline"><Underline size={18} /></button>
-                                    <div className="w-[1px] h-6 bg-white/10 mx-2"></div>
-                                    <button className="p-3 hover:bg-white/5 rounded-xl text-slate-400 hover:text-white transition-all" onClick={() => insertMarkdown('\n- ')} title="Bullet List"><List size={18} /></button>
-                                    <button className="p-3 hover:bg-white/5 rounded-xl text-slate-400 hover:text-white transition-all" onClick={() => insertMarkdown('\n1. ')} title="Numbered List"><ListOrdered size={18} /></button>
-                                    <button className="p-3 hover:bg-white/5 rounded-xl text-slate-400 hover:text-white transition-all" onClick={() => insertMarkdown('\n> ')} title="Quote"><Quote size={18} /></button>
-                                    <div className="w-[1px] h-6 bg-white/10 mx-2"></div>
-                                    <button className="p-3 hover:bg-white/5 rounded-xl text-slate-400 hover:text-white transition-all" onClick={() => insertMarkdown('[', '](url)')} title="Link"><LinkIcon size={18} /></button>
-                                    <button className="p-3 hover:bg-white/5 rounded-xl text-slate-400 hover:text-white transition-all" onClick={() => {
-                                        const url = prompt('Enter Image URL:');
-                                        if (url) insertMarkdown('![alt text](', url + ')');
-                                    }} title="Image"><ImageIcon size={18} /></button>
-                                    <button className="p-3 hover:bg-white/5 rounded-xl text-slate-400 hover:text-white transition-all" onClick={() => insertMarkdown('`', '`')} title="Code"><Code size={18} /></button>
-                                    <div className="ml-auto flex items-center gap-2">
-                                         <button className="p-3 hover:bg-white/5 rounded-xl text-slate-400 hover:text-white transition-all" title="Magic Assist"><Sparkles size={18} /></button>
-                                    </div>
-                                </div>
-                                <textarea 
-                                    id="blog-content-editor"
-                                    className="flex-1 w-full p-10 bg-transparent border-none focus:ring-0 resize-none text-lg leading-relaxed text-slate-200 outline-none placeholder:text-slate-800 scrollbar-hide"
-                                    placeholder="Start writing your magical story here..."
-                                    value={formData.content}
-                                    onChange={(e) => setFormData({...formData, content: e.target.value})}
+                                <RichTextEditor 
+                                    ref={editorRef}
+                                    content={formData.content} 
+                                    onChange={(content) => setFormData({...formData, content})}
+                                    onImageClick={() => {
+                                        setMediaTarget('content');
+                                        setIsMediaPickerOpen(true);
+                                    }}
                                 />
                             </div>
                         </div>
@@ -579,8 +576,8 @@ export default function BlogManagement() {
                                 <div 
                                     className="aspect-[4/3] rounded-2xl border border-dashed border-white/10 flex flex-col items-center justify-center gap-3 hover:bg-white/[0.04] transition-all cursor-pointer group relative overflow-hidden"
                                     onClick={() => {
-                                        const url = prompt('Enter Image URL:');
-                                        if (url) setFormData({...formData, image: url});
+                                        setMediaTarget('featured');
+                                        setIsMediaPickerOpen(true);
                                     }}
                                 >
                                     {formData.image ? (
@@ -679,6 +676,12 @@ export default function BlogManagement() {
                     </aside>
                 </div>
             </div>
+
+            <MediaPicker 
+                isOpen={isMediaPickerOpen} 
+                onClose={() => setIsMediaPickerOpen(false)} 
+                onSelect={handleMediaSelect} 
+            />
         </div>
     );
 }

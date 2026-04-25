@@ -47,29 +47,72 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Missing required order fields' }, { status: 400 });
         }
 
-        const order = await prisma.order.create({
-            data: {
-                customerName,
-                customerEmail,
-                customerPhone,
-                shippingAddress,
-                shippingMethod,
-                shippingPrice,
-                totalAmount,
-                paymentMethodId,
-                items: {
-                    create: items.map((item: any) => ({
-                        productId: item.productId,
-                        productName: item.productName,
-                        quantity: item.quantity,
-                        price: item.price,
-                    })),
+        // Use a transaction to ensure atomic stock decrement and order creation
+        const order = await prisma.$transaction(async (tx) => {
+            // 1. Check and decrement stock for each item
+            for (const item of items) {
+                if (item.productId) {
+                    const product = await tx.product.findUnique({
+                        where: { id: item.productId },
+                        select: { stock: true, name: true }
+                    });
+
+                    if (!product) {
+                        throw new Error(`Product ${item.productName} not found`);
+                    }
+
+                    if (product.stock < item.quantity) {
+                        throw new Error(`Insufficient stock for ${product.name}. Only ${product.stock} left.`);
+                    }
+
+                    await tx.product.update({
+                        where: { id: item.productId },
+                        data: { stock: { decrement: item.quantity } }
+                    });
+                }
+            }
+
+            const loyaltySetting = await (tx as any).loyaltySetting.findUnique({
+                where: { id: 'default' }
+            });
+            const pointsPerDollar = loyaltySetting?.pointsPerDollar ?? 1;
+            const pointsEarned = Math.floor(totalAmount * pointsPerDollar);
+
+            // 2. Create the order
+            const order = await tx.order.create({
+                data: {
+                    customerName,
+                    customerEmail,
+                    customerPhone,
+                    shippingAddress,
+                    shippingMethod,
+                    shippingPrice,
+                    totalAmount,
+                    paymentMethodId,
+                    pointsEarned,
+                    items: {
+                        create: items.map((item: any) => ({
+                            productId: item.productId,
+                            productName: item.productName,
+                            quantity: item.quantity,
+                            price: item.price,
+                        })),
+                    },
                 },
-            },
-            include: {
-                items: true,
-                paymentMethod: true,
-            },
+                include: {
+                    items: true,
+                    paymentMethod: true,
+                },
+            });
+
+            // 3. Update Loyalty Points
+            await tx.loyaltyAccount.upsert({
+                where: { email: customerEmail },
+                update: { points: { increment: pointsEarned } },
+                create: { email: customerEmail, points: pointsEarned }
+            });
+
+            return order;
         });
 
         // Initialize Resend

@@ -1,0 +1,78 @@
+.wishlistContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8rem 2rem 4rem;
+  min-height: 80vh;
+}
+
+.header {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+  background: linear-gradient(180deg, #fff 0%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.desc {
+  color: #a1a1aa;
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 6rem 2rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+}
+
+.emptyIcon {
+  margin-bottom: 2rem;
+  opacity: 0.5;
+}
+
+.emptyState h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.emptyState p {
+  color: #a1a1aa;
+  margin-bottom: 2.5rem;
+}
+
+.shopBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: #000;
+  padding: 1rem 2.5rem;
+  border-radius: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.shopBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}

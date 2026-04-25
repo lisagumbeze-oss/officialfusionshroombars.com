@@ -8,9 +8,13 @@ import { notFound } from 'next/navigation';
 import AddToCartSection from './AddToCartSection';
 import Link from 'next/link';
 import RelatedProducts from '@/components/RelatedProducts';
+import RecentlyViewedList from '@/components/RecentlyViewedList/RecentlyViewedList';
 import { Truck, ShieldCheck, Zap, Star } from 'lucide-react';
+import ProductGallery from './ProductGallery';
+import RecentlyViewedTracker from '@/components/RecentlyViewedTracker';
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+// ... existing code ...
     const { id } = await params;
     const product = await (prisma as any).product.findUnique({ where: { slug: id } });
     if (!product) return { title: 'Product Not Found' };
@@ -67,23 +71,18 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
     const ingredients = product.ingredients ? JSON.parse(product.ingredients) : null;
 
     return (
-        <div className={styles.productContainer}>
+        <main className={styles.productContainer}>
+            <RecentlyViewedTracker product={product as any} />
             {/* Split Screen Presentation */}
             <div className={styles.splitLayout}>
                 {/* Left: Sticky Image Hero */}
                 <div className={styles.imageSection}>
-                    <div className={styles.mainImagePlaceholder}>
-                        <Image 
-                            src={product.image} 
-                            alt={product.imageAlt || product.name} 
-                            fill 
-                            style={{ objectFit: 'cover' }} 
-                            priority 
-                        />
-                        {product.regularPrice && product.regularPrice > product.price && (
-                            <span className={styles.saleHeroTag}>SALE</span>
-                        )}
-                    </div>
+                    <ProductGallery 
+                        mainImage={product.image} 
+                        gallery={product.gallery} 
+                        name={product.name} 
+                        isSale={!!(product.regularPrice && product.regularPrice > product.price)} 
+                    />
                 </div>
 
                 {/* Right: Scrolling Info */}
@@ -169,7 +168,15 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                             product.reviews.map((r: any) => (
                                 <div key={r.id} className={styles.reviewCard}>
                                     <div className={styles.stars}>
-                                        {Array(r.rating).fill(<Star size={16} fill="#d97706" color="#d97706" style={{display: 'inline-block', marginRight: '4px'}}/>)}
+                                        {Array.from({ length: 5 }, (_, i) => (
+                                            <Star 
+                                                key={i} 
+                                                size={16} 
+                                                fill={i < r.rating ? "#d97706" : "transparent"} 
+                                                color={i < r.rating ? "#d97706" : "#444"} 
+                                                style={{display: 'inline-block', marginRight: '4px'}}
+                                            />
+                                        ))}
                                     </div>
                                     <p className={styles.reviewText}>"{r.content}"</p>
                                     <div className={styles.reviewMeta}>
@@ -182,6 +189,8 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                         )}
                     </div>
                 </div>
+
+                <RecentlyViewedList currentProductId={product.id} />
 
                 {/* Internal Cross-Links */}
                 <div className={styles.crossLinks}>

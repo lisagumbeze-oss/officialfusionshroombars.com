@@ -15,15 +15,19 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 import prisma from '@/lib/prisma';
 import ShopFilters from './ShopFilters';
-import AddToCartButton from '@/components/AddToCartButton';
 import Pagination from './Pagination';
+import ProductCard from '@/components/ProductCard/ProductCard';
+import { Product } from '@/types/product';
 
 export default async function Shop({ 
     searchParams 
 }: { 
-    searchParams: Promise<{ category?: string, sort?: string, page?: string }> 
+    searchParams: Promise<{ category?: string, sort?: string, page?: string, search?: string }> 
 }) {
-    const { category, sort, page } = await searchParams;
+    const { category, sort, page, search } = await searchParams;
+    const minPrice = (await searchParams).min ? parseFloat((await searchParams).min as string) : undefined;
+    const maxPrice = (await searchParams).max ? parseFloat((await searchParams).max as string) : undefined;
+    
     const currentPage = parseInt(page || '1', 10);
     const pageSize = 24;
 
@@ -33,12 +37,25 @@ export default async function Shop({
         where.category = category;
     }
 
+    if (minPrice !== undefined || maxPrice !== undefined) {
+        where.price = {};
+        if (minPrice !== undefined) where.price.gte = minPrice;
+        if (maxPrice !== undefined) where.price.lte = maxPrice;
+    }
+
+    if (search) {
+        where.OR = [
+            { name: { contains: search, mode: 'insensitive' } },
+            { description: { contains: search, mode: 'insensitive' } }
+        ];
+    }
+
     let orderBy: any = { name: 'asc' };
     if (sort === 'price-low') orderBy = { price: 'asc' };
     if (sort === 'price-high') orderBy = { price: 'desc' };
     if (sort === 'newest') orderBy = { createdAt: 'desc' };
 
-    let products: any[] = [];
+    let products: Product[] = [];
     let categories: string[] = [];
     let totalProducts = 0;
     let dbError = false;
@@ -52,11 +69,19 @@ export default async function Shop({
                 orderBy,
                 skip: skip >= 0 ? skip : 0,
                 take: pageSize,
+                include: {
+                    reviews: {
+                        select: { rating: true }
+                    },
+                    _count: {
+                        select: { reviews: true }
+                    }
+                }
             }),
             (prisma as any).product.count({ where })
         ]);
 
-        products = fetchedProducts;
+        products = fetchedProducts as Product[];
         totalProducts = totalCount;
 
         const catData = await (prisma as any).product.findMany({
@@ -89,36 +114,7 @@ export default async function Shop({
                 <>
                     <div className={styles.productGrid}>
                         {products.map((product: any) => (
-                            <div key={product.id} className={styles.productCard}>
-                                <Link href={`/shop/${product.slug}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-                                    <div className={styles.productImagePlaceholder}>
-                                        <Image 
-                                            src={product.image} 
-                                            alt={product.name} 
-                                            fill 
-                                            style={{ objectFit: 'cover' }}
-                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                        />
-                                        {product.regularPrice && product.regularPrice > product.price && (
-                                            <span className={styles.saleTag}>SALE</span>
-                                        )}
-                                    </div>
-                                    <h3 className={styles.productTitle}>{product.name}</h3>
-                                </Link>
-                                <div className={styles.categoryTag}>{product.category}</div>
-                                <div className={styles.price}>
-                                    {product.regularPrice && (
-                                        <span className={styles.oldPrice}>${product.regularPrice.toFixed(2)}</span>
-                                    )}
-                                    <span className={styles.newPrice}>${product.price.toFixed(2)}</span>
-                                </div>
-                                <div className={styles.buttonGroup}>
-                                    <Link href={`/shop/${product.slug}`} className={`${styles.viewBtn} premium-gradient`}>
-                                        VIEW PRODUCT
-                                    </Link>
-                                    <AddToCartButton product={product} className={styles.cartBtn} />
-                                </div>
-                            </div>
+                            <ProductCard key={product.id} product={product} />
                         ))}
                     </div>
 

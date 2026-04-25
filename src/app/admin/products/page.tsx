@@ -34,6 +34,8 @@ export default async function ProductsPage() {
         const image = formData.get('image') as string;
         const description = formData.get('description') as string;
         const isActive = formData.get('isActive') === 'on';
+        const stock = parseInt(formData.get('stock') as string) || 0;
+        const isSubscribable = formData.get('isSubscribable') === 'on';
 
         // Handle gallery
         const gallery = [];
@@ -54,6 +56,8 @@ export default async function ProductsPage() {
                 image, 
                 description, 
                 isActive,
+                stock,
+                isSubscribable,
                 gallery: JSON.stringify(gallery),
                 // Automatic SEO Update
                 targetKeyword: seo.targetKeyword,
@@ -80,6 +84,8 @@ export default async function ProductsPage() {
         const image = formData.get('image') as string;
         const description = formData.get('description') as string;
         const isActive = formData.get('isActive') === 'on';
+        const stock = parseInt(formData.get('stock') as string) || 0;
+        const isSubscribable = formData.get('isSubscribable') === 'on';
 
         // Handle gallery
         const gallery = [];
@@ -100,6 +106,8 @@ export default async function ProductsPage() {
                 image, 
                 description, 
                 isActive,
+                stock,
+                isSubscribable,
                 gallery: JSON.stringify(gallery),
                 // Automatic SEO
                 targetKeyword: seo.targetKeyword,

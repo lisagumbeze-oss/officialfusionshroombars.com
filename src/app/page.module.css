@@ -321,3 +321,22 @@
   .bentoLarge, .bentoWide, .bentoTall { grid-column: span 1; }
   .bentoCard { padding: 2rem; min-height: 250px; }
 }
+
+.conciergeSection {
+    padding: 10rem 0;
+    background: #000;
+    position: relative;
+    overflow: hidden;
+}
+
+.conciergeSection::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}

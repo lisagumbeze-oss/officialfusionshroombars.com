@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 import styles from '../admin.module.css';
 import { revalidatePath } from 'next/cache';
 import PaymentMethodManager from './PaymentMethodManager';
+import BrandSettingsManager from './BrandSettingsManager';
 
 export const metadata = {
     title: 'Admin Settings | Fusion Shroom Bars',
@@ -31,6 +32,23 @@ export default async function SettingsPage() {
         category1Price: 45,
         category2Name: 'Priority Express',
         category2Price: 85
+    };
+
+    const loyaltySetting = await (prisma as any).loyaltySetting.findUnique({
+        where: { id: 'default' }
+    }) || {
+        pointsPerDollar: 1,
+        redemptionValue: 0.01,
+        minPointsToUse: 100
+    };
+
+    const bulkSetting = await (prisma as any).bulkDiscountSetting.findUnique({
+        where: { id: 'default' }
+    }) || {
+        tier1Qty: 5,
+        tier1Discount: 0.10,
+        tier2Qty: 10,
+        tier2Discount: 0.20
     };
 
     async function deletePaymentMethod(formData: FormData) {
@@ -101,6 +119,35 @@ export default async function SettingsPage() {
         revalidatePath('/admin/settings');
     }
 
+    async function updateLoyalty(formData: FormData) {
+        'use server';
+        const pointsPerDollar = parseInt(formData.get('pointsPerDollar') as string);
+        const redemptionValue = parseFloat(formData.get('redemptionValue') as string);
+        const minPointsToUse = parseInt(formData.get('minPointsToUse') as string);
+
+        await (prisma as any).loyaltySetting.upsert({
+            where: { id: 'default' },
+            update: { pointsPerDollar, redemptionValue, minPointsToUse },
+            create: { id: 'default', pointsPerDollar, redemptionValue, minPointsToUse }
+        });
+        revalidatePath('/admin/settings');
+    }
+
+    async function updateBulkPricing(formData: FormData) {
+        'use server';
+        const tier1Qty = parseInt(formData.get('tier1Qty') as string);
+        const tier1Discount = parseFloat(formData.get('tier1Discount') as string);
+        const tier2Qty = parseInt(formData.get('tier2Qty') as string);
+        const tier2Discount = parseFloat(formData.get('tier2Discount') as string);
+
+        await (prisma as any).bulkDiscountSetting.upsert({
+            where: { id: 'default' },
+            update: { tier1Qty, tier1Discount, tier2Qty, tier2Discount },
+            create: { id: 'default', tier1Qty, tier1Discount, tier2Qty, tier2Discount }
+        });
+        revalidatePath('/admin/settings');
+    }
+
     return (
         <div className={styles.adminContainer}>
             <header className={styles.adminHeader} style={{ textAlign: 'left', marginBottom: '2rem' }}>
@@ -164,6 +211,61 @@ export default async function SettingsPage() {
                         </form>
                     </div>
                 </section>
+
+                {/* Loyalty Program Settings */}
+                <section className={styles.card} style={{ gridColumn: 'span 1' }}>
+                    <div className={styles.cardHeader}>
+                        <h2>Fusion Vault Rules</h2>
+                    </div>
+                    <form action={updateLoyalty} className={styles.paymentForm} style={{ padding: '1.5rem' }}>
+                        <div className={styles.inputGroup}>
+                            <label>Points per $1 Spent</label>
+                            <input type="number" name="pointsPerDollar" defaultValue={loyaltySetting.pointsPerDollar} required />
+                        </div>
+                        <div className={styles.inputGroup} style={{ marginTop: '1rem' }}>
+                            <label>Redemption Value per Point ($)</label>
+                            <input type="number" step="0.001" name="redemptionValue" defaultValue={loyaltySetting.redemptionValue} required />
+                            <p style={{ fontSize: '0.7rem', color: '#888', marginTop: '4px' }}>e.g. 0.01 means 100 points = $1.00 discount</p>
+                        </div>
+                        <div className={styles.inputGroup} style={{ marginTop: '1rem' }}>
+                            <label>Min. Points for Checkout</label>
+                            <input type="number" name="minPointsToUse" defaultValue={loyaltySetting.minPointsToUse} required />
+                        </div>
+                        <button type="submit" className={`${styles.submitBtn} premium-gradient`} style={{ marginTop: '1.5rem' }}>Save Rules</button>
+                    </form>
+                </section>
+
+                {/* Bulk Pricing Settings */}
+                <section className={styles.card} style={{ gridColumn: 'span 1' }}>
+                    <div className={styles.cardHeader}>
+                        <h2>Bulk Pricing Rules</h2>
+                    </div>
+                    <form action={updateBulkPricing} className={styles.paymentForm} style={{ padding: '1.5rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                            <div className={styles.inputGroup}>
+                                <label>Tier 1 Min Qty</label>
+                                <input type="number" name="tier1Qty" defaultValue={bulkSetting.tier1Qty} required />
+                            </div>
+                            <div className={styles.inputGroup}>
+                                <label>Tier 1 Discount (%)</label>
+                                <input type="number" step="0.01" name="tier1Discount" defaultValue={bulkSetting.tier1Discount * 100} required />
+                            </div>
+                        </div>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '1rem' }}>
+                            <div className={styles.inputGroup}>
+                                <label>Tier 2 Min Qty</label>
+                                <input type="number" name="tier2Qty" defaultValue={bulkSetting.tier2Qty} required />
+                            </div>
+                            <div className={styles.inputGroup}>
+                                <label>Tier 2 Discount (%)</label>
+                                <input type="number" step="0.01" name="tier2Discount" defaultValue={bulkSetting.tier2Discount * 100} required />
+                            </div>
+                        </div>
+                        <button type="submit" className={`${styles.submitBtn} premium-gradient`} style={{ marginTop: '1.5rem' }}>Update Tiers</button>
+                    </form>
+                </section>
+
+                <BrandSettingsManager />
             </div>
 
             <PaymentMethodManager 

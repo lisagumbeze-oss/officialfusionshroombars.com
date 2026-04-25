@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { Search, X, Eye, Trash2 } from 'lucide-react';
 import styles from '../admin.module.css';
 
+import { useSearchParams } from 'next/navigation';
+
 export default function OrdersTable({ 
     orders, 
     updateStatusAction,
@@ -12,31 +14,63 @@ export default function OrdersTable({
     updateStatusAction: (formData: FormData) => void,
     deleteOrderAction: (formData: FormData) => void
 }) {
-    const [searchTerm, setSearchTerm] = useState('');
+    const searchParams = useSearchParams();
+    const initialEmail = searchParams.get('email') || '';
+    const [searchTerm, setSearchTerm] = useState(initialEmail);
+    const [statusFilter, setStatusFilter] = useState('ALL');
     const [selectedOrder, setSelectedOrder] = useState<any>(null);
 
-    const filteredOrders = orders.filter(order => 
-        order.id.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        order.customerEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.customerName.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredOrders = orders.filter(order => {
+        const matchesSearch = order.id.toLowerCase().includes(searchTerm.toLowerCase()) || 
+            order.customerEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            order.customerName.toLowerCase().includes(searchTerm.toLowerCase());
+        
+        const matchesStatus = statusFilter === 'ALL' || order.status === statusFilter;
+        
+        return matchesSearch && matchesStatus;
+    });
 
     return (
         <section className={styles.card}>
-            <div className={styles.cardHeader}>
-                <h2>All Orders</h2>
-                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                    <div style={{ position: 'relative' }}>
+            <div className={styles.cardHeader} style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '1.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+                    <h2>All Orders</h2>
+                    <span className={styles.badge}>{filteredOrders.length}</span>
+                </div>
+                
+                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', flexWrap: 'wrap', gap: '1rem' }}>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        {['ALL', 'PENDING', 'PROCESSING', 'COMPLETED', 'CANCELLED'].map(status => (
+                            <button
+                                key={status}
+                                onClick={() => setStatusFilter(status)}
+                                style={{
+                                    padding: '0.5rem 1rem',
+                                    borderRadius: '999px',
+                                    border: '1px solid rgba(255,255,255,0.1)',
+                                    background: statusFilter === status ? '#a855f7' : 'rgba(255,255,255,0.05)',
+                                    color: 'white',
+                                    fontSize: '0.75rem',
+                                    fontWeight: 700,
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s'
+                                }}
+                            >
+                                {status}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div style={{ position: 'relative', flex: 1, maxWidth: '350px' }}>
                         <Search size={16} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#aaa' }} />
                         <input 
                             type="text" 
                             placeholder="Search name, email, or ID..." 
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            style={{ padding: '0.5rem 1rem 0.5rem 2.2rem', borderRadius: '4px', background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
+                            style={{ width: '100%', padding: '0.6rem 1rem 0.6rem 2.2rem', borderRadius: '8px', background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
                         />
                     </div>
-                    <span className={styles.badge}>{filteredOrders.length}</span>
                 </div>
             </div>
 

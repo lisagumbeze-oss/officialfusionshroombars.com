@@ -112,6 +112,72 @@
   font-size: 1.1rem;
 }
 
+.bulkDiscount {
+    color: #a855f7;
+    font-weight: 700;
+}
+
+.tierNudge {
+    background: rgba(168, 85, 247, 0.1);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin: 1rem 0;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #a855f7;
+}
+
+.tierNudge strong {
+    color: #fff;
+}
+
+.promoSection {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+    padding: 1.5rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.promoSection input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: #fff;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+.promoBtn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 0 1.25rem;
+    font-weight: 700;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+}
+
+.promoBtn:hover:not(:disabled) {
+    background: #fff;
+    color: #000;
+}
+
+.promoBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .removeBtn {
   background: none;
   border: none;
@@ -145,6 +211,15 @@
   justify-content: space-between;
   margin-bottom: 1rem;
   color: #aaa;
+}
+
+.appliedPromo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    color: #10b981;
+    font-weight: 600;
 }
 
 .divider {

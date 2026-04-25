@@ -10,106 +10,105 @@ import Link from 'next/link';
 import prisma from '@/lib/prisma';
 import AddToCartButton from '@/components/AddToCartButton';
 import { Reveal } from '@/components/Reveal';
+import ProductCard from '@/components/ProductCard/ProductCard';
+import DosageConcierge from '@/components/DosageConcierge/DosageConcierge';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const fallback: Metadata = {
-    title: "Official Fusion Shroom Bars | Elevated Experiences",
-    description: "The gold standard of psilocybin edibles. Experience focus, energy, and wellness with premium Fusion Chocolate Bars.",
-    openGraph: {
-      title: "Fusion | Elevated Mushroom Experiences",
-      description: "Artisanal Belgian chocolate infused with pure psilocybin extract.",
-      images: ["/images/hero-fusion.png"],
-    },
-  };
-  return await getPageMetadata("/", fallback);
+    const fallback: Metadata = {
+        title: "Official Fusion Shroom Bars | Elevated Experiences",
+        description: "The gold standard of psilocybin edibles. Experience focus, energy, and wellness with premium Fusion Chocolate Bars.",
+        openGraph: {
+            title: "Fusion | Elevated Mushroom Experiences",
+            description: "Artisanal Belgian chocolate infused with pure psilocybin extract.",
+            images: ["/images/hero-fusion.png"],
+        },
+    };
+    return await getPageMetadata("/", fallback);
 }
 
 export default async function Home() {
-  let bestsellers = [];
-  try {
-    const products = await (prisma as any).product.findMany({
-      where: { isActive: true },
-      take: 3, 
-      orderBy: { createdAt: 'desc' }
-    });
-    bestsellers = products;
-  } catch (error) {
-    console.error('[Home] Failed to fetch bestsellers:', error);
-  }
+    let bestsellers = [];
+    try {
+        const products = await (prisma as any).product.findMany({
+            where: { isActive: true },
+            take: 3, 
+            orderBy: { createdAt: 'desc' },
+            include: {
+                reviews: {
+                    select: { rating: true }
+                },
+                _count: {
+                    select: { reviews: true }
+                }
+            }
+        });
+        bestsellers = products;
+    } catch (error) {
+        console.error('[Home] Failed to fetch bestsellers:', error);
+    }
 
-  return (
-    <div className={styles.home}>
-      {/* 1. Split-Screen Hero */}
-      <section className={styles.editorialHero}>
-        <div className={styles.heroLeft}>
-          <div className={styles.mobileHeroTextOverlay}>
-            <Reveal>
-              <span className={styles.heroTag}>The New Standard</span>
-              <h1 className={styles.heroTitle}>Fusion<br/>Mushroom<br/>Bars.</h1>
-            </Reveal>
-          </div>
-          <div className={styles.mobileHeroContentBottom}>
-            <Reveal delay={0.2}>
-              <p className={styles.heroDesc}>
-                Discover the pinnacle of psilocybin edibles. Premium magic mushroom chocolate, powerful disposables, and precision-dosed gummies crafted for profound focus and deep calm.
-              </p>
-            </Reveal>
-            <Reveal delay={0.4}>
-              <Link href="/shop" className={styles.heroCta}>
-                EXPLORE COLLECTION
-                <ArrowRight size={20} />
-              </Link>
-            </Reveal>
-          </div>
-        </div>
-        <div className={styles.heroRight}>
-          <div className={styles.heroImageOverlay}></div>
-          <Image 
-            src="/images/hero-fusion.png" 
-            alt="Fusion Shroom Bars" 
-            fill 
-            style={{ objectFit: 'cover', objectPosition: 'center' }} 
-            priority
-          />
-        </div>
-      </section>
+    return (
+        <div className={styles.home}>
+            {/* 1. Split-Screen Hero */}
+            <section className={styles.editorialHero}>
+                <div className={styles.heroLeft}>
+                    <div className={styles.mobileHeroTextOverlay}>
+                        <Reveal>
+                            <span className={styles.heroTag}>The New Standard</span>
+                            <h1 className={styles.heroTitle}>Fusion<br/>Mushroom<br/>Bars.</h1>
+                        </Reveal>
+                    </div>
+                    <div className={styles.mobileHeroContentBottom}>
+                        <Reveal delay={0.2}>
+                            <p className={styles.heroDesc}>
+                                Discover the pinnacle of psilocybin edibles. Premium magic mushroom chocolate, powerful disposables, and precision-dosed gummies crafted for profound focus and deep calm.
+                            </p>
+                        </Reveal>
+                        <Reveal delay={0.4}>
+                            <Link href="/shop" className={styles.heroCta}>
+                                EXPLORE COLLECTION
+                                <ArrowRight size={20} />
+                            </Link>
+                        </Reveal>
+                    </div>
+                </div>
+                <div className={styles.heroRight}>
+                    <div className={styles.heroImageOverlay}></div>
+                    <Image 
+                        src="/images/hero-fusion.png" 
+                        alt="Fusion Shroom Bars" 
+                        fill 
+                        style={{ objectFit: 'cover', objectPosition: 'center' }} 
+                        priority
+                    />
+                </div>
+            </section>
 
-      {/* 2. Infinite Marquee */}
-      <div className={styles.marqueeContainer}>
-        <div className={styles.marqueeContent}>
-          <span>ELEVATED WELLNESS</span> • <span>ARTISANAL MASTERY</span> • <span>PUREST PSILOCYBIN</span> • <span>CLINICAL PRECISION</span> • 
-          <span>ELEVATED WELLNESS</span> • <span>ARTISANAL MASTERY</span> • <span>PUREST PSILOCYBIN</span> • <span>CLINICAL PRECISION</span> • 
-        </div>
-      </div>
-
-      {/* 3. Bestsellers Showcase */}
-      <section className={styles.collectionSection}>
-        <div className="container">
-          <Reveal>
-            <div className={styles.sectionHeader}>
-              <h2 className={styles.sectionTitle}>Best Sellers</h2>
-              <p className={styles.sectionDesc}>
-                Experience our most renowned artisanal mushroom chocolates. Meticulously crafted with clinical precision for an unmatched experience of focus, clarity, and euphoria.
-              </p>
+            {/* 2. Infinite Marquee */}
+            <div className={styles.marqueeContainer}>
+                <div className={styles.marqueeContent}>
+                    <span>ELEVATED WELLNESS</span> • <span>ARTISANAL MASTERY</span> • <span>PUREST PSILOCYBIN</span> • <span>CLINICAL PRECISION</span> • 
+                    <span>ELEVATED WELLNESS</span> • <span>ARTISANAL MASTERY</span> • <span>PUREST PSILOCYBIN</span> • <span>CLINICAL PRECISION</span> • 
+                </div>
             </div>
-          </Reveal>
 
-          <div className={`${shopStyles.productGrid} ${styles.homeProductGrid}`}>
-            {bestsellers.map((product: any) => (
-              <div key={product.id} className={shopStyles.productCard}>
-                <div className={shopStyles.productImagePlaceholder}>
-                    <Image src={product.image} alt={product.name} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 33vw" />
-                </div>
-                <h3 className={shopStyles.productTitle}>{product.name}</h3>
-                <div className={shopStyles.categoryTag}>{product.category}</div>
-                <div className={shopStyles.price}><span className={shopStyles.newPrice}>${product.price.toFixed(2)}</span></div>
-                <div className={shopStyles.buttonGroup}>
-                    <Link href={`/shop/${product.slug}`} className={`${shopStyles.viewBtn} premium-gradient`}>VIEW PRODUCT</Link>
-                    <AddToCartButton product={product} className={shopStyles.cartBtn} />
-                </div>
-              </div>
-            ))}
-          </div>
+            {/* 3. Bestsellers Showcase */}
+            <section className={styles.collectionSection}>
+                <div className="container">
+                    <Reveal>
+                        <div className={styles.sectionHeader}>
+                            <h2 className={styles.sectionTitle}>Best Sellers</h2>
+                            <p className={styles.sectionDesc}>
+                                Experience our most renowned artisanal mushroom chocolates. Meticulously crafted with clinical precision for an unmatched experience of focus, clarity, and euphoria.
+                            </p>
+                        </div>
+                    </Reveal>
+
+                    <div className={`${shopStyles.productGrid} ${styles.homeProductGrid}`}>
+                        {bestsellers.map((product: any) => (
+                            <ProductCard key={product.id} product={product} />
+                        ))}
+                    </div>
 
           <Reveal delay={0.2}>
             <div className={styles.sectionFooter}>
@@ -118,6 +117,23 @@ export default async function Home() {
                 <ArrowRight size={20} />
               </Link>
             </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 3.5 Dosage Concierge */}
+      <section className={styles.conciergeSection}>
+        <div className="container">
+          <Reveal>
+            <div className={styles.sectionHeader} style={{ textAlign: 'center' }}>
+              <h2 className={styles.sectionTitle}>Find Your Frequency</h2>
+              <p className={styles.sectionDesc}>
+                Not sure where to begin? Our interactive concierge will guide you to the ideal fusion product and dosage based on your experience and goals.
+              </p>
+            </div>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <DosageConcierge />
           </Reveal>
         </div>
       </section>

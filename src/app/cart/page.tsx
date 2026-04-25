@@ -1,15 +1,60 @@
 'use client';
 
-import styles from './cart.module.css';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import styles from './cart.module.css';
 import { useCart } from '@/context/CartContext';
-import { Trash2, ShoppingBag } from 'lucide-react';
+import { useToast } from '@/context/ToastContext';
+import { Trash2, ShoppingBag, Loader2 } from 'lucide-react';
 
 export default function CartPage() {
-    const { cart, cartTotal, removeFromCart, updateQuantity } = useCart();
-    const shipping: number = cartTotal > 300 ? 0 : 15; // Example shipping logic
+    const { 
+        cart, 
+        subtotal, 
+        discountAmount, 
+        bulkDiscountAmount,
+        cartTotal, 
+        removeFromCart, 
+        updateQuantity, 
+        applyCoupon, 
+        appliedCoupon,
+        cartCount
+    } = useCart();
+    const { showToast } = useToast();
+    
+    const [promoInput, setPromoInput] = useState('');
+    const [isApplying, setIsApplying] = useState(false);
+
+    const shipping: number = subtotal > 300 ? 0 : 15;
     const total = cartTotal + (cart.length > 0 ? shipping : 0);
+
+    const handleApplyPromo = async () => {
+        if (!promoInput.trim()) return;
+        
+        setIsApplying(true);
+        try {
+            const res = await fetch('/api/coupons/validate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code: promoInput })
+            });
+            
+            const data = await res.json();
+            
+            if (res.ok) {
+                applyCoupon(data.coupon);
+                showToast(`Success! ${data.coupon.code} applied.`, 'success');
+                setPromoInput('');
+            } else {
+                showToast(data.error || 'Invalid promo code', 'error');
+            }
+        } catch (error) {
+            showToast('Failed to apply promo code', 'error');
+        } finally {
+            setIsApplying(false);
+        }
+    };
 
     return (
         <div className={styles.cartContainer}>
@@ -57,8 +102,25 @@ export default function CartPage() {
                         <h2>Order Summary</h2>
                         <div className={styles.summaryRow}>
                             <span>Subtotal</span>
-                            <span>${cartTotal.toFixed(2)}</span>
+                            <span>${subtotal.toFixed(2)}</span>
                         </div>
+
+                        {bulkDiscountAmount > 0 && (
+                            <div className={`${styles.summaryRow} ${styles.bulkDiscount}`}>
+                                <span>Bulk Savings</span>
+                                <span>-${bulkDiscountAmount.toFixed(2)}</span>
+                            </div>
+                        )}
+
+                        {cartCount > 0 && cartCount < 10 && (
+                            <div className={styles.tierNudge}>
+                                {cartCount < 5 ? (
+                                    <p>Add <strong>{5 - cartCount}</strong> more bars for <strong>10% OFF</strong></p>
+                                ) : (
+                                    <p>Add <strong>{10 - cartCount}</strong> more bars for <strong>20% OFF</strong></p>
+                                )}
+                            </div>
+                        )}
                         <div className={styles.summaryRow}>
                             <span>Shipping</span>
                             <span>{shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}</span>
@@ -68,6 +130,32 @@ export default function CartPage() {
                                 Free shipping on orders over $300!
                             </p>
                         )}
+                        
+                        <div className={styles.promoSection}>
+                            <input 
+                                type="text" 
+                                placeholder="PROMO CODE" 
+                                value={promoInput}
+                                onChange={(e) => setPromoInput(e.target.value.toUpperCase())}
+                                className="glass-morphism"
+                                disabled={isApplying || !!appliedCoupon}
+                            />
+                            <button 
+                                onClick={appliedCoupon ? () => applyCoupon(null) : handleApplyPromo} 
+                                className={styles.promoBtn}
+                                disabled={isApplying || (!promoInput.trim() && !appliedCoupon)}
+                            >
+                                {isApplying ? <Loader2 className="animate-spin" size={16} /> : (appliedCoupon ? 'REMOVE' : 'APPLY')}
+                            </button>
+                        </div>
+
+                        {appliedCoupon && (
+                            <div className={styles.appliedPromo}>
+                                <span>Discount ({appliedCoupon.code})</span>
+                                <span>-${discountAmount.toFixed(2)}</span>
+                            </div>
+                        )}
+
                         <div className={styles.divider}></div>
                         <div className={styles.totalRow}>
                             <span>Total</span>

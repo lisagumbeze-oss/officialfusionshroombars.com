@@ -1,0 +1,119 @@
+.editorWrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: transparent;
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.toolGroup {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.menuButton {
+    padding: 0.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-center: center;
+}
+
+.menuButton:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+
+.menuButton.active {
+    background: rgba(168, 85, 247, 0.1);
+    color: #a855f7;
+}
+
+.divider {
+    width: 1px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0 0.25rem;
+}
+
+.content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+    color: #ccc;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+.content :global(.ProseMirror) {
+    outline: none;
+    min-height: 400px;
+}
+
+.content :global(.ProseMirror p.is-editor-empty:first-child::before) {
+    content: attr(data-placeholder);
+    float: left;
+    color: #444;
+    pointer-events: none;
+    height: 0;
+}
+
+.content :global(h1) {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 1.5rem;
+}
+
+.content :global(h2) {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.content :global(blockquote) {
+    border-left: 4px solid #a855f7;
+    padding-left: 1.5rem;
+    font-style: italic;
+    color: #888;
+    margin: 2rem 0;
+}
+
+.content :global(ul), .content :global(ol) {
+    padding-left: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.content :global(img) {
+    max-width: 100%;
+    border-radius: 12px;
+    margin: 2rem 0;
+    display: block;
+}
+
+.content :global(pre) {
+    background: #000;
+    color: #10b981;
+    padding: 1.5rem;
+    border-radius: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    margin: 2rem 0;
+    overflow-x: auto;
+}

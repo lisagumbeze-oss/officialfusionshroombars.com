@@ -2,30 +2,42 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-export interface CartItem {
-  id: string;
-  slug: string;
-  name: string;
-  price: number;
+import { Product } from '@/types/product';
+
+export interface CartItem extends Product {
   quantity: number;
-  image: string;
 }
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (product: any, quantity?: number) => void;
+  addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
+  applyCoupon: (coupon: { code: string; discount: number; type: string } | null) => void;
+  appliedCoupon: { code: string; discount: number; type: string } | null;
   cartCount: number;
   cartTotal: number;
+  subtotal: number;
+  discountAmount: number;
+  bulkDiscountAmount: number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discount: number; type: string } | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [settings, setSettings] = useState<any>(null);
+
+  // Fetch settings
+  useEffect(() => {
+    fetch('/api/settings')
+      .then(r => r.json())
+      .then(setSettings)
+      .catch(console.error);
+  }, []);
 
   // Load from localStorage
   useEffect(() => {
@@ -47,7 +59,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [cart, isLoaded]);
 
-  const addToCart = (product: any, quantity: number = 1) => {
+  const addToCart = (product: Product, quantity: number = 1) => {
     setCart(prev => {
       const existing = prev.find(item => item.id === product.id);
       if (existing) {
@@ -55,14 +67,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
         );
       }
-      return [...prev, { 
-        id: product.id, 
-        slug: product.slug, 
-        name: product.name, 
-        price: product.price, 
-        quantity, 
-        image: product.image 
-      }];
+      return [...prev, { ...product, quantity }];
     });
   };
 
@@ -82,10 +87,47 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const clearCart = () => {
     setCart([]);
+    setAppliedCoupon(null);
   };
 
+  const applyCoupon = (coupon: { code: string; discount: number; type: string } | null) => {
+    setAppliedCoupon(coupon);
+  };
+
+  const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
-  const cartTotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  
+  // Tiered Bulk Pricing Logic
+  let bulkDiscountAmount = 0;
+  if (settings?.bulk) {
+    const { tier1Qty, tier1Discount, tier2Qty, tier2Discount } = settings.bulk;
+    if (cartCount >= tier2Qty) {
+      bulkDiscountAmount = subtotal * tier2Discount;
+    } else if (cartCount >= tier1Qty) {
+      bulkDiscountAmount = subtotal * tier1Discount;
+    }
+  } else {
+    // Fallback if settings not loaded yet
+    if (cartCount >= 10) {
+      bulkDiscountAmount = subtotal * 0.20;
+    } else if (cartCount >= 5) {
+      bulkDiscountAmount = subtotal * 0.10;
+    }
+  }
+
+  let couponDiscountAmount = 0;
+  if (appliedCoupon) {
+    if (appliedCoupon.type === 'PERCENTAGE') {
+      // Coupon applies to the subtotal AFTER bulk discount or just the subtotal? 
+      // Usually it's stackable or applies to the subtotal. Let's make it stackable on subtotal.
+      couponDiscountAmount = subtotal * (appliedCoupon.discount / 100);
+    } else {
+      couponDiscountAmount = appliedCoupon.discount;
+    }
+  }
+
+  const discountAmount = bulkDiscountAmount + couponDiscountAmount;
+  const cartTotal = Math.max(0, subtotal - discountAmount);
 
   return (
     <CartContext.Provider value={{ 
@@ -94,8 +136,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       removeFromCart, 
       updateQuantity, 
       clearCart, 
+      applyCoupon,
+      appliedCoupon,
       cartCount, 
-      cartTotal 
+      cartTotal,
+      subtotal,
+      discountAmount,
+      bulkDiscountAmount
     }}>
       {children}
     </CartContext.Provider>

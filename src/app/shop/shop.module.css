@@ -276,4 +276,24 @@
     cursor: not-allowed;
     transform: none !important;
     box-shadow: none !important;
-}
+}
+
+.priceInputs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.priceInputs input {
+    width: 80px;
+    padding: 0.5rem;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    color: #fff;
+}
+
+.priceInputs span {
+    color: var(--text-muted);
+}

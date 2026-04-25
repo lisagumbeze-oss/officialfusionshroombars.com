@@ -1,0 +1,170 @@
+.container {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 3rem;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+}
+
+.progress {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #a855f7;
+    margin-bottom: 1rem;
+    font-weight: 800;
+}
+
+.question {
+    font-size: 1.8rem;
+    margin-bottom: 2.5rem;
+    color: #fff;
+    font-weight: 700;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.optionBtn {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: left;
+    width: 100%;
+}
+
+.optionBtn:hover {
+    background: rgba(168, 85, 247, 0.1);
+    border-color: #a855f7;
+    transform: translateX(8px);
+}
+
+.optIcon {
+    width: 40px;
+    height: 40px;
+    background: rgba(168, 85, 247, 0.15);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #a855f7;
+    margin-right: 1.5rem;
+}
+
+.optText {
+    flex: 1;
+}
+
+.optLabel {
+    display: block;
+    font-weight: 700;
+    color: #fff;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.optDesc {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.arrow {
+    color: #444;
+    transition: color 0.3s;
+}
+
+.optionBtn:hover .arrow {
+    color: #a855f7;
+}
+
+/* Result Styles */
+.resultContainer {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(0, 0, 0, 0) 100%);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 20px;
+    padding: 3rem;
+    text-align: center;
+}
+
+.resultHeader {
+    margin-bottom: 2.5rem;
+}
+
+.sparkleIcon {
+    color: #a855f7;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 1rem;
+}
+
+.resultHeader h3 {
+    font-size: 1.8rem;
+    color: #fff;
+    margin: 0;
+}
+
+.recCard {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.recItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.recItem span {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #666;
+    font-weight: 800;
+}
+
+.recItem strong {
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+.resetBtn {
+    background: none;
+    border: none;
+    color: #a855f7;
+    font-weight: 800;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 auto;
+    transition: opacity 0.3s;
+}
+
+.resetBtn:hover {
+    opacity: 0.7;
+}
+
+@media (max-width: 600px) {
+    .container, .resultContainer {
+        padding: 2rem 1.5rem;
+    }
+}

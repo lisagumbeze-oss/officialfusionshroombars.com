@@ -10,7 +10,11 @@ import {
     Package,
     ShoppingBag,
     Settings,
-    LogOut
+    LogOut,
+    Tag,
+    BarChart3,
+    Award,
+    Users
 } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 import styles from './Sidebar.module.css';
@@ -26,6 +30,7 @@ const storeItems: NavItem[] = [
     { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
     { label: 'Products', href: '/admin/products', icon: Package },
     { label: 'Orders', href: '/admin/orders', icon: ShoppingBag },
+    { label: 'Coupons', href: '/admin/coupons', icon: Tag },
     { label: 'Settings', href: '/admin/settings', icon: Settings },
 ];
 
@@ -34,6 +39,12 @@ const contentItems: NavItem[] = [
     { label: 'Categories', href: '/admin/categories', icon: Layers },
     { label: 'Media Library', href: '/admin/media', icon: ImageIcon },
     { label: 'Comments', href: '/admin/comments', icon: MessageSquare, badge: '12' },
+];
+
+const insightsItems: NavItem[] = [
+    { label: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
+    { label: 'Loyalty Vault', href: '/admin/loyalty', icon: Award },
+    { label: 'Customers', href: '/admin/customers', icon: Users },
 ];
 
 export default function Sidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () => void }) {
@@ -85,7 +96,20 @@ export default function Sidebar({ isOpen, onClose }: { isOpen?: boolean; onClose
                 {renderNavItems(contentItems)}
             </nav>
 
+            <div className={styles.sectionLabel}>INSIGHTS & REPORTS</div>
+            <nav className={styles.nav}>
+                {renderNavItems(insightsItems)}
+            </nav>
+
             <div className={styles.footer}>
+                <Link 
+                    href="/" 
+                    className={styles.navLink} 
+                    style={{ marginBottom: '1rem', background: 'rgba(255,255,255,0.05)' }}
+                >
+                    <LogOut size={18} style={{ transform: 'rotate(180deg)' }} />
+                    <span>View Website</span>
+                </Link>
                 <div className={styles.storageCard}>
                     <div className={styles.storageLabel}>
                         <span>Storage Status</span>

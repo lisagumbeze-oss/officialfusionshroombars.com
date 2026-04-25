@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Search, Grid, List as ListIcon, X, Loader2, ImageIcon, Folder } from 'lucide-react';
-import styles from '../admin.module.css';
+import styles from '../../app/admin/admin.module.css';
 
 interface MediaPickerProps {
     isOpen: boolean;

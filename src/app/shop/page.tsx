@@ -22,11 +22,12 @@ import { Product } from '@/types/product';
 export default async function Shop({ 
     searchParams 
 }: { 
-    searchParams: Promise<{ category?: string, sort?: string, page?: string, search?: string }> 
+    searchParams: Promise<{ category?: string, sort?: string, page?: string, search?: string, min?: string, max?: string }> 
 }) {
-    const { category, sort, page, search } = await searchParams;
-    const minPrice = (await searchParams).min ? parseFloat((await searchParams).min as string) : undefined;
-    const maxPrice = (await searchParams).max ? parseFloat((await searchParams).max as string) : undefined;
+    const params = await searchParams;
+    const { category, sort, page, search, min, max } = params;
+    const minPrice = min ? parseFloat(min) : undefined;
+    const maxPrice = max ? parseFloat(max) : undefined;
     
     const currentPage = parseInt(page || '1', 10);
     const pageSize = 24;

@@ -248,7 +248,7 @@ export default function MediaLibrary() {
                             <img src={selectedAsset.url} alt="" style={{ width: '100%', display: 'block' }} />
                         </div>
 
-                        <div style={{ spaceY: '1.25rem' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                             <div style={{ marginBottom: '1rem' }}>
                                 <label style={{ display: 'block', fontSize: '0.7rem', color: '#555', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '1px', marginBottom: '0.5rem' }}>Filename</label>
                                 <div style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 600, wordBreak: 'break-all' }}>{selectedAsset.filename}</div>
@@ -295,7 +295,7 @@ export default function MediaLibrary() {
 
             {/* Modals */}
             {isUploadModalOpen && (
-                <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', backdropBlur: '8px', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+                <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(8px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
                     <div className={styles.card} style={{ width: '100%', maxWidth: '500px', padding: '2rem' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                             <h2 style={{ margin: 0 }}>Register Asset</h2>
@@ -318,7 +318,7 @@ export default function MediaLibrary() {
             )}
 
             {isFolderModalOpen && (
-                <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', backdropBlur: '8px', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+                <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(8px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
                     <div className={styles.card} style={{ width: '100%', maxWidth: '400px', padding: '2rem' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                             <h2 style={{ margin: 0 }}>Create Folder</h2>

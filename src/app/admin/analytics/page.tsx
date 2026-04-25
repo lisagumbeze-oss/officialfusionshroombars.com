@@ -88,7 +88,7 @@ export default function AnalyticsPage() {
                             <YAxis tick={{ fill: '#666', fontSize: 11 }} tickFormatter={(v) => `$${v}`} />
                             <Tooltip
                                 contentStyle={{ background: '#1a1a2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#fff' }}
-                                formatter={(v: number) => [`$${v.toFixed(2)}`, 'Revenue']}
+                                formatter={(v: any) => [`$${v ? Number(v).toFixed(2) : '0.00'}`, 'Revenue']}
                                 labelFormatter={(label) => `Date: ${label}`}
                             />
                             <Line type="monotone" dataKey="revenue" stroke="#a855f7" strokeWidth={2.5} dot={false} />
@@ -114,7 +114,7 @@ export default function AnalyticsPage() {
                                     <YAxis dataKey="name" type="category" tick={{ fill: '#aaa', fontSize: 11 }} width={140} />
                                     <Tooltip
                                         contentStyle={{ background: '#1a1a2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#fff' }}
-                                        formatter={(v: number) => [`$${v.toFixed(2)}`, 'Revenue']}
+                                        formatter={(v: any) => [`$${v ? Number(v).toFixed(2) : '0.00'}`, 'Revenue']}
                                     />
                                     <Bar dataKey="revenue" radius={[0, 4, 4, 0]}>
                                         {topProducts.map((_: any, i: number) => (

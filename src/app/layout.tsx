@@ -133,10 +133,7 @@ export default function RootLayout({
         <Script id="smartsupp-chat" strategy="afterInteractive">
           {`
             var _smartsupp = _smartsupp || {};
-            _smartsupp.key = '066c33c30d5a0cddcfb7a8750f96fe6b77709e72';
-            if (window.innerWidth <= 768) {
-              _smartsupp.offsetY = 80;
-            }
+            _smartsupp.key = '0bdb3fb9e0920fff6f5fa54237b5821e00ff112f';
             window.smartsupp||(function(d) {
               var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
               s=d.getElementsByTagName('script')[0];c=d.createElement('script');

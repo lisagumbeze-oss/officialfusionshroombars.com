@@ -7,16 +7,16 @@
     justify-content: center;
     gap: 0.75rem;
     font-size: 0.8rem;
-    color: #a855f7;
+    color: #4c1d95; /* Darker purple for better contrast */
     text-align: center;
 }
 
 .icon {
-    color: #a855f7;
+    color: #4c1d95;
 }
 
 .banner strong {
-    color: #fff;
+    color: #1a1a1a; /* Dark gray/black instead of white for visibility */
     text-transform: capitalize;
 }
 

@@ -113,7 +113,6 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background text-foreground">
-        <GeoDelivery />
         <GoogleAnalytics ga_id="G-403953413" />
         <ToastProvider>
           <WishlistProvider>

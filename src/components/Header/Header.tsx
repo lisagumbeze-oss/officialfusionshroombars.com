@@ -7,6 +7,7 @@ import styles from './Header.module.css';
 import CartDropdown from './CartDropdown';
 import { Menu, X, Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import GeoDelivery from '../GeoDelivery/GeoDelivery';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -34,6 +35,7 @@ export default function Header() {
 
   return (
     <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''} glass-morphism`}>
+      {!isScrolled && <GeoDelivery />}
       <div className={styles.container}>
         <Link href="/" className={styles.logoWrapper}>
           <Image 

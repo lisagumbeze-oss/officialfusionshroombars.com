@@ -4,18 +4,24 @@
     left: 0;
     width: 100%;
     z-index: 1000;
-    height: 80px;
+    height: auto;
+    min-height: 80px;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .scrolled {
-    height: 65px;
+    min-height: 65px;
     background: var(--glass) !important;
     backdrop-filter: blur(20px) !important;
     border-bottom: 1px solid var(--surface-border);
     box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+
+.scrolled .container {
+    height: 65px;
 }
 
 .container {
@@ -26,6 +32,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 2rem;
+    height: 80px;
 }
 
 .logoWrapper {

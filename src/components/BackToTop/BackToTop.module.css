@@ -1,0 +1,50 @@
+.button {
+  position: fixed;
+  right: var(--floating-widget-right);
+  bottom: calc(
+    var(--floating-widget-bottom) + var(--chat-bubble-size) + var(--floating-widget-gap)
+  );
+  width: var(--back-to-top-size);
+  height: var(--back-to-top-size);
+  border-radius: 50%;
+  border: 1px solid rgba(217, 119, 6, 0.35);
+  background: linear-gradient(135deg, #3e2723 0%, var(--primary) 45%, var(--secondary) 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2147483646;
+  box-shadow: 0 8px 24px rgba(92, 64, 51, 0.35);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.button:hover {
+  box-shadow: 0 12px 28px rgba(217, 119, 6, 0.35);
+  transform: translateY(-2px);
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.visible:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .button {
+    bottom: calc(
+      var(--floating-widget-bottom-mobile) + var(--chat-bubble-size) + var(--floating-widget-gap)
+    );
+  }
+}

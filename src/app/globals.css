@@ -19,6 +19,14 @@
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-heading: 'Outfit', system-ui, sans-serif;
   --grid-bg: radial-gradient(circle at 50% 50%, rgba(180, 83, 9, 0.03) 0%, transparent 70%);
+
+  /* Floating widgets (back-to-top + live chat) */
+  --floating-widget-right: 1.25rem;
+  --floating-widget-bottom: 1.25rem;
+  --floating-widget-bottom-mobile: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+  --floating-widget-gap: 0.75rem;
+  --chat-bubble-size: 3.75rem;
+  --back-to-top-size: 3rem;
 }
 
 * {
@@ -226,5 +234,23 @@ button {
     height: auto;
     border-radius: 1rem;
     margin: 2.5rem 0;
+}
+
+/* Smartsupp live chat — align with brand colors and floating widget stack */
+#smartsupp-widget-container,
+#webWidget,
+#chat-application,
+.smartsupp-widget {
+  right: var(--floating-widget-right) !important;
+  bottom: var(--floating-widget-bottom) !important;
+}
+
+@media (max-width: 768px) {
+  #smartsupp-widget-container,
+  #webWidget,
+  #chat-application,
+  .smartsupp-widget {
+    bottom: var(--floating-widget-bottom-mobile) !important;
+  }
 }
 

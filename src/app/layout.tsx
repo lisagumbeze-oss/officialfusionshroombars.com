@@ -13,6 +13,7 @@ import { WishlistProvider } from "@/context/WishlistContext";
 import { RecentlyViewedProvider } from "@/context/RecentlyViewedContext";
 import SocialProof from "@/components/SocialProof/SocialProof";
 import GeoDelivery from "@/components/GeoDelivery/GeoDelivery";
+import BackToTop from "@/components/BackToTop/BackToTop";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://officialfusionshroombars.com"),
@@ -127,12 +128,14 @@ export default function RootLayout({
         </ToastProvider>
         
         <SocialProof />
+        <BackToTop />
         
         {/* Smartsupp Live Chat script */}
         <Script id="smartsupp-chat" strategy="afterInteractive">
           {`
             var _smartsupp = _smartsupp || {};
-            _smartsupp.key = '0bdb3fb9e0920fff6f5fa54237b5821e00ff112f';
+            _smartsupp.key = '066c33c30d5a0cddcfb7a8750f96fe6b77709e72';
+            _smartsupp.color = '#5C4033';
             window.smartsupp||(function(d) {
               var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
               s=d.getElementsByTagName('script')[0];c=d.createElement('script');
@@ -141,6 +144,9 @@ export default function RootLayout({
             })(document);
           `}
         </Script>
+        <noscript>
+          Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a>
+        </noscript>
       </body>
     </html>
   );

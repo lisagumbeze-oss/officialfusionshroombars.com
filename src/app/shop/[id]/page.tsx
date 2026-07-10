@@ -1,7 +1,6 @@
-export const revalidate = 3600; // Incrementally regenerate page every hour
+export const revalidate = 3600;
 
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import styles from './product.module.css';
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
@@ -9,12 +8,19 @@ import AddToCartSection from './AddToCartSection';
 import Link from 'next/link';
 import RelatedProducts from '@/components/RelatedProducts';
 import RecentlyViewedList from '@/components/RecentlyViewedList/RecentlyViewedList';
-import { Truck, ShieldCheck, Zap, Star } from 'lucide-react';
+import { Truck, ShieldCheck, Zap, Star, CircleHelp, Mail, BookOpen, FlaskConical } from 'lucide-react';
 import ProductGallery from './ProductGallery';
 import RecentlyViewedTracker from '@/components/RecentlyViewedTracker';
+import { Reveal } from '@/components/Reveal';
+
+const CROSS_LINKS = [
+    { href: '/faq', icon: CircleHelp, label: 'Knowledge base' },
+    { href: '/contact', icon: Mail, label: 'Contact support' },
+    { href: '/about', icon: FlaskConical, label: 'Our standards' },
+    { href: '/blog', icon: BookOpen, label: 'Editorial journal' },
+];
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
-// ... existing code ...
     const { id } = await params;
     const product = await (prisma as any).product.findUnique({ where: { slug: id } });
     if (!product) return { title: 'Product Not Found' };
@@ -45,8 +51,8 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             include: {
                 reviews: {
                     orderBy: { createdAt: 'desc' },
-                }
-            }
+                },
+            },
         });
 
         if (product) {
@@ -54,9 +60,9 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                 where: {
                     category: product.category,
                     isActive: true,
-                    NOT: { id: product.id }
+                    NOT: { id: product.id },
                 },
-                take: 4
+                take: 4,
             });
         }
     } catch (error) {
@@ -67,145 +73,198 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
         notFound();
     }
 
-    const effects = product.effects ? JSON.parse(product.effects) : null;
     const ingredients = product.ingredients ? JSON.parse(product.ingredients) : null;
+    const isOnSale = !!(product.regularPrice && product.regularPrice > product.price);
 
     return (
-        <main className={styles.productContainer}>
+        <div className={styles.productPage}>
             <RecentlyViewedTracker product={product as any} />
-            {/* Split Screen Presentation */}
+
             <div className={styles.splitLayout}>
-                {/* Left: Sticky Image Hero */}
+                {/* Left: Sticky gallery */}
                 <div className={styles.imageSection}>
-                    <ProductGallery 
-                        mainImage={product.image} 
-                        gallery={product.gallery} 
-                        name={product.name} 
-                        isSale={!!(product.regularPrice && product.regularPrice > product.price)} 
+                    <div className={`grain-overlay ${styles.heroGrain}`} aria-hidden />
+                    <ProductGallery
+                        mainImage={product.image}
+                        gallery={product.gallery}
+                        name={product.name}
+                        isSale={isOnSale}
                     />
                 </div>
 
-                {/* Right: Scrolling Info */}
+                {/* Right: Product info */}
                 <div className={styles.infoSection}>
-                    <nav className={styles.breadcrumbs} aria-label="Breadcrumb">
-                        <Link href="/">HOME</Link>
-                        <span> // </span>
-                        <Link href="/shop">COLLECTION</Link>
-                        <span> // </span>
-                        <Link href={`/shop?category=${encodeURIComponent(product.category)}`}>{product.category}</Link>
-                        <span> // </span>
-                        <span style={{ color: '#fff' }}>{product.name}</span>
-                    </nav>
+                    <Reveal>
+                        <nav className={styles.breadcrumbs} aria-label="Breadcrumb">
+                            <Link href="/">Home</Link>
+                            <span className={styles.breadcrumbSep} aria-hidden="true">/</span>
+                            <Link href="/shop">Collection</Link>
+                            <span className={styles.breadcrumbSep} aria-hidden="true">/</span>
+                            <Link href={`/shop?category=${encodeURIComponent(product.category)}`}>
+                                {product.category}
+                            </Link>
+                        </nav>
+                    </Reveal>
 
-                    <h1 className={styles.title}>{product.name}</h1>
+                    {product.category && (
+                        <Reveal delay={0.05}>
+                            <span className={styles.categoryTag}>{product.category}</span>
+                        </Reveal>
+                    )}
 
-                    <div className={styles.priceContainer}>
-                        {product.regularPrice && (
-                            <span className={styles.oldPrice}>${product.regularPrice.toFixed(2)}</span>
-                        )}
-                        <span className={styles.newPrice}>${product.price.toFixed(2)}</span>
-                    </div>
+                    <Reveal delay={0.1}>
+                        <h1 className={styles.title}>{product.name}</h1>
+                    </Reveal>
 
-                    <div className={styles.actionArea}>
-                        <AddToCartSection product={product} />
-
-                        <div className={styles.benefits}>
-                            <div className={styles.benefitItem}><Truck size={20} /> Discrete Delivery</div>
-                            <div className={styles.benefitItem}><ShieldCheck size={20} /> Triple Lab Tested</div>
-                            {product.weight && (
-                                <div className={styles.benefitItem}><Zap size={20} /> {product.weight} Potency</div>
+                    <Reveal delay={0.15}>
+                        <div className={styles.priceContainer}>
+                            {product.regularPrice && (
+                                <span className={styles.oldPrice}>
+                                    ${product.regularPrice.toFixed(2)}
+                                </span>
+                            )}
+                            <span className={styles.newPrice}>${product.price.toFixed(2)}</span>
+                            {isOnSale && (
+                                <span className={styles.saleBadge}>On sale</span>
                             )}
                         </div>
-                    </div>
+                    </Reveal>
 
+                    <Reveal delay={0.2}>
+                        <div className={styles.actionArea}>
+                            <AddToCartSection product={product} />
+
+                            <div className={styles.benefits}>
+                                <div className={styles.benefitItem}>
+                                    <Truck size={18} strokeWidth={1.5} />
+                                    Discreet delivery
+                                </div>
+                                <div className={styles.benefitItem}>
+                                    <ShieldCheck size={18} strokeWidth={1.5} />
+                                    Triple lab tested
+                                </div>
+                                {product.weight && (
+                                    <div className={styles.benefitItem}>
+                                        <Zap size={18} strokeWidth={1.5} />
+                                        {product.weight} potency
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </Reveal>
                 </div>
             </div>
 
-            {/* Below the fold: Reviews & Related */}
+            {/* Below the fold */}
             <div className={styles.standardLayout}>
-                {/* Full Width Discover Section */}
-                <div className={styles.detailsTabs}>
-                    <div className={styles.tabHeaders}>
-                        <button className={styles.activeTab}>Discover</button>
-                    </div>
-                    <div className={styles.tabContent}>
-                        <div 
-                            className={styles.htmlDesc} 
-                            dangerouslySetInnerHTML={{ __html: product.description }} 
-                        />
-
-                        {effects && (
-                            <>
-                                <h4>Expected Experience</h4>
-                                <ul>
-                                    {effects.map((effect: string) => <li key={effect}>{effect}</li>)}
-                                </ul>
-                            </>
-                        )}
+                <Reveal>
+                    <section className={styles.detailsSection}>
+                        <div className={styles.sectionHeader}>
+                            <span className={styles.sectionLabel}>Details</span>
+                            <h2 className={styles.sectionTitle}>Discover this product</h2>
+                        </div>
+                        <div className={styles.descCard}>
+                            <div
+                                className={styles.htmlDesc}
+                                dangerouslySetInnerHTML={{ __html: product.description }}
+                            />
+                        </div>
 
                         {ingredients && (
-                            <>
-                                <h4>Pure Ingredients</h4>
-                                <ul>
-                                    {ingredients.map((ing: string) => <li key={ing}>{ing}</li>)}
-                                </ul>
-                            </>
+                            <div className={styles.detailGrid}>
+                                <div className={styles.detailCard}>
+                                    <h3>Pure ingredients</h3>
+                                    <ul>
+                                        {ingredients.map((ing: string) => (
+                                            <li key={ing}>{ing}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
                         )}
-                    </div>
-                </div>
+                    </section>
+                </Reveal>
 
                 {relatedProducts.length > 0 && (
-                    <div style={{ marginBottom: '6rem' }}>
-                        <h2 className={styles.sectionTitle}>Curated For You</h2>
+                    <Reveal delay={0.1}>
                         <RelatedProducts products={relatedProducts} />
-                    </div>
+                    </Reveal>
                 )}
 
-                <div className={styles.reviewsSection}>
-                    <h2 className={styles.sectionTitle}>Client Experiences</h2>
-                    <div className={styles.reviewsGrid}>
-                        {product.reviews && product.reviews.length > 0 ? (
-                            product.reviews.map((r: any) => (
-                                <div key={r.id} className={styles.reviewCard}>
-                                    <div className={styles.stars}>
-                                        {Array.from({ length: 5 }, (_, i) => (
-                                            <Star 
-                                                key={i} 
-                                                size={16} 
-                                                fill={i < r.rating ? "#d97706" : "transparent"} 
-                                                color={i < r.rating ? "#d97706" : "#444"} 
-                                                style={{display: 'inline-block', marginRight: '4px'}}
-                                            />
-                                        ))}
+                <Reveal delay={0.15}>
+                    <section className={styles.reviewsSection}>
+                        <div className={styles.sectionHeader}>
+                            <span className={styles.sectionLabel}>Reviews</span>
+                            <h2 className={styles.sectionTitle}>Client experiences</h2>
+                        </div>
+                        <div className={styles.reviewsGrid}>
+                            {product.reviews && product.reviews.length > 0 ? (
+                                product.reviews.map((r: any) => (
+                                    <div key={r.id} className={styles.reviewCard}>
+                                        <div className={styles.stars}>
+                                            {Array.from({ length: 5 }, (_, i) => (
+                                                <Star
+                                                    key={i}
+                                                    size={15}
+                                                    fill={i < r.rating ? 'var(--primary)' : 'transparent'}
+                                                    color={i < r.rating ? 'var(--primary)' : 'var(--text-subtle)'}
+                                                />
+                                            ))}
+                                        </div>
+                                        <p className={styles.reviewText}>&ldquo;{r.content}&rdquo;</p>
+                                        <div className={styles.reviewMeta}>
+                                            <strong>{r.name}</strong>
+                                            <span>
+                                                {new Date(r.createdAt).toLocaleDateString(undefined, {
+                                                    month: 'short',
+                                                    day: 'numeric',
+                                                    year: 'numeric',
+                                                })}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <p className={styles.reviewText}>"{r.content}"</p>
-                                    <div className={styles.reviewMeta}>
-                                        <strong>{r.name}</strong> • {new Date(r.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
-                                    </div>
-                                </div>
-                            ))
-                        ) : (
-                            <p style={{ color: '#888', fontStyle: 'italic' }}>Be the first to share an experience with this product.</p>
-                        )}
-                    </div>
-                </div>
+                                ))
+                            ) : (
+                                <p className={styles.emptyReviews}>
+                                    Be the first to share an experience with this product.
+                                </p>
+                            )}
+                        </div>
+                    </section>
+                </Reveal>
 
                 <RecentlyViewedList currentProductId={product.id} />
 
-                {/* Internal Cross-Links */}
-                <div className={styles.crossLinks}>
-                    <h3>Expand Your Journey</h3>
-                    <div className={styles.linkTags}>
-                        <Link href="/faq" className={styles.tag}>Read the FAQ</Link>
-                        <Link href="/contact" className={styles.tag}>Contact Support</Link>
-                        <Link href="/about" className={styles.tag}>Our Standards</Link>
-                        <Link href="/blog" className={styles.tag}>Editorial Journal</Link>
-                    </div>
-                    <p style={{ color: '#666', fontSize: '0.85rem' }}>
-                        All Fusion products utilize premium <a href="https://en.wikipedia.org/wiki/Psilocybin" target="_blank" rel="noopener noreferrer" style={{ color: '#fff' }}>psilocybin</a> extract infused into Belgian chocolate.
-                    </p>
-                </div>
+                <section className={styles.ctaSection}>
+                    <Reveal>
+                        <h2 className={styles.ctaTitle}>Expand your journey</h2>
+                        <p className={styles.ctaDesc}>
+                            All Fusion products utilize premium{' '}
+                            <a
+                                href="https://en.wikipedia.org/wiki/Psilocybin"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                psilocybin
+                            </a>{' '}
+                            extract infused into Belgian chocolate.
+                        </p>
+                    </Reveal>
+                    <Reveal delay={0.2}>
+                        <div className={styles.crossLinks}>
+                            {CROSS_LINKS.map((link) => {
+                                const Icon = link.icon;
+                                return (
+                                    <Link key={link.href} href={link.href} className={styles.crossLink}>
+                                        <Icon size={16} />
+                                        {link.label}
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    </Reveal>
+                </section>
             </div>
-        </main>
+        </div>
     );
 }

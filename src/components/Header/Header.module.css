@@ -17,7 +17,7 @@
     background: var(--glass) !important;
     backdrop-filter: blur(20px) !important;
     border-bottom: 1px solid var(--surface-border);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
 
 .scrolled .container {
@@ -25,20 +25,22 @@
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 2rem;
+    padding: 0 1.5rem;
     height: 80px;
+    gap: 1.5rem;
 }
 
 .logoWrapper {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .brandLogo {
@@ -54,30 +56,137 @@
 
 .nav {
     display: flex;
-    gap: 2rem;
+    align-items: center;
+    gap: 0.35rem;
+    flex: 1;
+    justify-content: center;
 }
 
-.nav a {
-    font-family: var(--font-heading);
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
+.navLink {
+    font-family: var(--font-label);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
     color: var(--text-muted);
-    transition: color 0.2s ease;
+    transition: color 0.25s ease, background 0.25s ease;
     display: flex;
     align-items: center;
-    min-height: 44px; /* Better tap target */
-    padding: 0.5rem; /* Better tap target */
+    min-height: 44px;
+    padding: 0.5rem 0.85rem;
+    position: relative;
+    white-space: nowrap;
+    border-radius: 999px;
 }
 
-.nav a:hover {
-    color: var(--primary);
+.navLink:hover,
+.navLinkActive {
+    color: var(--foreground);
+    background: rgba(155, 77, 255, 0.1);
+}
+
+.navDropdown {
+    position: relative;
+}
+
+.navDropdownTrigger {
+    font-family: var(--font-label);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 44px;
+    padding: 0.5rem 0.85rem;
+    cursor: pointer;
+    transition: color 0.25s ease, background 0.25s ease;
+    white-space: nowrap;
+    border-radius: 999px;
+}
+
+.navDropdownTrigger:hover,
+.navDropdownOpen .navDropdownTrigger,
+.navDropdownActive .navDropdownTrigger {
+    color: var(--foreground);
+    background: rgba(155, 77, 255, 0.1);
+}
+
+.navDropdownChevron {
+    transition: transform 0.25s ease;
+    opacity: 0.7;
+}
+
+.navDropdownOpen .navDropdownChevron {
+    transform: rotate(180deg);
+}
+
+.navDropdownMenu {
+    position: absolute;
+    top: calc(100% + 0.65rem);
+    left: 50%;
+    min-width: 280px;
+    max-width: 320px;
+    background: var(--background-elevated);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 0.5rem;
+    box-shadow: var(--shadow-elevated);
+    z-index: 1001;
+}
+
+.navDropdownLink {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.8rem 0.95rem;
+    border-radius: 10px;
+    transition: background 0.2s ease, transform 0.2s ease;
+    min-height: unset;
+    min-width: unset;
+}
+
+.navDropdownLink:hover,
+.navDropdownLinkActive {
+    background: rgba(155, 77, 255, 0.14);
+}
+
+.navDropdownLinkFeatured {
+    margin-bottom: 0.25rem;
+    border-bottom: 1px solid var(--surface-border);
+    border-radius: 10px 10px 8px 8px;
+    padding-bottom: 0.95rem;
+}
+
+.navDropdownLinkLabel {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--foreground);
+    line-height: 1.3;
+}
+
+.navDropdownLinkDesc {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.35;
+}
+
+.navDropdownLink:hover .navDropdownLinkLabel,
+.navDropdownLinkActive .navDropdownLinkLabel {
+    color: var(--on-primary);
 }
 
 .actions {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
+    flex-shrink: 0;
 }
 
 .searchWrapper {
@@ -91,9 +200,9 @@
     align-items: center;
     position: absolute;
     right: 100%;
-    margin-right: 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-right: 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--surface-border-strong);
     border-radius: 50px;
     padding: 0.25rem 0.5rem 0.25rem 1.25rem;
     width: 0;
@@ -101,6 +210,7 @@
     overflow: hidden;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
 .searchOpen .searchForm {
@@ -112,16 +222,20 @@
 .searchInput {
     background: transparent;
     border: none;
-    color: #fff;
+    color: var(--foreground);
     font-size: 0.9rem;
     outline: none;
     width: 100%;
 }
 
+.searchInput::placeholder {
+    color: var(--text-muted);
+}
+
 .searchSubmit {
     background: transparent;
     border: none;
-    color: #a1a1aa;
+    color: var(--primary-light);
     padding: 0.5rem;
     display: flex;
     align-items: center;
@@ -129,99 +243,272 @@
     cursor: pointer;
     min-height: unset;
     min-width: unset;
+    flex-shrink: 0;
 }
 
 .searchSubmit:hover {
-    color: #fff;
+    color: var(--foreground);
 }
 
 .searchToggle {
     background: transparent;
     border: none;
-    color: #fff;
+    color: var(--foreground);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0.5rem;
     border-radius: 50%;
-    transition: background 0.2s;
+    transition: background 0.2s, color 0.2s;
     min-height: unset;
     min-width: unset;
+    flex-shrink: 0;
 }
 
 .searchToggle:hover {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.cartBtn {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    color: var(--foreground);
-    position: relative;
-    transition: transform 0.2s ease;
-}
-
-.cartBtn:hover {
-    transform: scale(1.1);
-}
-
-.cartCount {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background: var(--secondary);
-    color: white;
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    border-radius: 10px;
-    font-weight: 800;
+    background: rgba(155, 77, 255, 0.12);
+    color: var(--primary-light);
 }
 
 .mobileMenuBtn {
     display: none;
-    background: var(--primary);
-    color: #ffffff;
-    border: 2px solid var(--primary);
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    color: var(--on-primary);
+    border: none;
     cursor: pointer;
-    border-radius: 8px;
-    padding: 0.4rem;
-    transition: all 0.3s ease;
+    border-radius: 12px;
+    padding: 0.55rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 8px 20px rgba(155, 77, 255, 0.25);
 }
 
 .mobileMenuBtn:hover {
-    background: #ffffff;
-    color: var(--primary);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(155, 77, 255, 0.35);
+}
+
+.mobileNavBackdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    top: 80px;
+    background: rgba(26, 16, 40, 0.35);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: none;
+    z-index: 998;
+    cursor: pointer;
+}
+
+.mobileNavDrawer {
+    position: fixed;
+    top: 80px;
+    right: 0;
+    width: min(100%, 360px);
+    height: calc(100dvh - 80px);
+    background: var(--background-elevated);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-left: 1px solid var(--surface-border);
+    box-shadow: -16px 0 48px var(--shadow-color);
+    z-index: 999;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+.mobileNavHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.25rem 0.75rem;
+    border-bottom: 1px solid var(--surface-border);
+}
+
+.mobileNavTitle {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--foreground);
+    letter-spacing: 0.02em;
+}
+
+.mobileNavClose {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface-hover);
+    color: var(--foreground);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.mobileNavClose:hover {
+    background: rgba(155, 77, 255, 0.15);
+}
+
+.mobileNavList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem 1rem 2rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.mobileNavLink {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--foreground);
+    display: flex;
+    align-items: center;
+    min-height: 52px;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    transition: background 0.2s ease, color 0.2s ease;
+    width: 100%;
+}
+
+.mobileNavLink:hover,
+.mobileNavLinkActive {
+    background: rgba(155, 77, 255, 0.12);
+    color: var(--primary-light);
+}
+
+.mobileNavSection {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.mobileNavToggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--foreground);
+    background: none;
+    border: none;
+    min-height: 52px;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: background 0.2s ease;
+}
+
+.mobileNavToggle:hover,
+.mobileNavToggleActive {
+    background: rgba(155, 77, 255, 0.08);
+}
+
+.mobileNavChevron {
+    transition: transform 0.25s ease;
+    color: var(--text-muted);
+}
+
+.mobileNavChevronOpen {
+    transform: rotate(180deg);
+    color: var(--primary-light);
+}
+
+.mobileSubmenu {
+    overflow: hidden;
+    padding: 0 0.5rem 0.5rem 1rem;
+    border-left: 2px solid rgba(155, 77, 255, 0.35);
+    margin-left: 1rem;
+}
+
+.mobileSubmenuLink {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: 10px;
+    transition: background 0.2s ease;
+}
+
+.mobileSubmenuLink:hover,
+.mobileSubmenuLinkActive {
+    background: rgba(155, 77, 255, 0.1);
+}
+
+.mobileSubmenuLabel {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--foreground-muted);
+}
+
+.mobileSubmenuDesc {
+    font-size: 0.78rem;
+    color: var(--text-subtle);
+    line-height: 1.35;
+}
+
+.mobileSubmenuLink:hover .mobileSubmenuLabel,
+.mobileSubmenuLinkActive .mobileSubmenuLabel {
+    color: var(--primary-light);
+}
+
+@media (max-width: 1200px) {
+    .nav {
+        gap: 0.15rem;
+    }
+
+    .navLink,
+    .navDropdownTrigger {
+        padding: 0.5rem 0.65rem;
+        font-size: 0.625rem;
+    }
 }
 
 @media (max-width: 1024px) {
     .mobileMenuBtn {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .nav {
         display: none;
-        position: fixed;
-        top: 80px;
-        left: 0;
-        width: 100%;
-        height: calc(100vh - 80px);
-        background: var(--background);
-        flex-direction: column;
-        padding: 2rem;
-        gap: 1.5rem;
-        border-bottom: 1px solid var(--surface-border);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        z-index: 999;
-        overflow-y: auto;
     }
 
-    .mobileNavOpen {
+    .mobileNavBackdrop {
+        display: block;
+    }
+
+    .mobileNavDrawer {
         display: flex;
     }
 
     .container {
         padding: 0 1rem;
+    }
+
+    .searchOpen .searchForm {
+        width: min(220px, calc(100vw - 11rem));
+    }
+
+    .scrolled .mobileNavBackdrop,
+    .scrolled .mobileNavDrawer {
+        top: 65px;
+        height: calc(100dvh - 65px);
+    }
+}
+
+@media (max-width: 480px) {
+    .mobileNavDrawer {
+        width: 100%;
+        border-left: none;
+    }
+
+    .searchOpen .searchForm {
+        width: 180px;
     }
 }

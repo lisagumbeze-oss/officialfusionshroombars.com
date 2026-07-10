@@ -1,24 +1,24 @@
 .banner {
-    background: #581c87; /* Solid dark purple */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.12), rgba(var(--secondary-rgb), 0.08));
+    border-bottom: 1px solid var(--surface-border);
     padding: 0.6rem 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
     font-size: 0.85rem;
-    color: #ffffff; /* White text */
+    color: var(--foreground-muted);
     text-align: center;
 }
 
 .icon {
-    color: #ffffff;
+    color: var(--primary);
 }
 
 .banner strong {
-    color: #fbbf24; /* Amber color for the location to make it pop */
+    color: var(--primary-dark);
     text-transform: capitalize;
-    font-weight: 800;
+    font-weight: 700;
 }
 
 @media (max-width: 600px) {

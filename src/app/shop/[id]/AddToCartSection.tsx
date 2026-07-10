@@ -3,8 +3,9 @@
 import React, { useState } from 'react';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/context/ToastContext';
+import ProductWhatsAppButton from '@/components/ProductWhatsAppButton/ProductWhatsAppButton';
+import ProductStockStatus from '@/components/ProductStockStatus/ProductStockStatus';
 import styles from './product.module.css';
-
 export default function AddToCartSection({ product }: { product: any }) {
     const [quantity, setQuantity] = useState(1);
     const { addToCart } = useCart();
@@ -25,7 +26,8 @@ export default function AddToCartSection({ product }: { product: any }) {
         <div className={styles.purchaseFlow}>
             {product.isSubscribable && (
                 <div className={styles.subOptions}>
-                    <button 
+                    <button
+                        type="button"
                         className={`${styles.subOption} ${!isSubscribing ? styles.activeSub : ''}`}
                         onClick={() => setIsSubscribing(false)}
                     >
@@ -35,7 +37,8 @@ export default function AddToCartSection({ product }: { product: any }) {
                             <strong>${product.price.toFixed(2)}</strong>
                         </div>
                     </button>
-                    <button 
+                    <button
+                        type="button"
                         className={`${styles.subOption} ${isSubscribing ? styles.activeSub : ''}`}
                         onClick={() => setIsSubscribing(true)}
                     >
@@ -48,22 +51,35 @@ export default function AddToCartSection({ product }: { product: any }) {
                 </div>
             )}
 
-            <div className={styles.addToCartSection}>
-                <div className={styles.quantity}>
-                    <button onClick={() => setQuantity(Math.max(1, quantity - 1))}>-</button>
-                    <input 
-                        type="number" 
-                        value={quantity} 
-                        onChange={(e) => setQuantity(parseInt(e.target.value) || 1)} 
-                        min={1} 
-                    />
-                    <button onClick={() => setQuantity(quantity + 1)}>+</button>
-                </div>
-                <button 
-                    className={`${styles.addToCartBtn} premium-gradient ${added ? styles.added : ''}`}
+            <ProductStockStatus stock={product.stock} align="left" className={styles.stockStatus} />
+
+            <div className={styles.quantity}>
+                <button type="button" onClick={() => setQuantity(Math.max(1, quantity - 1))}>-</button>
+                <input
+                    type="number"
+                    value={quantity}
+                    onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
+                    min={1}
+                />
+                <button type="button" onClick={() => setQuantity(quantity + 1)}>+</button>
+            </div>
+
+            <div className={styles.ctaRow}>
+                <ProductWhatsAppButton
+                    product={{
+                        name: product.name,
+                        slug: product.slug,
+                        price: product.price,
+                    }}
+                    variant="detail"
+                    className={styles.whatsappBtn}
+                />
+                <button
+                    type="button"
+                    className={`${styles.addToCartBtn} btn-shine ${added ? styles.added : ''}`}
                     onClick={handleAddToCart}
                 >
-                    {added ? 'ADDED TO CART! ✓' : 'ADD TO CART'}
+                    {added ? 'Added to cart ✓' : 'Add to cart'}
                 </button>
             </div>
         </div>

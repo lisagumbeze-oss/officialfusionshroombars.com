@@ -1,0 +1,52 @@
+.header {
+  text-align: center;
+  max-width: var(--content-narrow);
+  margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+  padding: 0 0.5rem;
+}
+
+.eyebrow {
+  font-family: var(--font-label);
+  font-size: var(--text-label);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--primary-light);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: var(--text-h1);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(165deg, var(--foreground) 0%, var(--foreground-muted) 55%, var(--primary-light) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.lead {
+  color: var(--text-muted);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  max-width: 52ch;
+  margin: 0 auto;
+}
+
+.intro {
+  margin-top: 1.25rem;
+  color: var(--foreground-muted);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  max-width: 52ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.intro strong {
+  color: var(--foreground);
+  font-weight: 600;
+}

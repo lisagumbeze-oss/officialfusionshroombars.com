@@ -47,7 +47,7 @@ export default function ShopFilters({ categories }: { categories: string[] }) {
     return (
         <div className={styles.filters}>
             <div className={styles.filterGroup}>
-                <label>Category:</label>
+                <label>Category</label>
                 <select 
                     className="glass-morphism" 
                     value={currentCategory} 
@@ -60,7 +60,7 @@ export default function ShopFilters({ categories }: { categories: string[] }) {
                 </select>
             </div>
             <div className={styles.filterGroup}>
-                <label>Price Range:</label>
+                <label>Price range</label>
                 <div className={styles.priceInputs}>
                     <input 
                         type="number" 
@@ -80,7 +80,7 @@ export default function ShopFilters({ categories }: { categories: string[] }) {
                 </div>
             </div>
             <div className={styles.filterGroup}>
-                <label>Sort By:</label>
+                <label>Sort by</label>
                 <select 
                     className="glass-morphism" 
                     value={currentSort} 

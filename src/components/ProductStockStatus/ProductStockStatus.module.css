@@ -1,0 +1,30 @@
+.stockStatus {
+  display: flex;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.left {
+  justify-content: flex-start;
+}
+
+.right {
+  justify-content: flex-end;
+}
+
+.center {
+  justify-content: center;
+}
+
+.outOfStock {
+  color: #ef4444;
+}
+
+.lowStock {
+  color: #f59e0b;
+}
+
+.inStock {
+  color: #10b981;
+}

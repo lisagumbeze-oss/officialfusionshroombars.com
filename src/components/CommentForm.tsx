@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Script from 'next/script';
+import styles from './CommentForm.module.css';
 
 interface CommentFormProps {
     blogPostId: string;
@@ -9,6 +10,7 @@ interface CommentFormProps {
 
 export default function CommentForm({ blogPostId }: CommentFormProps) {
     const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
     const [content, setContent] = useState('');
     const [token, setToken] = useState<string>('');
     const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -16,7 +18,6 @@ export default function CommentForm({ blogPostId }: CommentFormProps) {
 
     const SITE_KEY = process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY || '1x00000000000000000000AA';
 
-    // Handle token from global callback
     useEffect(() => {
         (window as any).onTurnstileSuccess = (newToken: string) => {
             setToken(newToken);
@@ -25,7 +26,7 @@ export default function CommentForm({ blogPostId }: CommentFormProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         if (!token) {
             setStatus('error');
             setMessage('Please complete the spam verification.');
@@ -37,13 +38,14 @@ export default function CommentForm({ blogPostId }: CommentFormProps) {
             const res = await fetch('/api/comments', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, content, blogPostId, turnstileToken: token }),
+                body: JSON.stringify({ name, email, content, blogPostId, turnstileToken: token }),
             });
 
             if (res.ok) {
                 setStatus('success');
                 setMessage('Thank you! Your comment has been posted.');
                 setName('');
+                setEmail('');
                 setContent('');
                 setToken('');
                 if ((window as any).turnstile) {
@@ -54,103 +56,65 @@ export default function CommentForm({ blogPostId }: CommentFormProps) {
                 setStatus('error');
                 setMessage(data.error || 'Failed to post comment.');
             }
-        } catch (err) {
+        } catch {
             setStatus('error');
             setMessage('Something went wrong. Please try again.');
         }
     };
 
     return (
-        <div style={{ 
-            marginTop: '3rem', 
-            padding: '2rem', 
-            background: 'rgba(255,255,255,0.02)', 
-            borderRadius: '16px', 
-            border: '1px solid rgba(255,255,255,0.06)' 
-        }}>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: '1.5rem', color: '#fff' }}>
-                Leave a Comment
-            </h3>
-            
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem' }}>
-                    <div>
-                        <input
-                            type="text"
-                            placeholder="Your Name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                            style={{
-                                width: '100%',
-                                padding: '12px 16px',
-                                background: 'rgba(255,255,255,0.03)',
-                                border: '1px solid rgba(255,255,255,0.1)',
-                                borderRadius: '8px',
-                                color: '#fff',
-                                outline: 'none'
-                            }}
-                        />
-                    </div>
-                    <div>
-                        <textarea
-                            placeholder="Your thought..."
-                            value={content}
-                            onChange={(e) => setContent(e.target.value)}
-                            required
-                            rows={3}
-                            style={{
-                                width: '100%',
-                                padding: '12px 16px',
-                                background: 'rgba(255,255,255,0.03)',
-                                border: '1px solid rgba(255,255,255,0.1)',
-                                borderRadius: '8px',
-                                color: '#fff',
-                                outline: 'none',
-                                resize: 'none'
-                            }}
-                        />
-                    </div>
-                </div>
+        <div className={styles.formCard}>
+            <h3 className={styles.formTitle}>Leave a comment</h3>
 
-                {/* Cloudflare Turnstile */}
-                <div style={{ minHeight: '65px' }}>
-                    <Script 
-                        src="https://challenges.cloudflare.com/turnstile/v0/api.js" 
-                        strategy="afterInteractive" 
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <input
+                    type="text"
+                    placeholder="Your name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    aria-label="Your name"
+                />
+                <input
+                    type="email"
+                    placeholder="Your email (for confirmation)"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    aria-label="Your email"
+                />
+                <textarea
+                    placeholder="Your thought..."
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    required
+                    rows={4}
+                    aria-label="Comment"
+                />
+
+                <div className={styles.turnstile}>
+                    <Script
+                        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+                        strategy="afterInteractive"
                     />
-                    <div 
-                        className="cf-turnstile" 
+                    <div
+                        className="cf-turnstile"
                         data-sitekey={SITE_KEY}
                         data-callback="onTurnstileSuccess"
-                        data-theme="dark"
-                    ></div>
+                        data-theme="light"
+                    />
                 </div>
 
                 <div>
                     <button
                         type="submit"
                         disabled={status === 'submitting'}
-                        style={{
-                            padding: '12px 32px',
-                            background: '#8B5E34',
-                            color: '#fff',
-                            border: 'none',
-                            borderRadius: '999px',
-                            fontWeight: 700,
-                            cursor: status === 'submitting' ? 'not-allowed' : 'pointer',
-                            opacity: status === 'submitting' ? 0.7 : 1,
-                            transition: 'all 0.2s'
-                        }}
+                        className={styles.submitBtn}
                     >
-                        {status === 'submitting' ? 'POSTING...' : 'POST COMMENT'}
+                        {status === 'submitting' ? 'Posting…' : 'Post comment'}
                     </button>
                     {message && (
-                        <p style={{ 
-                            marginTop: '1rem', 
-                            fontSize: '0.85rem', 
-                            color: status === 'error' ? '#ff4d4d' : '#4dff88' 
-                        }}>
+                        <p className={`${styles.message} ${status === 'error' ? styles.messageError : styles.messageSuccess}`}>
                             {message}
                         </p>
                     )}

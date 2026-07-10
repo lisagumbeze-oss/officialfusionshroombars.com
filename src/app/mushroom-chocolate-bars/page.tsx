@@ -1,5 +1,18 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
+import {
+    ArrowRight,
+    ShoppingBag,
+    CircleHelp,
+    BookOpen,
+    FlaskConical,
+    ShieldCheck,
+    Beaker,
+    Candy,
+} from 'lucide-react';
+import styles from './page.module.css';
+import { Reveal } from '@/components/Reveal';
 
 export const revalidate = 3600;
 
@@ -11,90 +24,264 @@ export const metadata: Metadata = {
     },
 };
 
+const HERO_STATS = [
+    { value: '3×', label: 'Lab tested' },
+    { value: '4', label: 'Dose tiers' },
+    { value: '100%', label: 'Belgian craft' },
+];
+
+const DOSE_TIERS = [
+    {
+        label: 'Microdose',
+        range: '0.1g – 0.3g',
+        desc: 'Sub-perceptual — enhanced focus, reduced anxiety, and lateral thinking without active hallucinations.',
+    },
+    {
+        label: 'Creative / social',
+        range: '0.8g – 1.5g',
+        desc: 'Hyper-saturated colors, deeper music, spontaneous laughter — ideal for concerts and close friends.',
+    },
+    {
+        label: 'Macrodose',
+        range: '2.0g – 3.5g',
+        desc: 'Full psychedelic experience requiring preparation, set and setting, and ideally a sober trip sitter.',
+    },
+    {
+        label: 'Heroic dose',
+        range: '4.0g – 5.0g+',
+        desc: 'Reserved for experienced psychonauts seeking mystical experiences and deep spiritual recalibration.',
+    },
+];
+
+const QUALITY_CHECKS = [
+    'Verified QR codes linking to the official manufacturer website',
+    'Embedded NFC tags inside the packaging',
+    'Clean, professional inner foil wrapping — never cheap plastic',
+    'Transparent lab results for heavy metals and alkaloid profiles',
+];
+
+const CROSS_LINKS = [
+    { href: '/shop', icon: ShoppingBag, label: 'The collection' },
+    { href: '/faq', icon: CircleHelp, label: 'Knowledge base' },
+    { href: '/blog', icon: BookOpen, label: 'Editorial journal' },
+    { href: '/about', icon: FlaskConical, label: 'Our process' },
+];
+
 export default function MushroomChocolateBarsLanding() {
     return (
-        <main style={{ padding: '6rem 2rem 4rem', maxWidth: '1000px', margin: '0 auto', color: '#eaeaea', lineHeight: 1.8, fontFamily: 'sans-serif' }}>
-            <h1 style={{ fontSize: '3rem', fontWeight: 900, marginBottom: '2rem', color: '#fff' }}>Everything You Need to Know About Mushroom Chocolate Bars</h1>
-            
-            <section style={{ marginBottom: '3rem' }}>
-                <p style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>
-                    The world of psychedelic wellness is rapidly evolving, and at the forefront of this revolution are <strong>mushroom chocolate bars</strong>. For decades, those seeking the profound benefits of psilocybin had to endure the incredibly earthy, often unpleasant taste of raw dried mushrooms, which frequently resulted in gastrointestinal distress and nausea. Today, modern extraction techniques combined with artisanal confectionery have entirely transformed the experience.
-                </p>
-                <p style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>
-                    Premium products like our <Link href="/shop" style={{ color: '#c9a44a', textDecoration: 'underline' }}>Fusion Shroom Bars</Link> seamlessly blend precisely dosed psilocybin extract with high-quality <a href="https://en.wikipedia.org/wiki/Belgian_chocolate" target="_blank" rel="noopener noreferrer" style={{ color: '#c9a44a', textDecoration: 'underline' }}>Belgian chocolate</a>. This fusion not only creates an incredibly delicious delivery mechanism but also offers unparalleled consistency and safety for consumers everywhere.
-                </p>
+        <div className={styles.page}>
+            {/* Editorial Hero */}
+            <section className={styles.editorialHero}>
+                <div className={`grain-overlay ${styles.heroGrain}`} aria-hidden />
+                <div className={styles.heroOrbit} aria-hidden />
+
+                <div className={styles.heroInner}>
+                    <Reveal>
+                        <span className={styles.heroTag}>Complete guide</span>
+                        <h1 className={styles.heroTitle}>
+                            Mushroom<br /><em>chocolate bars</em>
+                        </h1>
+                    </Reveal>
+                    <Reveal delay={0.15}>
+                        <p className={styles.heroDesc}>
+                            Everything you need to know about psilocybin edibles — the science,
+                            safe dosing, and how to spot real quality.
+                        </p>
+                    </Reveal>
+                    <Reveal delay={0.25}>
+                        <div className={styles.heroStats}>
+                            {HERO_STATS.map((stat) => (
+                                <div key={stat.label} className={styles.heroStat}>
+                                    <strong>{stat.value}</strong>
+                                    <span>{stat.label}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </Reveal>
+                    <Reveal delay={0.35}>
+                        <div className={styles.heroActions}>
+                            <Link href="/shop" className={`${styles.heroCta} btn-shine`}>
+                                Shop premium bars
+                                <ArrowRight size={18} />
+                            </Link>
+                            <a href="#guide" className={styles.heroSecondary}>
+                                Read the guide
+                            </a>
+                        </div>
+                    </Reveal>
+                </div>
             </section>
 
-            <section style={{ marginBottom: '3rem' }}>
-                <h2 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '1.5rem', color: '#fff' }}>The Science of Mushroom Chocolate Bars</h2>
-                <p style={{ marginBottom: '1.5rem' }}>
-                    There is a fascinating scientific and historical reason why cocoa and psilocybin make such incredible partners. The ancient Aztecs called magic mushrooms "Teonanácatl" (meaning "flesh of the gods") and frequently consumed them alongside a bitter cacao beverage. They understood intuitively what modern science is now verifying: cocoa is a mild MAO (monoamine oxidase) inhibitor. 
-                </p>
-                <p style={{ marginBottom: '1.5rem' }}>
-                    When you consume <strong>mushroom chocolate bars</strong>, the naturally occurring MAOIs in dark chocolate slow down the breakdown of psilocybin in your stomach. Because chocolate is also rich in fats and natural lipids, it acts as a smooth buffer, allowing the active alkaloids to enter your bloodstream steadily rather than aggressively. This significantly reduces the harsh "come up" anxiety often associated with eating raw shrooms, creating a warmer, more euphoric ascent into the psychedelic realm.
-                </p>
-                <p style={{ marginBottom: '1.5rem' }}>
-                    Additionally, premium extract-based bars completely remove chitin—a rigid structural polymer found in the cell walls of fungi. The human body struggles to process chitin, which is why raw mushrooms frequently cause stomach cramps. By utilizing liquid extraction, brands like <Link href="/shop" style={{ color: '#c9a44a', textDecoration: 'underline' }}>Fusion</Link> eliminate this problem entirely.
-                </p>
-            </section>
+            {/* Marquee */}
+            <div className={styles.marqueeContainer}>
+                <div className={styles.marqueeContent}>
+                    <span>Precise dosing</span> • <span>Belgian chocolate</span> • <span>Lab verified</span> • <span>Discreet delivery</span> •
+                    <span>Precise dosing</span> • <span>Belgian chocolate</span> • <span>Lab verified</span> • <span>Discreet delivery</span> •
+                </div>
+            </div>
 
-            <section style={{ marginBottom: '3rem' }}>
-                <h2 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '1.5rem', color: '#fff' }}>How to Safely Dose Mushroom Chocolate Bars</h2>
-                <p style={{ marginBottom: '1.5rem' }}>
-                    One of the most significant advantages of consuming legally available, lab-tested mushroom chocolate bars is the ability to precisely control your dosage. Raw mushrooms can vary wildly in potency from stem to cap and from flush to flush. A 4-gram bar that specifies it contains exactly 4,000mg of active material eliminates this dangerous guesswork.
-                </p>
-                <ul style={{ paddingLeft: '2rem', marginBottom: '1.5rem' }}>
-                    <li style={{ marginBottom: '1rem' }}><strong>The Microdose (0.1g - 0.3g):</strong> Usually equivalent to 1 or 2 small squares of a premium bar. This dose is sub-perceptual, meaning you shouldn't feel active hallucinations. Instead, you'll likely notice enhanced focus, lateral thinking, reduced anxiety, and a deep appreciation for your surroundings. It's often used by tech executives, artists, and those suffering from treatment-resistant depression.</li>
-                    <li style={{ marginBottom: '1rem' }}><strong>The Creative/Social Dose (0.8g - 1.5g):</strong> Usually between 3 to 6 squares. At this level, colors become hyper-saturated, music gains profound depth, and bouts of spontaneous laughter are common. It's a highly manageable dose for hiking, attending concerts, or connecting deeply with close friends.</li>
-                    <li style={{ marginBottom: '1rem' }}><strong>The Macrodose (2.0g - 3.5g):</strong> Up to half or essentially the whole bar. This is a full psychedelic experience requiring preparation, a comfortable set and setting, and ideally a sober trip sitter. Expect visual and auditory hallucinations, deeply profound introspection, and temporary ego dissolution.</li>
-                    <li style={{ marginBottom: '1rem' }}><strong>The Heroic Dose (4.0g - 5.0+g):</strong> We strongly recommend extreme caution here. This is reserved strictly for experienced psychonauts seeking mystical experiences, complete ego death, and deep spiritual recalibration.</li>
-                </ul>
-                <p style={{ marginBottom: '1.5rem' }}>
-                    Always follow the golden rule of psychedelic exploration: <em>Start low and go slow.</em> It can take anywhere from 30 to 90 minutes to feel the effects of mushroom chocolate bars, so wait at least 90 minutes before considering consuming more.
-                </p>
-            </section>
+            {/* Article */}
+            <article className={styles.article} id="guide">
+                <div className={styles.container}>
+                    {/* Intro + image */}
+                    <div className={styles.introGrid}>
+                        <Reveal>
+                            <div className={styles.prose}>
+                                <p>
+                                    The world of psychedelic wellness is rapidly evolving, and at the forefront of this revolution are <strong>mushroom chocolate bars</strong>. For decades, those seeking the profound benefits of psilocybin had to endure the incredibly earthy, often unpleasant taste of raw dried mushrooms, which frequently resulted in gastrointestinal distress and nausea. Today, modern extraction techniques combined with artisanal confectionery have entirely transformed the experience.
+                                </p>
+                                <p>
+                                    Premium products like our <Link href="/shop">Fusion Shroom Bars</Link> seamlessly blend precisely dosed psilocybin extract with high-quality <a href="https://en.wikipedia.org/wiki/Belgian_chocolate" target="_blank" rel="noopener noreferrer">Belgian chocolate</a>. This fusion not only creates an incredibly delicious delivery mechanism but also offers unparalleled consistency and safety for consumers everywhere.
+                                </p>
+                            </div>
+                        </Reveal>
+                        <Reveal delay={0.15}>
+                            <div className={styles.introImage}>
+                                <Image
+                                    src="/images/fusion-boxes.jpg"
+                                    alt="Premium mushroom chocolate bars"
+                                    fill
+                                    className={styles.introImg}
+                                />
+                            </div>
+                        </Reveal>
+                    </div>
 
-            <section style={{ marginBottom: '3rem' }}>
-                <h2 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '1.5rem', color: '#fff' }}>Identifying Real Quality: Avoiding the Black Market</h2>
-                <p style={{ marginBottom: '1.5rem' }}>
-                    As the popularity of <strong>mushroom chocolate bars</strong> has surged, so too has a highly dangerous black market. Unscrupulous operators import cheap, empty branded boxes from overseas (such as fake Polkadot or One Up packaging), fill them with low-quality compound chocolate, and dose them with 4-AcO-DMT, a synthetic research chemical that mimics psilocybin but is far cheaper and entirely unregulated.
-                </p>
-                <p style={{ marginBottom: '1.5rem' }}>
-                    When purchasing these products, you must exercise extreme caution. True premium brands offer multiple layers of verification. Always check for:
-                </p>
-                <ol style={{ paddingLeft: '2rem', marginBottom: '1.5rem' }}>
-                    <li style={{ marginBottom: '0.5rem' }}>Verified QR codes that link directly to the official manufacturer website.</li>
-                    <li style={{ marginBottom: '0.5rem' }}>Embedded NFC (Near Field Communication) tags inside the packaging.</li>
-                    <li style={{ marginBottom: '0.5rem' }}>Clean, professional inner foil wrapping (never cheap plastic wrap).</li>
-                    <li style={{ marginBottom: '0.5rem' }}>Transparent lab results that detail heavy metal testing and exact alkaloid profiles.</li>
-                </ol>
-                <p style={{ marginBottom: '1.5rem' }}>
-                    Fortunately, we take the guesswork out of the equation. Finding a trusted source is the most important step in your entire journey.
-                </p>
-            </section>
+                    {/* Science */}
+                    <Reveal>
+                        <section className={styles.section}>
+                            <div className={styles.sectionHeader}>
+                                <Beaker size={22} className={styles.sectionIcon} />
+                                <h2>The science of mushroom chocolate bars</h2>
+                            </div>
+                            <div className={styles.prose}>
+                                <p>
+                                    There is a fascinating scientific and historical reason why cocoa and psilocybin make such incredible partners. The ancient Aztecs called magic mushrooms &ldquo;Teonanácatl&rdquo; (meaning &ldquo;flesh of the gods&rdquo;) and frequently consumed them alongside a bitter cacao beverage. They understood intuitively what modern science is now verifying: cocoa is a mild MAO (monoamine oxidase) inhibitor.
+                                </p>
+                                <p>
+                                    When you consume <strong>mushroom chocolate bars</strong>, the naturally occurring MAOIs in dark chocolate slow down the breakdown of psilocybin in your stomach. Because chocolate is also rich in fats and natural lipids, it acts as a smooth buffer, allowing the active alkaloids to enter your bloodstream steadily rather than aggressively. This significantly reduces the harsh &ldquo;come up&rdquo; anxiety often associated with eating raw shrooms, creating a warmer, more euphoric ascent into the psychedelic realm.
+                                </p>
+                                <p>
+                                    Additionally, premium extract-based bars completely remove chitin—a rigid structural polymer found in the cell walls of fungi. The human body struggles to process chitin, which is why raw mushrooms frequently cause stomach cramps. By utilizing liquid extraction, brands like <Link href="/shop">Fusion</Link> eliminate this problem entirely.
+                                </p>
+                            </div>
+                        </section>
+                    </Reveal>
 
-            <section style={{ marginBottom: '3rem' }}>
-                <h2 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '1.5rem', color: '#fff' }}>Exploring Flavor Profiles</h2>
-                <p style={{ marginBottom: '1.5rem' }}>
-                    The beauty of blending gourmet chocolate with psilocybin is the infinite array of flavor profiles available. Top-tier confectioners have realized that the earthy undertones of magic mushrooms pair beautifully with specific culinary elements. 
-                </p>
-                <p style={{ marginBottom: '1.5rem' }}>
-                    Dark chocolate (70% cocoa or above) remains the preferred base due to its natural MAOI properties, but the industry has seen massive innovation. From creamy milk chocolate and salted caramel infusions to vegan-friendly matcha and strawberry profiles, there is truly a bar for every palate. The best brands ensure that the chocolate remains properly tempered, possessing a satisfying "snap" when broken—a hallmark of true artisanal quality.
-                </p>
-                <p style={{ marginBottom: '1.5rem' }}>
-                    To dive deeper into the science and culture of psilocybin wellness, we encourage you to <Link href="/blog" style={{ color: '#c9a44a', textDecoration: 'underline' }}>read our blog</Link>, where we regularly post updates on microdosing protocols, new scientific studies, and product reviews.
-                </p>
-            </section>
+                    {/* Dosing */}
+                    <Reveal>
+                        <section className={styles.section}>
+                            <div className={styles.sectionHeader}>
+                                <Candy size={22} className={styles.sectionIcon} />
+                                <h2>How to safely dose mushroom chocolate bars</h2>
+                            </div>
+                            <div className={styles.prose}>
+                                <p>
+                                    One of the most significant advantages of consuming legally available, lab-tested mushroom chocolate bars is the ability to precisely control your dosage. Raw mushrooms can vary wildly in potency from stem to cap and from flush to flush. A 4-gram bar that specifies it contains exactly 4,000mg of active material eliminates this dangerous guesswork.
+                                </p>
+                            </div>
+                            <div className={styles.doseGrid}>
+                                {DOSE_TIERS.map((tier, idx) => (
+                                    <div key={tier.label} className={styles.doseCard}>
+                                        <span className={styles.doseIndex}>
+                                            {String(idx + 1).padStart(2, '0')}
+                                        </span>
+                                        <h3>{tier.label}</h3>
+                                        <span className={styles.doseRange}>{tier.range}</span>
+                                        <p>{tier.desc}</p>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className={styles.prose}>
+                                <p>
+                                    Always follow the golden rule of psychedelic exploration: <em>Start low and go slow.</em> It can take anywhere from 30 to 90 minutes to feel the effects of mushroom chocolate bars, so wait at least 90 minutes before considering consuming more.
+                                </p>
+                            </div>
+                        </section>
+                    </Reveal>
 
-            <section style={{ marginBottom: '3rem', padding: '3rem', backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(201,164,74,0.3)', borderRadius: '16px', textAlign: 'center' }}>
-                <h3 style={{ fontSize: '2rem', fontWeight: 900, marginBottom: '1rem', color: '#fff' }}>Ready to Elevate Your Mind?</h3>
-                <p style={{ marginBottom: '2rem', fontSize: '1.1rem', color: '#aaa' }}>
-                    Explore the official collection of ultra-premium, lab-tested mushroom chocolate bars. We proudly ship safely, securely, and discreetly worldwide.
-                </p>
-                <Link href="/shop" style={{ display: 'inline-block', padding: '1rem 2.5rem', backgroundColor: '#c9a44a', color: '#000', fontWeight: 800, textDecoration: 'none', borderRadius: '50px', letterSpacing: '0.05em' }}>
-                    SHOP PREMIUM BARS NOW
-                </Link>
+                    {/* Quality */}
+                    <Reveal>
+                        <section className={styles.section}>
+                            <div className={styles.sectionHeader}>
+                                <ShieldCheck size={22} className={styles.sectionIcon} />
+                                <h2>Identifying real quality: avoiding the black market</h2>
+                            </div>
+                            <div className={styles.prose}>
+                                <p>
+                                    As the popularity of <strong>mushroom chocolate bars</strong> has surged, so too has a highly dangerous black market. Unscrupulous operators import cheap, empty branded boxes from overseas (such as fake Polkadot or One Up packaging), fill them with low-quality compound chocolate, and dose them with 4-AcO-DMT, a synthetic research chemical that mimics psilocybin but is far cheaper and entirely unregulated.
+                                </p>
+                                <p>
+                                    When purchasing these products, you must exercise extreme caution. True premium brands offer multiple layers of verification. Always check for:
+                                </p>
+                            </div>
+                            <ul className={styles.checkList}>
+                                {QUALITY_CHECKS.map((item, idx) => (
+                                    <li key={idx}>
+                                        <span className={styles.checkNum}>{idx + 1}</span>
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+                            <div className={styles.prose}>
+                                <p>
+                                    Fortunately, we take the guesswork out of the equation. Finding a trusted source is the most important step in your entire journey.
+                                </p>
+                            </div>
+                        </section>
+                    </Reveal>
+
+                    {/* Flavors */}
+                    <Reveal>
+                        <section className={styles.section}>
+                            <div className={styles.sectionHeader}>
+                                <h2>Exploring flavor profiles</h2>
+                            </div>
+                            <div className={styles.prose}>
+                                <p>
+                                    The beauty of blending gourmet chocolate with psilocybin is the infinite array of flavor profiles available. Top-tier confectioners have realized that the earthy undertones of magic mushrooms pair beautifully with specific culinary elements.
+                                </p>
+                                <p>
+                                    Dark chocolate (70% cocoa or above) remains the preferred base due to its natural MAOI properties, but the industry has seen massive innovation. From creamy milk chocolate and salted caramel infusions to vegan-friendly matcha and strawberry profiles, there is truly a bar for every palate. The best brands ensure that the chocolate remains properly tempered, possessing a satisfying &ldquo;snap&rdquo; when broken—a hallmark of true artisanal quality.
+                                </p>
+                                <p>
+                                    To dive deeper into the science and culture of psilocybin wellness, we encourage you to <Link href="/blog">read our blog</Link>, where we regularly post updates on microdosing protocols, new scientific studies, and product reviews.
+                                </p>
+                            </div>
+                        </section>
+                    </Reveal>
+                </div>
+            </article>
+
+            {/* CTA */}
+            <section className={styles.ctaSection}>
+                <div className={styles.ctaInner}>
+                    <Reveal>
+                        <h2 className={styles.ctaTitle}>Ready to elevate your mind?</h2>
+                        <p className={styles.ctaDesc}>
+                            Explore the official collection of ultra-premium, lab-tested mushroom
+                            chocolate bars. We proudly ship safely, securely, and discreetly worldwide.
+                        </p>
+                        <Link href="/shop" className={`${styles.heroCta} btn-shine`}>
+                            Shop premium bars now
+                            <ArrowRight size={18} />
+                        </Link>
+                    </Reveal>
+                    <Reveal delay={0.2}>
+                        <div className={styles.crossLinks}>
+                            {CROSS_LINKS.map((link) => {
+                                const Icon = link.icon;
+                                return (
+                                    <Link key={link.href} href={link.href} className={styles.crossLink}>
+                                        <Icon size={16} />
+                                        {link.label}
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    </Reveal>
+                </div>
             </section>
-        </main>
+        </div>
     );
 }

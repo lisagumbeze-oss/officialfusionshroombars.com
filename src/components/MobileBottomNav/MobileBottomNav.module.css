@@ -15,7 +15,7 @@
 
 .spacer {
   display: none;
-  height: 65px;
+  height: var(--mobile-bottom-nav-height, 65px);
   width: 100%;
 }
 
@@ -32,7 +32,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: 65px;
+  height: var(--mobile-bottom-nav-height, 65px);
   max-width: 100%;
 }
 
@@ -54,7 +54,7 @@
 }
 
 .navItem:hover {
-  color: #ffffff;
+  color: var(--on-primary);
 }
 
 .navItem.active {

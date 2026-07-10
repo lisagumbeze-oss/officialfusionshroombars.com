@@ -1,0 +1,75 @@
+.iconWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 1px solid var(--surface-border);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--foreground);
+}
+
+.md {
+  width: 2.75rem;
+  height: 2.75rem;
+}
+
+.sm {
+  width: 2.25rem;
+  height: 2.25rem;
+  font-size: 0.65rem;
+}
+
+.crypto {
+  background: rgba(247, 147, 26, 0.12);
+  border-color: rgba(247, 147, 26, 0.35);
+  color: #f7931a;
+}
+
+.cashapp {
+  background: rgba(0, 200, 83, 0.12);
+  border-color: rgba(0, 200, 83, 0.35);
+  color: #00c853;
+}
+
+.zelle {
+  background: rgba(109, 74, 255, 0.12);
+  border-color: rgba(109, 74, 255, 0.35);
+  color: #8b7aff;
+}
+
+.venmo {
+  background: rgba(60, 137, 255, 0.12);
+  border-color: rgba(60, 137, 255, 0.35);
+  color: #3c89ff;
+}
+
+.paypal {
+  background: rgba(0, 112, 186, 0.12);
+  border-color: rgba(0, 112, 186, 0.35);
+  color: #4da3e0;
+}
+
+.badge {
+  font-family: var(--font-label);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.cryptoRow {
+  display: inline-flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  margin-top: 0.35rem;
+}
+
+.coinBadge {
+  font-family: var(--font-label);
+  font-size: 0.5625rem;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+  background: rgba(247, 147, 26, 0.1);
+  border: 1px solid rgba(247, 147, 26, 0.25);
+  color: #f0b429;
+}

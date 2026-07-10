@@ -1,0 +1,39 @@
+.button {
+  position: fixed;
+  left: var(--floating-widget-left);
+  bottom: var(--floating-widget-bottom);
+  width: var(--chat-bubble-size);
+  height: var(--chat-bubble-size);
+  border-radius: 50%;
+  border: 1px solid #1ebe57;
+  background: #25d366;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9000;
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.35);
+  transition:
+    transform 0.3s var(--ease-out-expo, cubic-bezier(0.23, 1, 0.32, 1)),
+    box-shadow 0.3s ease;
+  min-width: unset;
+  min-height: unset;
+}
+
+.button:hover {
+  opacity: 1;
+  background: #20ba5a;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 28px rgba(37, 211, 102, 0.42);
+}
+
+.icon {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+@media (max-width: 768px) {
+  .button {
+    bottom: var(--floating-widget-bottom-mobile);
+  }
+}

@@ -1,11 +1,54 @@
 'use client';
-// This file will remain 'use client'. I will create a layout.tsx for metadata separately if needed.
 
 import React from 'react';
 import styles from './page.module.css';
-import Image from 'next/image';
 import Link from 'next/link';
-import { Mail, MapPin, Clock, Search, ShoppingBag, BookOpen, FlaskConical, Home, Send, CheckCircle2 } from 'lucide-react';
+import { Reveal } from '@/components/Reveal';
+import {
+    Mail,
+    MapPin,
+    Clock,
+    Search,
+    ShoppingBag,
+    BookOpen,
+    FlaskConical,
+    Home,
+    Send,
+    CheckCircle2,
+    ArrowRight,
+} from 'lucide-react';
+
+const HERO_STATS = [
+    { value: '24/7', label: 'Support' },
+    { value: 'Global', label: 'Coverage' },
+    { value: '100%', label: 'Discreet' },
+];
+
+const CONTACT_INFO = [
+    {
+        icon: Mail,
+        title: 'Digital inquiry',
+        detail: 'order@officialfusionshroombars.com',
+    },
+    {
+        icon: MapPin,
+        title: 'Headquarters',
+        detail: '6736 S Sherbourne Dr, Los Angeles, CA 90056, USA',
+    },
+    {
+        icon: Clock,
+        title: 'Service hours',
+        detail: 'Monday – Sunday: 24/7 global support',
+    },
+];
+
+const CROSS_LINKS = [
+    { href: '/faq', icon: Search, label: 'Knowledge base' },
+    { href: '/shop', icon: ShoppingBag, label: 'The collection' },
+    { href: '/blog', icon: BookOpen, label: 'Editorial journal' },
+    { href: '/about', icon: FlaskConical, label: 'Our process' },
+    { href: '/', icon: Home, label: 'Return home' },
+];
 
 export default function ContactPage() {
     const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -24,12 +67,13 @@ export default function ContactPage() {
         try {
             const response = await fetch('/api/contact', {
                 method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
             });
             if (response.ok) {
                 setIsSuccess(true);
                 (e.target as HTMLFormElement).reset();
-                setTimeout(() => setIsSuccess(false), 5000); // Reset success after 5s
+                setTimeout(() => setIsSuccess(false), 5000);
             } else {
                 alert('Something went wrong. Please try again.');
             }
@@ -42,76 +86,182 @@ export default function ContactPage() {
     }
 
     return (
-        <div className={styles.container}>
-            <div className={styles.heroSection}>
-                <h1>Client Relations</h1>
-                <p>Discreet, dedicated, and professional support. How can we assist your journey?</p>
+        <div className={styles.contactPage}>
+            {/* Editorial Hero */}
+            <section className={styles.editorialHero}>
+                <div className={`grain-overlay ${styles.heroGrain}`} aria-hidden />
+                <div className={styles.heroOrbit} aria-hidden />
+
+                <div className={styles.heroInner}>
+                    <Reveal>
+                        <span className={styles.heroTag}>Client relations</span>
+                        <h1 className={styles.heroTitle}>
+                            Get in<br /><em>touch</em>
+                        </h1>
+                    </Reveal>
+                    <Reveal delay={0.15}>
+                        <p className={styles.heroDesc}>
+                            Discreet, dedicated, and professional support. How can we
+                            assist your journey?
+                        </p>
+                    </Reveal>
+                    <Reveal delay={0.25}>
+                        <div className={styles.heroStats}>
+                            {HERO_STATS.map((stat) => (
+                                <div key={stat.label} className={styles.heroStat}>
+                                    <strong>{stat.value}</strong>
+                                    <span>{stat.label}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </Reveal>
+                    <Reveal delay={0.35}>
+                        <div className={styles.heroActions}>
+                            <a href="#contact-form" className={`${styles.heroCta} btn-shine`}>
+                                Send a message
+                                <ArrowRight size={18} />
+                            </a>
+                            <Link href="/faq" className={styles.heroSecondary}>
+                                Browse FAQ
+                            </Link>
+                        </div>
+                    </Reveal>
+                </div>
+            </section>
+
+            {/* Marquee */}
+            <div className={styles.marqueeContainer}>
+                <div className={styles.marqueeContent}>
+                    <span>24/7 support</span> • <span>Discreet service</span> • <span>Global reach</span> • <span>Expert guidance</span> •
+                    <span>24/7 support</span> • <span>Discreet service</span> • <span>Global reach</span> • <span>Expert guidance</span> •
+                </div>
             </div>
 
-            <div className={styles.contactGrid}>
-                <div className={styles.contactInfo}>
-                    <div className={styles.infoCard}>
-                        <div className={styles.iconWrapper}><Mail size={24} /></div>
-                        <h3>Digital Inquiry</h3>
-                        <p>order@officialfusionshroombars.com</p>
-                    </div>
-                    <div className={styles.infoCard}>
-                        <div className={styles.iconWrapper}><MapPin size={24} /></div>
-                        <h3>Headquarters</h3>
-                        <p>6736 S Sherbourne Dr, Los Angeles, CA 90056, USA</p>
-                    </div>
-                    <div className={styles.infoCard}>
-                        <div className={styles.iconWrapper}><Clock size={24} /></div>
-                        <h3>Service Hours</h3>
-                        <p>Monday - Sunday: 24/7 Global Support</p>
-                    </div>
-                </div>
+            {/* Contact Grid */}
+            <section className={styles.contactSection} id="contact-form">
+                <div className={styles.container}>
+                    <Reveal>
+                        <div className={styles.sectionHeader}>
+                            <span className={styles.sectionLabel}>Reach us</span>
+                            <h2 className={styles.sectionTitle}>We&apos;re here to help</h2>
+                            <p className={styles.sectionDesc}>
+                                Send us a message or use the details below — our team responds promptly.
+                            </p>
+                        </div>
+                    </Reveal>
 
-                <div className={styles.formSection}>
-                    <form className={styles.form} onSubmit={handleSubmit}>
-                        <div className={styles.inputRow}>
-                            <div className={styles.inputGroup}>
-                                <label>Full Name</label>
-                                <input type="text" name="name" placeholder="Enter your name" required />
+                    <div className={styles.contactGrid}>
+                        <div className={styles.contactInfo}>
+                            {CONTACT_INFO.map((item, idx) => {
+                                const Icon = item.icon;
+                                return (
+                                    <Reveal key={item.title} delay={0.1 * idx}>
+                                        <div className={styles.infoCard}>
+                                            <div className={styles.iconWrapper}>
+                                                <Icon size={24} strokeWidth={1.5} />
+                                            </div>
+                                            <h3>{item.title}</h3>
+                                            <p>{item.detail}</p>
+                                        </div>
+                                    </Reveal>
+                                );
+                            })}
+                        </div>
+
+                        <Reveal delay={0.2}>
+                            <div className={styles.formSection}>
+                                <form className={styles.form} onSubmit={handleSubmit}>
+                                    <div className={styles.inputRow}>
+                                        <div className={styles.inputGroup}>
+                                            <label htmlFor="contact-name">Full name</label>
+                                            <input
+                                                id="contact-name"
+                                                type="text"
+                                                name="name"
+                                                placeholder="Enter your name"
+                                                required
+                                            />
+                                        </div>
+                                        <div className={styles.inputGroup}>
+                                            <label htmlFor="contact-email">Email address</label>
+                                            <input
+                                                id="contact-email"
+                                                type="email"
+                                                name="email"
+                                                placeholder="Enter your email"
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className={styles.inputGroup}>
+                                        <label htmlFor="contact-subject">Subject</label>
+                                        <input
+                                            id="contact-subject"
+                                            type="text"
+                                            name="subject"
+                                            placeholder="What is this regarding?"
+                                        />
+                                    </div>
+                                    <div className={styles.inputGroup}>
+                                        <label htmlFor="contact-message">Message</label>
+                                        <textarea
+                                            id="contact-message"
+                                            name="message"
+                                            placeholder="Detail your inquiry..."
+                                            rows={6}
+                                            required
+                                        />
+                                    </div>
+                                    <button
+                                        type="submit"
+                                        className={styles.submitBtn}
+                                        disabled={isSubmitting || isSuccess}
+                                    >
+                                        {isSuccess ? (
+                                            <>
+                                                <CheckCircle2 size={20} />
+                                                Message sent
+                                            </>
+                                        ) : isSubmitting ? (
+                                            'Sending...'
+                                        ) : (
+                                            <>
+                                                <Send size={20} />
+                                                Send message
+                                            </>
+                                        )}
+                                    </button>
+                                </form>
                             </div>
-                            <div className={styles.inputGroup}>
-                                <label>Email Address</label>
-                                <input type="email" name="email" placeholder="Enter your email" required />
-                            </div>
-                        </div>
-                        <div className={styles.inputGroup}>
-                            <label>Subject</label>
-                            <input type="text" name="subject" placeholder="What is this regarding?" />
-                        </div>
-                        <div className={styles.inputGroup}>
-                            <label>Message</label>
-                            <textarea name="message" placeholder="Detail your inquiry..." rows={6} required></textarea>
-                        </div>
-                        <button type="submit" disabled={isSubmitting || isSuccess}>
-                            {isSuccess ? (
-                                <><CheckCircle2 size={20} /> MESSAGE SENT</>
-                            ) : isSubmitting ? (
-                                "SENDING..."
-                            ) : (
-                                <><Send size={20} /> TRANSMIT INQUIRY</>
-                            )}
-                        </button>
-                    </form>
+                        </Reveal>
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            {/* Internal Cross-Links */}
-            <div className={styles.crossLinks}>
-                <h3>Self-Service Resources</h3>
-                <p>Find immediate answers in our knowledge base.</p>
-                <div className={styles.linkTags}>
-                    <Link href="/faq" className={styles.tag}><Search size={16}/> Knowledge Base</Link>
-                    <Link href="/shop" className={styles.tag}><ShoppingBag size={16}/> The Collection</Link>
-                    <Link href="/blog" className={styles.tag}><BookOpen size={16}/> Editorial Journal</Link>
-                    <Link href="/about" className={styles.tag}><FlaskConical size={16}/> Our Process</Link>
-                    <Link href="/" className={styles.tag}><Home size={16}/> Return Home</Link>
+            {/* Cross-links */}
+            <section className={styles.ctaSection}>
+                <div className={styles.ctaInner}>
+                    <Reveal>
+                        <h2 className={styles.ctaTitle}>Self-service resources</h2>
+                        <p className={styles.ctaDesc}>
+                            Find immediate answers in our knowledge base before reaching out.
+                        </p>
+                    </Reveal>
+                    <Reveal delay={0.2}>
+                        <div className={styles.crossLinks}>
+                            {CROSS_LINKS.map((link) => {
+                                const Icon = link.icon;
+                                return (
+                                    <Link key={link.href} href={link.href} className={styles.crossLink}>
+                                        <Icon size={16} />
+                                        {link.label}
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    </Reveal>
                 </div>
-            </div>
+            </section>
         </div>
     );
 }

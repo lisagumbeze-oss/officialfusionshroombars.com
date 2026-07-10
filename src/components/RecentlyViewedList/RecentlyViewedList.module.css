@@ -8,7 +8,7 @@
   font-size: 1.5rem;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: #fff;
+  color: var(--foreground);
   margin-bottom: 2.5rem;
   text-align: center;
 }

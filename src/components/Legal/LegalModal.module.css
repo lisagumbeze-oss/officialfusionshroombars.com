@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(26, 16, 40, 0.4);
   backdrop-filter: blur(5px);
   z-index: 9999;
   display: flex;
@@ -14,12 +14,12 @@
   width: 100%;
   max-width: 700px;
   max-height: 80vh;
-  background: var(--surface);
+  background: var(--background-elevated);
   border: 1px solid var(--surface-border);
   border-radius: 24px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-elevated);
   animation: modalIn 0.3s ease-out;
 }
 
@@ -41,7 +41,7 @@
   font-size: 1.5rem;
   text-transform: uppercase;
   letter-spacing: 2px;
-  background: linear-gradient(90deg, #1a1a1a, var(--primary), var(--secondary));
+  background: linear-gradient(90deg, var(--foreground), var(--primary), var(--secondary));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -50,27 +50,27 @@
 .closeBtn {
   background: none;
   border: none;
-  color: #666;
+  color: var(--text-muted);
   cursor: pointer;
   transition: color 0.3s;
 }
 
 .closeBtn:hover {
-  color: white;
+  color: var(--foreground);
 }
 
 .body {
   padding: 2.5rem;
   overflow-y: auto;
   line-height: 1.7;
-  color: #4b5563;
+  color: var(--foreground-muted);
 }
 
 .body h3 {
-  color: #1a1a1a;
+  color: var(--foreground);
   margin-top: 2rem;
   font-size: 1.2rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .body p {
@@ -88,21 +88,22 @@
   padding: 0.75rem 3rem;
   border: none;
   border-radius: 30px;
-  color: white;
-  font-weight: bold;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  color: var(--on-primary);
+  font-weight: 600;
   cursor: pointer;
-  transition: transform 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .footer button:hover {
   transform: scale(1.05);
+  box-shadow: 0 8px 24px var(--primary-glow);
 }
 
-/* Custom Scrollbar */
 .body::-webkit-scrollbar {
   width: 6px;
 }
 .body::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
+  background: var(--surface-border);
   border-radius: 10px;
 }

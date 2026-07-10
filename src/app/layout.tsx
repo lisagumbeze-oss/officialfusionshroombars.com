@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { generateSEO } from '@/lib/seo-utils';
 import prisma from '@/lib/prisma';
 import "./globals.css";
@@ -11,9 +12,11 @@ import GoogleAnalytics from '@/components/GoogleAnalytics';
 import { ToastProvider } from "@/context/ToastContext";
 import { WishlistProvider } from "@/context/WishlistContext";
 import { RecentlyViewedProvider } from "@/context/RecentlyViewedContext";
-import SocialProof from "@/components/SocialProof/SocialProof";
 import GeoDelivery from "@/components/GeoDelivery/GeoDelivery";
 import BackToTop from "@/components/BackToTop/BackToTop";
+import ScrollToTop from "@/components/ScrollToTop/ScrollToTop";
+import WhatsAppFloat from "@/components/WhatsAppFloat/WhatsAppFloat";
+import SmartsuppPosition from "@/components/SmartsuppPosition/SmartsuppPosition";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://officialfusionshroombars.com"),
@@ -114,6 +117,9 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background text-foreground">
+        <Suspense fallback={null}>
+          <ScrollToTop />
+        </Suspense>
         <GoogleAnalytics ga_id="G-403953413" />
         <ToastProvider>
           <WishlistProvider>
@@ -127,15 +133,19 @@ export default function RootLayout({
           </WishlistProvider>
         </ToastProvider>
         
-        <SocialProof />
         <BackToTop />
+        <WhatsAppFloat />
+        <SmartsuppPosition />
         
         {/* Smartsupp Live Chat script */}
         <Script id="smartsupp-chat" strategy="afterInteractive">
           {`
             var _smartsupp = _smartsupp || {};
             _smartsupp.key = '066c33c30d5a0cddcfb7a8750f96fe6b77709e72';
-            _smartsupp.color = '#5C4033';
+            _smartsupp.color = '#8668a3';
+            if (window.matchMedia('(max-width: 768px)').matches) {
+              _smartsupp.offsetY = 81;
+            }
             window.smartsupp||(function(d) {
               var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
               s=d.getElementsByTagName('script')[0];c=d.createElement('script');

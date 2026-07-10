@@ -1,337 +1,722 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, useMemo, useEffect, FormEvent } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
+import { useToast } from '@/context/ToastContext';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Loader2,
+  ShieldCheck,
+  Truck,
+  Lock,
+  Copy,
+  ShoppingBag,
+  Pencil,
+} from 'lucide-react';
+import PaymentMethodIcon, { CryptoIcons } from '@/components/checkout/PaymentMethodIcon';
 import styles from './checkout.module.css';
 
-export default function CheckoutForm({ 
-    dbPaymentMethods,
-    shippingSettings
-}: { 
-    dbPaymentMethods: any[],
-    shippingSettings: any[]
+const STEPS = [
+  { id: 'details', label: 'Details' },
+  { id: 'shipping', label: 'Delivery' },
+  { id: 'payment', label: 'Payment' },
+] as const;
+
+interface FormState {
+  country: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+}
+
+const INITIAL_FORM: FormState = {
+  country: 'United States',
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  address: '',
+  city: '',
+  state: '',
+  zip: '',
+};
+
+export default function CheckoutForm({
+  dbPaymentMethods,
+  shippingSettings,
+}: {
+  dbPaymentMethods: any[];
+  shippingSettings: any[];
 }) {
-    const router = useRouter();
-    const { cart, cartTotal, clearCart } = useCart();
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [selectedMethod, setSelectedMethod] = useState('');
-    const [region, setRegion] = useState('LOCAL'); // LOCAL (USA) or INTERNATIONAL
-    const [shippingOption, setShippingOption] = useState<any>(null);
+  const router = useRouter();
+  const {
+    cart,
+    cartTotal,
+    clearCart,
+    subtotal,
+    discountAmount,
+    bulkDiscountAmount,
+    appliedCoupon,
+  } = useCart();
+  const { showToast } = useToast();
 
-    const subtotal = cartTotal;
-    const shippingPrice = shippingOption ? shippingOption.price : 0;
-    const total = subtotal + shippingPrice;
+  const [step, setStep] = useState(0);
+  const [form, setForm] = useState<FormState>(INITIAL_FORM);
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof FormState, string>>>({});
+  const [formError, setFormError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedMethod, setSelectedMethod] = useState('');
+  const [region, setRegion] = useState<'LOCAL' | 'INTERNATIONAL'>('LOCAL');
+  const [shippingOption, setShippingOption] = useState<{ id: string; name: string; price: number } | null>(null);
 
-    // Get current region settings
-    const currentShippingSettings = shippingSettings.find(s => s.type === region) || {
-        category1Name: 'Standard', category1Price: region === 'LOCAL' ? 15 : 45,
-        category2Name: 'Express', category2Price: region === 'LOCAL' ? 35 : 85
+  const couponDiscount = Math.max(0, discountAmount - bulkDiscountAmount);
+  const shippingPrice = shippingOption?.price ?? 0;
+  const total = cartTotal + shippingPrice;
+  const progressPct = ((step + 1) / STEPS.length) * 100;
+
+  const currentShippingSettings = useMemo(
+    () =>
+      shippingSettings.find((s) => s.type === region) || {
+        category1Name: 'Standard',
+        category1Price: region === 'LOCAL' ? 15 : 45,
+        category2Name: 'Express',
+        category2Price: region === 'LOCAL' ? 35 : 85,
+      },
+    [shippingSettings, region]
+  );
+
+  const shippingOptions = useMemo(
+    () => [
+      { id: 'cat1', name: currentShippingSettings.category1Name, price: currentShippingSettings.category1Price },
+      { id: 'cat2', name: currentShippingSettings.category2Name, price: currentShippingSettings.category2Price },
+    ],
+    [currentShippingSettings]
+  );
+
+  useEffect(() => {
+    if (step === 1 && !shippingOption && shippingOptions.length > 0) {
+      setShippingOption(shippingOptions[0]);
+    }
+  }, [step, shippingOption, shippingOptions]);
+
+  function updateField<K extends keyof FormState>(key: K, value: FormState[K]) {
+    setForm((prev) => ({ ...prev, [key]: value }));
+    setFieldErrors((prev) => ({ ...prev, [key]: undefined }));
+    setFormError('');
+  }
+
+  function validateDetails(): boolean {
+    const errors: Partial<Record<keyof FormState, string>> = {};
+    if (!form.firstName.trim()) errors.firstName = 'First name is required';
+    if (!form.lastName.trim()) errors.lastName = 'Last name is required';
+    if (!form.email.trim()) errors.email = 'Email is required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errors.email = 'Enter a valid email';
+    if (!form.phone.trim()) errors.phone = 'Phone number is required';
+    if (!form.address.trim()) errors.address = 'Street address is required';
+    if (!form.city.trim()) errors.city = 'City is required';
+    if (!form.state.trim()) errors.state = 'State / province is required';
+    if (!form.zip.trim()) errors.zip = 'ZIP / postal code is required';
+
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) {
+      setFormError('Please complete all required fields.');
+      showToast('Please fix the highlighted fields.', 'error');
+      return false;
+    }
+    return true;
+  }
+
+  function validateShipping(): boolean {
+    if (!shippingOption) {
+      setFormError('Select a shipping method to continue.');
+      showToast('Please select a shipping method.', 'error');
+      return false;
+    }
+    setFormError('');
+    return true;
+  }
+
+  function goToStep(target: number) {
+    if (target > step) return;
+    if (target === 1 && !validateDetails()) return;
+    if (target === 2 && (!validateDetails() || !validateShipping())) return;
+    setFormError('');
+    setStep(target);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goNext() {
+    if (step === 0 && !validateDetails()) return;
+    if (step === 1 && !validateShipping()) return;
+    setFormError('');
+    setStep((s) => Math.min(s + 1, STEPS.length - 1));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goBack() {
+    setFormError('');
+    setStep((s) => Math.max(s - 1, 0));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  async function copyPaymentDetails(text: string) {
+    try {
+      await navigator.clipboard.writeText(text);
+      showToast('Payment details copied', 'success');
+    } catch {
+      showToast('Could not copy — select and copy manually', 'error');
+    }
+  }
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (step < STEPS.length - 1) {
+      goNext();
+      return;
+    }
+
+    if (!validateDetails() || !validateShipping()) return;
+
+    if (!selectedMethod) {
+      setFormError('Select a payment method.');
+      showToast('Please select a payment method.', 'error');
+      return;
+    }
+
+    if (total < 100) {
+      setFormError('Minimum order is $100 including shipping.');
+      showToast('Minimum order amount is $100.', 'error');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setFormError('');
+
+    const orderData = {
+      customerName: `${form.firstName} ${form.lastName}`.trim(),
+      customerEmail: form.email,
+      customerPhone: form.phone,
+      shippingAddress: `${form.address}, ${form.city}, ${form.state} ${form.zip}, ${form.country}`,
+      shippingMethod: shippingOption!.name,
+      shippingPrice: shippingOption!.price,
+      totalAmount: total,
+      paymentMethodId: selectedMethod,
+      items: cart.map((item) => ({
+        productId: item.id,
+        productName: item.name,
+        quantity: item.quantity,
+        price: item.price,
+      })),
     };
 
-    const shippingOptions = [
-        { id: 'cat1', name: currentShippingSettings.category1Name, price: currentShippingSettings.category1Price },
-        { id: 'cat2', name: currentShippingSettings.category2Name, price: currentShippingSettings.category2Price },
-    ];
+    try {
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData),
+      });
 
-    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        if (!shippingOption) {
-            alert('Please select a shipping method.');
-            return;
-        }
-        setIsSubmitting(true);
-
-        const formData = new FormData(e.currentTarget);
-        const orderData = {
-            customerName: formData.get('firstName') + ' ' + formData.get('lastName'),
-            customerEmail: formData.get('email'),
-            customerPhone: formData.get('phone'),
-            shippingAddress: `${formData.get('address')}, ${formData.get('city')}, ${formData.get('state')} ${formData.get('zip')}, ${formData.get('country')}`,
-            shippingMethod: shippingOption.name,
-            shippingPrice: shippingOption.price,
-            totalAmount: total,
-            paymentMethodId: selectedMethod === 'CRYPTO' ? 'CRYPTO' : selectedMethod,
-            items: cart.map(item => ({
-                productId: item.id,
-                productName: item.name,
-                quantity: item.quantity,
-                price: item.price
-            })),
-        };
-
+      if (!res.ok) {
+        let errMsg = 'Failed to place order. Please try again.';
         try {
-            const res = await fetch('/api/orders', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(orderData),
-            });
-
-            if (res.ok) {
-                let data;
-                try {
-                    data = await res.json();
-                } catch (e) {
-                    const text = await res.text();
-                    console.error('Failed to parse order response as JSON:', text);
-                    alert('Server returned an invalid response. Please check the console for details.');
-                    setIsSubmitting(false);
-                    return;
-                }
-                
-                if (selectedMethod === 'CRYPTO') {
-                    // Create Plisio Invoice
-                    const cryptoRes = await fetch('/api/checkout/crypto-payment', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ orderId: data.id }),
-                    });
-                    
-                    if (cryptoRes.ok) {
-                        let cryptoData;
-                        try {
-                            cryptoData = await cryptoRes.json();
-                        } catch (e) {
-                            const text = await cryptoRes.text();
-                            console.error('Failed to parse crypto response as JSON:', text);
-                            alert('Payment system returned an invalid response. Please check the console for details.');
-                            setIsSubmitting(false);
-                            return;
-                        }
-                        clearCart();
-                        window.location.href = cryptoData.invoiceUrl;
-                        return;
-                    } else {
-                        let cryptoErr;
-                        try {
-                            cryptoErr = await cryptoRes.json();
-                        } catch (e) {
-                            cryptoErr = { error: 'Failed to initiate crypto payment (and could not parse error response).' };
-                        }
-                        alert(cryptoErr.error || 'Failed to initiate crypto payment.');
-                    }
-                } else {
-                    clearCart();
-                    router.push(`/checkout/success?orderId=${data.id}`);
-                }
-            } else {
-                const errData = await res.json();
-                alert(errData.error || 'Failed to place order. Please try again.');
-            }
-        } catch (error) {
-            console.error(error);
-            alert('An error occurred.');
-        } finally {
-            setIsSubmitting(false);
+          const errData = await res.json();
+          errMsg = errData.error || errMsg;
+        } catch {
+          /* ignore parse error */
         }
+        setFormError(errMsg);
+        showToast(errMsg, 'error');
+        return;
+      }
+
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        setFormError('Server returned an invalid response.');
+        showToast('Unexpected server response. Please contact support.', 'error');
+        return;
+      }
+
+      if (selectedMethod === 'CRYPTO') {
+        const cryptoRes = await fetch('/api/checkout/crypto-payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderId: data.id }),
+        });
+
+        if (cryptoRes.ok) {
+          let cryptoData;
+          try {
+            cryptoData = await cryptoRes.json();
+          } catch {
+            showToast('Payment gateway returned an invalid response.', 'error');
+            return;
+          }
+          clearCart();
+          showToast('Redirecting to secure crypto checkout…', 'info');
+          window.location.href = cryptoData.invoiceUrl;
+          return;
+        }
+
+        let cryptoErr = 'Failed to initiate crypto payment.';
+        try {
+          const parsed = await cryptoRes.json();
+          cryptoErr = parsed.error || cryptoErr;
+        } catch {
+          /* ignore */
+        }
+        setFormError(cryptoErr);
+        showToast(cryptoErr, 'error');
+        return;
+      }
+
+      clearCart();
+      showToast('Order placed successfully!', 'success');
+      router.push(`/checkout/success?orderId=${data.id}`);
+    } catch (error) {
+      console.error(error);
+      const msg = 'Network error. Check your connection and try again.';
+      setFormError(msg);
+      showToast(msg, 'error');
+    } finally {
+      setIsSubmitting(false);
     }
+  }
 
-    const selectedPaymentInfo = dbPaymentMethods.find(m => m.id === selectedMethod);
+  const selectedPaymentInfo = dbPaymentMethods.find((m) => m.id === selectedMethod);
 
-    if (cart.length === 0) {
-        return (
-            <div className={styles.emptyCart}>
-                <h2>Your cart is empty</h2>
-                <button onClick={() => router.push('/shop')} className="premium-gradient">CONTINUE SHOPPING</button>
-            </div>
-        );
-    }
-
+  if (cart.length === 0) {
     return (
-        <div className={styles.checkoutLayout}>
-            <div className={styles.formSection}>
-                <form id="checkout-form" onSubmit={handleSubmit}>
-                    <h2 className={styles.sectionTitle}>Billing & Shipping Details</h2>
-                    <div className={styles.inputGroup}>
-                        <label>Country / Region*</label>
-                        <select 
-                            name="country" 
-                            required 
-                            className={styles.select}
-                            onChange={(e) => {
-                                setRegion(e.target.value === 'United States' ? 'LOCAL' : 'INTERNATIONAL');
-                                setShippingOption(null); // Reset shipping when country changes
-                            }}
-                        >
-                            <option value="United States">United States (USA)</option>
-                            <option value="Canada">Canada</option>
-                            <option value="United Kingdom">United Kingdom</option>
-                            <option value="Australia">Australia</option>
-                            <option value="Germany">Germany</option>
-                            <option value="France">France</option>
-                            <option value="Italy">Italy</option>
-                            <option value="Spain">Spain</option>
-                            <option value="Netherlands">Netherlands</option>
-                            <option value="Sweden">Sweden</option>
-                            <option value="Switzerland">Switzerland</option>
-                            <option value="New Zealand">New Zealand</option>
-                            <option value="Japan">Japan</option>
-                            <option value="Brazil">Brazil</option>
-                            <option value="Mexico">Mexico</option>
-                            <option value="International">Other (International)</option>
-                        </select>
-                    </div>
-                    <div className={styles.inputRow}>
-                        <div className={styles.inputGroup}>
-                            <label>First Name*</label>
-                            <input type="text" name="firstName" required />
-                        </div>
-                        <div className={styles.inputGroup}>
-                            <label>Last Name*</label>
-                            <input type="text" name="lastName" required />
-                        </div>
-                    </div>
-                    <div className={styles.inputGroup}>
-                        <label>Email Address*</label>
-                        <input type="email" name="email" required />
-                    </div>
-                    <div className={styles.inputGroup}>
-                        <label>Phone Number</label>
-                        <input type="tel" name="phone" />
-                    </div>
-                    <div className={styles.inputGroup}>
-                        <label>Street Address*</label>
-                        <input type="text" name="address" required />
-                    </div>
-                    <div className={styles.inputRow}>
-                        <div className={styles.inputGroup}>
-                            <label>City*</label>
-                            <input type="text" name="city" required />
-                        </div>
-                        <div className={styles.inputGroup}>
-                            <label>State / Province*</label>
-                            <input type="text" name="state" required />
-                        </div>
-                        <div className={styles.inputGroup}>
-                            <label>ZIP / Postal Code*</label>
-                            <input type="text" name="zip" required />
-                        </div>
-                    </div>
-
-                    <div className={styles.shippingSection}>
-                        <h2 className={styles.sectionTitle}>Shipping Method</h2>
-                        <div className={styles.shippingOptions}>
-                            {shippingOptions.map(option => (
-                                <label key={option.id} className={`${styles.shippingOption} ${shippingOption?.id === option.id ? styles.selected : ''}`}>
-                                    <input 
-                                        type="radio" 
-                                        name="shipping" 
-                                        checked={shippingOption?.id === option.id}
-                                        onChange={() => setShippingOption(option)}
-                                        required
-                                    />
-                                    <div className={styles.shippingInfo}>
-                                        <span className={styles.shippingName}>{option.name}</span>
-                                        <span className={styles.shippingPrice}>${option.price.toFixed(2)}</span>
-                                    </div>
-                                </label>
-                            ))}
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <div className={styles.summarySection}>
-                <div className={styles.orderSummary}>
-                    <h2 className={styles.sectionTitle}>Your Order</h2>
-                    <div className={styles.summaryItems}>
-                        {cart.map((item, i) => (
-                            <div key={i} className={styles.summaryRow}>
-                                <span>{item.quantity}x {item.name}</span>
-                                <span>${(item.price * item.quantity).toFixed(2)}</span>
-                            </div>
-                        ))}
-                        <div className={styles.summarySeparator} />
-                        <div className={styles.summaryRow}>
-                            <span>Subtotal</span>
-                            <span>${subtotal.toFixed(2)}</span>
-                        </div>
-                        {shippingOption && (
-                            <div className={styles.summaryRow}>
-                                <span>Shipping ({shippingOption.name})</span>
-                                <span>${shippingOption.price.toFixed(2)}</span>
-                            </div>
-                        )}
-                        <div className={`${styles.summaryRow} ${styles.totalRow}`}>
-                            <span>Total</span>
-                            <span>${total.toFixed(2)}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div className={styles.paymentMethods}>
-                    <h2 className={styles.sectionTitle}>Payment Method</h2>
-                    {dbPaymentMethods.length === 0 ? (
-                        <p className={styles.errorText}>No payment methods active. Please contact support.</p>
-                    ) : (
-                        <div className={styles.methodOptions}>
-                            {/* Hardcoded Cryptocurrency Option */}
-                            <label className={`${styles.methodOption} ${selectedMethod === 'CRYPTO' ? styles.selected : ''}`}>
-                                <input
-                                    type="radio"
-                                    name="paymentMethod"
-                                    value="CRYPTO"
-                                    checked={selectedMethod === 'CRYPTO'}
-                                    onChange={(e) => setSelectedMethod(e.target.value)}
-                                    required
-                                    form="checkout-form"
-                                />
-                                <div className={styles.methodInfo}>
-                                    <strong>Cryptocurrency (BTC, ETH, LTC, USDT, etc.)</strong>
-                                    <span style={{ fontSize: '0.75rem', color: 'var(--primary)', marginLeft: '0.5rem' }}>Powered by Plisio</span>
-                                </div>
-                            </label>
-
-                            {dbPaymentMethods.map((method) => (
-                                <label key={method.id} className={`${styles.methodOption} ${selectedMethod === method.id ? styles.selected : ''}`}>
-                                    <input
-                                        type="radio"
-                                        name="paymentMethod"
-                                        value={method.id}
-                                        checked={selectedMethod === method.id}
-                                        onChange={(e) => setSelectedMethod(e.target.value)}
-                                        required
-                                        form="checkout-form"
-                                    />
-                                    <div className={styles.methodInfo}>
-                                        <strong>{method.name}</strong>
-                                    </div>
-                                </label>
-                            ))}
-                        </div>
-                    )}
-
-                    {selectedPaymentInfo && (
-                        <div className={styles.paymentInstructions}>
-                            <p><strong>Pay to:</strong> {selectedPaymentInfo.details}</p>
-                            {selectedPaymentInfo.instructions && <p>{selectedPaymentInfo.instructions}</p>}
-                            <p className={styles.noticeText}><em>Please place your order first, then send the payment to the address above. Your order will be processed once payment is confirmed.</em></p>
-                        </div>
-                    )}
-
-                    {selectedMethod === 'CRYPTO' && (
-                        <div className={styles.paymentInstructions} style={{ borderLeftColor: 'var(--primary)' }}>
-                            <p><strong>Crypto Payment:</strong> You will be redirected to Plisio's secure gateway after clicking "PLACE ORDER" to complete your payment with the cryptocurrency of your choice.</p>
-                            <p className={styles.noticeText}><em>Real-time exchange rates will be applied.</em></p>
-                        </div>
-                    )}
-                </div>
-
-                <button
-                    form="checkout-form"
-                    type="submit"
-                    className={`${styles.placeOrderBtn} premium-gradient`}
-                    disabled={isSubmitting || !selectedMethod || !shippingOption || total < 100}
-                >
-                    {isSubmitting ? 'PROCESSING...' : 'PLACE ORDER'}
-                </button>
-                {total < 100 && (
-                    <div className={styles.minimumOrderWarning}>
-                        <span className="material-symbols-outlined">warning</span>
-                        <p>Minimum order amount is <strong>$100.00</strong> (including shipping). Please add more items to your cart to proceed.</p>
-                    </div>
-                )}
-            </div>
+      <div className={styles.emptyCart}>
+        <div className={styles.emptyIcon}>
+          <ShoppingBag size={56} strokeWidth={1.25} />
         </div>
+        <h2>Your cart is empty</h2>
+        <p>Add items before checking out.</p>
+        <button type="button" onClick={() => router.push('/shop')} className={styles.primaryBtn}>
+          Continue shopping
+        </button>
+      </div>
     );
+  }
+
+  return (
+    <div className={styles.checkoutPage}>
+      <div className={styles.progressBar} aria-hidden>
+        <div className={styles.progressFill} style={{ width: `${progressPct}%` }} />
+      </div>
+
+      <div className={styles.trustStrip}>
+        <span><Lock size={14} /> Encrypted checkout</span>
+        <span><ShieldCheck size={14} /> Lab-tested products</span>
+        <span><Truck size={14} /> Discreet shipping</span>
+      </div>
+
+      <nav className={styles.stepper} aria-label="Checkout progress">
+        {STEPS.map((s, i) => (
+          <button
+            key={s.id}
+            type="button"
+            className={`${styles.stepItem} ${i === step ? styles.stepActive : ''} ${i < step ? styles.stepDone : ''}`}
+            onClick={() => goToStep(i)}
+            disabled={i > step}
+            aria-current={i === step ? 'step' : undefined}
+          >
+            <span className={styles.stepNumber}>{i < step ? '✓' : i + 1}</span>
+            <span className={styles.stepLabel}>{s.label}</span>
+          </button>
+        ))}
+      </nav>
+
+      <div className={styles.checkoutLayout}>
+        <div className={styles.formSection}>
+          <form onSubmit={handleSubmit} noValidate>
+            {formError && (
+              <div className={styles.errorBanner} role="alert">
+                {formError}
+              </div>
+            )}
+
+            {step === 2 && (
+              <div className={styles.reviewCard}>
+                <div className={styles.reviewRow}>
+                  <div>
+                    <span className={styles.reviewLabel}>Ship to</span>
+                    <p className={styles.reviewValue}>
+                      {form.firstName} {form.lastName}<br />
+                      {form.address}, {form.city}, {form.state} {form.zip}<br />
+                      {form.country}
+                    </p>
+                  </div>
+                  <button type="button" className={styles.editLink} onClick={() => goToStep(0)}>
+                    <Pencil size={14} />
+                    Edit
+                  </button>
+                </div>
+                <div className={styles.reviewDivider} />
+                <div className={styles.reviewRow}>
+                  <div>
+                    <span className={styles.reviewLabel}>Delivery</span>
+                    <p className={styles.reviewValue}>
+                      {shippingOption?.name ?? 'Not selected'}
+                      {shippingOption ? ` · $${shippingOption.price.toFixed(2)}` : ''}
+                    </p>
+                  </div>
+                  <button type="button" className={styles.editLink} onClick={() => goToStep(1)}>
+                    <Pencil size={14} />
+                    Edit
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {step === 0 && (
+              <div className={styles.stepPanel}>
+                <h2 className={styles.sectionTitle}>Contact &amp; shipping address</h2>
+                <div className={styles.inputGroup}>
+                  <label htmlFor="country">Country / region *</label>
+                  <select
+                    id="country"
+                    name="country"
+                    className={styles.select}
+                    autoComplete="country-name"
+                    value={form.country}
+                    onChange={(e) => {
+                      updateField('country', e.target.value);
+                      setRegion(e.target.value === 'United States' ? 'LOCAL' : 'INTERNATIONAL');
+                      setShippingOption(null);
+                    }}
+                  >
+                    <option value="United States">United States</option>
+                    <option value="Canada">Canada</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Germany">Germany</option>
+                    <option value="France">France</option>
+                    <option value="Italy">Italy</option>
+                    <option value="Spain">Spain</option>
+                    <option value="Netherlands">Netherlands</option>
+                    <option value="Sweden">Sweden</option>
+                    <option value="Switzerland">Switzerland</option>
+                    <option value="New Zealand">New Zealand</option>
+                    <option value="Japan">Japan</option>
+                    <option value="Brazil">Brazil</option>
+                    <option value="Mexico">Mexico</option>
+                    <option value="International">Other (International)</option>
+                  </select>
+                </div>
+                <div className={styles.inputRow}>
+                  <div className={styles.inputGroup}>
+                    <label htmlFor="firstName">First name *</label>
+                    <input
+                      id="firstName"
+                      name="firstName"
+                      autoComplete="given-name"
+                      value={form.firstName}
+                      onChange={(e) => updateField('firstName', e.target.value)}
+                      className={fieldErrors.firstName ? styles.inputError : ''}
+                    />
+                    {fieldErrors.firstName && <span className={styles.fieldError}>{fieldErrors.firstName}</span>}
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <label htmlFor="lastName">Last name *</label>
+                    <input
+                      id="lastName"
+                      name="lastName"
+                      autoComplete="family-name"
+                      value={form.lastName}
+                      onChange={(e) => updateField('lastName', e.target.value)}
+                      className={fieldErrors.lastName ? styles.inputError : ''}
+                    />
+                    {fieldErrors.lastName && <span className={styles.fieldError}>{fieldErrors.lastName}</span>}
+                  </div>
+                </div>
+                <div className={styles.inputGroup}>
+                  <label htmlFor="email">Email *</label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    value={form.email}
+                    onChange={(e) => updateField('email', e.target.value)}
+                    className={fieldErrors.email ? styles.inputError : ''}
+                  />
+                  {fieldErrors.email && <span className={styles.fieldError}>{fieldErrors.email}</span>}
+                </div>
+                <div className={styles.inputGroup}>
+                  <label htmlFor="phone">Phone *</label>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    autoComplete="tel"
+                    required
+                    value={form.phone}
+                    onChange={(e) => updateField('phone', e.target.value)}
+                    className={fieldErrors.phone ? styles.inputError : ''}
+                  />
+                  {fieldErrors.phone && <span className={styles.fieldError}>{fieldErrors.phone}</span>}
+                </div>
+                <div className={styles.inputGroup}>
+                  <label htmlFor="address">Street address *</label>
+                  <input
+                    id="address"
+                    name="address"
+                    autoComplete="street-address"
+                    value={form.address}
+                    onChange={(e) => updateField('address', e.target.value)}
+                    className={fieldErrors.address ? styles.inputError : ''}
+                  />
+                  {fieldErrors.address && <span className={styles.fieldError}>{fieldErrors.address}</span>}
+                </div>
+                <div className={styles.inputRow}>
+                  <div className={styles.inputGroup}>
+                    <label htmlFor="city">City *</label>
+                    <input
+                      id="city"
+                      name="city"
+                      autoComplete="address-level2"
+                      value={form.city}
+                      onChange={(e) => updateField('city', e.target.value)}
+                      className={fieldErrors.city ? styles.inputError : ''}
+                    />
+                    {fieldErrors.city && <span className={styles.fieldError}>{fieldErrors.city}</span>}
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <label htmlFor="state">State *</label>
+                    <input
+                      id="state"
+                      name="state"
+                      autoComplete="address-level1"
+                      value={form.state}
+                      onChange={(e) => updateField('state', e.target.value)}
+                      className={fieldErrors.state ? styles.inputError : ''}
+                    />
+                    {fieldErrors.state && <span className={styles.fieldError}>{fieldErrors.state}</span>}
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <label htmlFor="zip">ZIP *</label>
+                    <input
+                      id="zip"
+                      name="zip"
+                      autoComplete="postal-code"
+                      value={form.zip}
+                      onChange={(e) => updateField('zip', e.target.value)}
+                      className={fieldErrors.zip ? styles.inputError : ''}
+                    />
+                    {fieldErrors.zip && <span className={styles.fieldError}>{fieldErrors.zip}</span>}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {step === 1 && (
+              <div className={styles.stepPanel}>
+                <h2 className={styles.sectionTitle}>Delivery method</h2>
+                <p className={styles.sectionHint}>
+                  Shipping to <strong>{form.country}</strong>
+                  {form.city ? ` · ${form.city}` : ''}
+                </p>
+                <div className={styles.shippingOptions}>
+                  {shippingOptions.map((option) => (
+                    <label
+                      key={option.id}
+                      className={`${styles.shippingOption} ${shippingOption?.id === option.id ? styles.selected : ''}`}
+                    >
+                      <input
+                        type="radio"
+                        name="shipping"
+                        checked={shippingOption?.id === option.id}
+                        onChange={() => setShippingOption(option)}
+                      />
+                      <div className={styles.shippingInfo}>
+                        <span className={styles.shippingName}>{option.name}</span>
+                        <span className={styles.shippingPrice}>${option.price.toFixed(2)}</span>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {step === 2 && (
+              <div className={styles.stepPanel}>
+                <h2 className={styles.sectionTitle}>Payment method</h2>
+                {dbPaymentMethods.length === 0 ? (
+                  <p className={styles.errorText}>No payment methods available. Please contact support.</p>
+                ) : (
+                  <div className={styles.methodOptions}>
+                    <label className={`${styles.methodOption} ${selectedMethod === 'CRYPTO' ? styles.selected : ''}`}>
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="CRYPTO"
+                        checked={selectedMethod === 'CRYPTO'}
+                        onChange={(e) => setSelectedMethod(e.target.value)}
+                      />
+                      <PaymentMethodIcon id="CRYPTO" name="Cryptocurrency" />
+                      <div className={styles.methodInfo}>
+                        <strong>Cryptocurrency</strong>
+                        <span className={styles.methodMeta}>Secure checkout via Plisio</span>
+                        <CryptoIcons />
+                      </div>
+                    </label>
+
+                    {dbPaymentMethods
+                      .filter((m) => m.id !== 'CRYPTO')
+                      .map((method) => (
+                        <label
+                          key={method.id}
+                          className={`${styles.methodOption} ${selectedMethod === method.id ? styles.selected : ''}`}
+                        >
+                          <input
+                            type="radio"
+                            name="paymentMethod"
+                            value={method.id}
+                            checked={selectedMethod === method.id}
+                            onChange={(e) => setSelectedMethod(e.target.value)}
+                          />
+                          <PaymentMethodIcon id={method.id} name={method.name} />
+                          <div className={styles.methodInfo}>
+                            <strong>{method.name}</strong>
+                          </div>
+                        </label>
+                      ))}
+                  </div>
+                )}
+
+                {selectedPaymentInfo && (
+                  <div className={styles.paymentInstructions}>
+                    <div className={styles.paymentInstructionsHeader}>
+                      <p><strong>Pay to:</strong> {selectedPaymentInfo.details}</p>
+                      <button
+                        type="button"
+                        className={styles.copyBtn}
+                        onClick={() => copyPaymentDetails(selectedPaymentInfo.details)}
+                      >
+                        <Copy size={14} />
+                        Copy
+                      </button>
+                    </div>
+                    {selectedPaymentInfo.instructions && <p>{selectedPaymentInfo.instructions}</p>}
+                    <p className={styles.noticeText}>
+                      Place your order first, then send payment. We process orders once payment is confirmed.
+                    </p>
+                  </div>
+                )}
+
+                {selectedMethod === 'CRYPTO' && (
+                  <div className={styles.paymentInstructions}>
+                    <p>
+                      <strong>Crypto checkout:</strong> You&apos;ll be redirected to Plisio&apos;s secure gateway
+                      after placing your order.
+                    </p>
+                    <p className={styles.noticeText}>Real-time exchange rates apply at checkout.</p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            <div className={styles.formNav}>
+              {step > 0 && (
+                <button type="button" className={styles.backBtn} onClick={goBack} disabled={isSubmitting}>
+                  <ChevronLeft size={18} />
+                  Back
+                </button>
+              )}
+              <button
+                type="submit"
+                className={styles.primaryBtn}
+                disabled={isSubmitting || (step === 2 && (!selectedMethod || !shippingOption || total < 100))}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 size={18} className={styles.spinner} />
+                    Processing…
+                  </>
+                ) : step < STEPS.length - 1 ? (
+                  <>
+                    Continue
+                    <ChevronRight size={18} />
+                  </>
+                ) : (
+                  `Place order · $${total.toFixed(2)}`
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <aside className={styles.summarySection}>
+          <div className={styles.orderSummary}>
+            <div className={styles.summaryHeader}>
+              <h2 className={styles.summaryTitle}>Order summary</h2>
+              <Link href="/cart" className={styles.editCartLink}>Edit cart</Link>
+            </div>
+            <div className={styles.summaryItems}>
+              {cart.map((item) => (
+                <div key={item.id} className={styles.summaryItem}>
+                  <div className={styles.summaryThumb}>
+                    <Image
+                      src={item.image || '/images/hero-fusion.png'}
+                      alt=""
+                      fill
+                      sizes="48px"
+                      style={{ objectFit: 'cover' }}
+                      unoptimized
+                    />
+                    <span className={styles.summaryQty}>{item.quantity}</span>
+                  </div>
+                  <span className={styles.summaryItemName}>{item.name}</span>
+                  <span className={styles.summaryItemPrice}>${(item.price * item.quantity).toFixed(2)}</span>
+                </div>
+              ))}
+              <div className={styles.summarySeparator} />
+              <div className={styles.summaryRow}>
+                <span>Subtotal</span>
+                <span>${subtotal.toFixed(2)}</span>
+              </div>
+              {bulkDiscountAmount > 0 && (
+                <div className={`${styles.summaryRow} ${styles.discountRow}`}>
+                  <span>Bulk savings</span>
+                  <span>-${bulkDiscountAmount.toFixed(2)}</span>
+                </div>
+              )}
+              {appliedCoupon && couponDiscount > 0 && (
+                <div className={`${styles.summaryRow} ${styles.discountRow}`}>
+                  <span>Promo ({appliedCoupon.code})</span>
+                  <span>-${couponDiscount.toFixed(2)}</span>
+                </div>
+              )}
+              <div className={styles.summaryRow}>
+                <span>Shipping</span>
+                <span>{shippingOption ? `$${shippingOption.price.toFixed(2)}` : '—'}</span>
+              </div>
+              <div className={`${styles.summaryRow} ${styles.totalRow}`}>
+                <span>Total</span>
+                <span>${total.toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+
+          {total < 100 && (
+            <div className={styles.minimumOrderWarning} role="status">
+              <p>Minimum order is <strong>$100</strong> including shipping.</p>
+            </div>
+          )}
+        </aside>
+      </div>
+    </div>
+  );
 }

@@ -1,0 +1,20 @@
+export const emailTheme = {
+    canvas: '#faf6f2',
+    elevated: '#fffcf9',
+    surfaceHover: '#f4ede6',
+    ink: '#2b1f30',
+    inkMuted: '#574a63',
+    primary: '#8668a3',
+    orchid: '#9a78b3',
+    deepMauve: '#6d5485',
+    teal: '#0e7d92',
+    warmAmber: '#b8620f',
+    border: '#e8ddd4',
+    success: '#2d6a4f',
+    fonts: {
+        display: "'Cormorant Garamond', Georgia, 'Times New Roman', serif",
+        body: "'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif",
+        mono: "'IBM Plex Mono', 'Courier New', monospace",
+    },
+    gradient: 'linear-gradient(135deg, #6d5485 0%, #8668a3 50%, #9a78b3 100%)',
+} as const;

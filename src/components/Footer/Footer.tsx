@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Footer.module.css';
@@ -63,17 +64,23 @@ export default function Footer() {
                     <button onClick={() => setLegalType('refund')} className={styles.legalBtn}>Refund Policy</button>
                 </div>
                 <div className={styles.column}>
-                    <h4>FUSION VAULT</h4>
-                    <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>Check your reward points</p>
+                    <h4>Fusion Vault</h4>
+                    <p className={styles.vaultHint}>Check your reward points</p>
                     <div className={styles.vaultInput}>
-                        <input 
-                            type="email" 
-                            placeholder="Email address" 
+                        <input
+                            type="email"
+                            placeholder="Email address"
                             value={vaultEmail}
                             onChange={(e) => setVaultEmail(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleCheckPoints()}
                         />
-                        <button onClick={handleCheckPoints} disabled={isChecking}>
-                            {isChecking ? '...' : 'CHECK'}
+                        <button
+                            type="button"
+                            className={styles.vaultBtn}
+                            onClick={handleCheckPoints}
+                            disabled={isChecking || !vaultEmail.trim()}
+                        >
+                            {isChecking ? <Loader2 size={16} className={styles.vaultSpinner} /> : 'Check'}
                         </button>
                     </div>
                     {vaultPoints !== null && (

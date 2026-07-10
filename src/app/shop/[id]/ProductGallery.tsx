@@ -25,7 +25,7 @@ export default function ProductGallery({ mainImage, gallery, name, isSale }: Pro
           style={{ objectFit: 'cover' }} 
           priority 
         />
-        {isSale && <span className={styles.saleHeroTag}>SALE</span>}
+        {isSale && <span className={styles.saleHeroTag}>On sale</span>}
       </div>
       
       {images.length > 1 && (

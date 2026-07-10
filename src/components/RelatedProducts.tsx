@@ -13,7 +13,7 @@ export default function RelatedProducts({ products }: RelatedProductsProps) {
       <span className={styles.sectionLabel}>You may also like</span>
       <h3 className={styles.title}>Curated for you</h3>
       <div className={styles.grid}>
-        {products.map((product, index) => (
+        {products.slice(0, 3).map((product, index) => (
           <ProductCard key={product.id} product={product} index={index} />
         ))}
       </div>

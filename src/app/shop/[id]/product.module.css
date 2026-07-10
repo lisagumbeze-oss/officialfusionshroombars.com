@@ -363,7 +363,7 @@
   width: 100%;
   min-width: 0;
   border: 1px solid rgba(var(--primary-rgb), 0.35);
-  border-radius: 100px;
+  border-radius: 10px;
   color: var(--on-primary);
   font-weight: 600;
   font-size: 0.9375rem;

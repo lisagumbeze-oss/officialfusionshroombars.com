@@ -62,7 +62,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                     isActive: true,
                     NOT: { id: product.id },
                 },
-                take: 4,
+                take: 3,
             });
         }
     } catch (error) {

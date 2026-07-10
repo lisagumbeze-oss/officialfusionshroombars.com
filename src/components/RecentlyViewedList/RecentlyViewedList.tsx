@@ -8,7 +8,7 @@ import styles from './RecentlyViewedList.module.css';
 export default function RecentlyViewedList({ currentProductId }: { currentProductId?: string }) {
   const { recentlyViewed } = useRecentlyViewed();
   
-  const filtered = recentlyViewed.filter(p => p.id !== currentProductId).slice(0, 4);
+  const filtered = recentlyViewed.filter(p => p.id !== currentProductId).slice(0, 3);
 
   if (filtered.length === 0) return null;
 

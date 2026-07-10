@@ -144,7 +144,18 @@ export default function RootLayout({
             _smartsupp.key = '066c33c30d5a0cddcfb7a8750f96fe6b77709e72';
             _smartsupp.color = '#8668a3';
             if (window.matchMedia('(max-width: 768px)').matches) {
-              _smartsupp.offsetY = 81;
+              var nav = 65;
+              var gap = 12;
+              var buffer = 16;
+              var safe = 0;
+              try {
+                var probe = document.createElement('div');
+                probe.style.cssText = 'position:fixed;bottom:0;padding-bottom:env(safe-area-inset-bottom);visibility:hidden;pointer-events:none;';
+                document.body.appendChild(probe);
+                safe = parseFloat(getComputedStyle(probe).paddingBottom) || 0;
+                document.body.removeChild(probe);
+              } catch (e) {}
+              _smartsupp.offsetY = Math.ceil(nav + safe + gap + buffer);
             }
             window.smartsupp||(function(d) {
               var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];

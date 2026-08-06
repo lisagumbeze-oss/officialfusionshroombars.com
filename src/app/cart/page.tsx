@@ -7,7 +7,7 @@ import styles from './cart.module.css';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/context/ToastContext';
 import { Reveal } from '@/components/Reveal';
-import PaymentMethodIcon, { CryptoIcons } from '@/components/checkout/PaymentMethodIcon';
+import PaymentMethodIcon from '@/components/checkout/PaymentMethodIcon';
 import { Trash2, ShoppingBag, Loader2, ArrowRight, CircleHelp, BookOpen } from 'lucide-react';
 
 export default function CartPage() {
@@ -279,7 +279,7 @@ export default function CartPage() {
                                 <div className={styles.secureCheckout}>
                                     <span>Secure checkout</span>
                                     <div className={styles.paymentIcons}>
-                                        <CryptoIcons />
+                                        <PaymentMethodIcon id="bitcoin" name="Bitcoin" size="sm" />
                                         <PaymentMethodIcon id="cashapp" name="Cash App" size="sm" />
                                         <PaymentMethodIcon id="zelle" name="Zelle" size="sm" />
                                         <PaymentMethodIcon id="venmo" name="Venmo" size="sm" />

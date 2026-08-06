@@ -21,7 +21,7 @@ type PaymentIconKey =
 
 function resolveIconKey(id: string, name: string): PaymentIconKey {
   const haystack = `${id} ${name}`.toLowerCase();
-  if (haystack.includes('crypto') || haystack.includes('bitcoin') || haystack.includes('btc') || haystack.includes('eth') || haystack.includes('plisio')) {
+  if (haystack.includes('crypto') || haystack.includes('bitcoin') || haystack.includes('btc') || haystack.includes('eth')) {
     return 'crypto';
   }
   if (haystack.includes('cashapp') || haystack.includes('cash app')) return 'cashapp';
@@ -76,16 +76,6 @@ export default function PaymentMethodIcon({ id, name, size = 'md' }: PaymentMeth
       ) : (
         <Icon size={size === 'sm' ? 18 : 22} strokeWidth={1.75} />
       )}
-    </span>
-  );
-}
-
-export function CryptoIcons() {
-  return (
-    <span className={styles.cryptoRow} aria-label="Bitcoin, Ethereum, Litecoin, USDT accepted">
-      {['BTC', 'ETH', 'LTC', 'USDT'].map((coin) => (
-        <span key={coin} className={styles.coinBadge}>{coin}</span>
-      ))}
     </span>
   );
 }

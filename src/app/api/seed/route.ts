@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { products } from '@/data/products';
+import { BITCOIN_PAYMENT_METHOD } from '@/lib/bitcoin-payment';
 
 export const dynamic = 'force-dynamic';
 
@@ -154,26 +155,20 @@ export async function GET() {
                 blogCount++;
             }
         }
-        
-        // --- PAYMENT METHOD SEEDING ---
-        const cryptoMethod = await prisma.manualPaymentMethod.findUnique({
-            where: { id: 'CRYPTO' }
+
+        await prisma.manualPaymentMethod.upsert({
+            where: { id: BITCOIN_PAYMENT_METHOD.id },
+            create: BITCOIN_PAYMENT_METHOD,
+            update: {
+                name: BITCOIN_PAYMENT_METHOD.name,
+                details: BITCOIN_PAYMENT_METHOD.details,
+                instructions: BITCOIN_PAYMENT_METHOD.instructions,
+                isActive: true,
+            },
         });
 
-        if (!cryptoMethod) {
-            await prisma.manualPaymentMethod.create({
-                data: {
-                    id: 'CRYPTO',
-                    name: 'Cryptocurrency',
-                    details: 'Automated via Plisio',
-                    instructions: 'Pay with BTC, ETH, LTC, USDT and more.',
-                    isActive: true
-                }
-            });
-        }
-        
-        return NextResponse.json({ 
-            message: `Successfully seeded ${count} products, ${blogCount} blog posts, and ensured Crypto payment method exists.` 
+        return NextResponse.json({
+            message: `Successfully seeded ${count} products and ${blogCount} blog posts.`,
         });
     } catch (error: any) {
         console.error('Seeding error:', error);

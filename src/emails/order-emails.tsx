@@ -113,6 +113,7 @@ export interface OrderAdminAlertEmailProps {
     totalAmount: number;
     items: OrderItem[];
     paymentMethodName: string;
+    paymentDetails?: string;
     adminUrl: string;
 }
 
@@ -123,6 +124,7 @@ export function OrderAdminAlertEmail({
     totalAmount,
     items,
     paymentMethodName,
+    paymentDetails,
     adminUrl,
 }: OrderAdminAlertEmailProps) {
     const shortId = orderId.slice(-6).toUpperCase();
@@ -144,6 +146,26 @@ export function OrderAdminAlertEmail({
                 <EmailValue>${totalAmount.toFixed(2)}</EmailValue>
                 <EmailLabel>Payment Method</EmailLabel>
                 <EmailValue>{paymentMethodName}</EmailValue>
+                {paymentDetails ? (
+                    <>
+                        <EmailLabel>Payment Detail</EmailLabel>
+                        <Text
+                            style={{
+                                backgroundColor: t.elevated,
+                                border: `1px solid ${t.border}`,
+                                borderRadius: '8px',
+                                color: t.ink,
+                                display: 'inline-block',
+                                fontSize: '14px',
+                                fontWeight: 600,
+                                margin: '0 0 16px',
+                                padding: '10px 14px',
+                            }}
+                        >
+                            {paymentDetails}
+                        </Text>
+                    </>
+                ) : null}
             </EmailCard>
 
             <EmailLabel>Order Items ({items.length})</EmailLabel>
@@ -165,6 +187,69 @@ export function OrderAdminAlertEmail({
 
             <EmailButtonRow>
                 <EmailButton href={adminUrl}>Manage Order in Admin</EmailButton>
+            </EmailButtonRow>
+        </EmailLayout>
+    );
+}
+
+export interface PaymentSubmittedAdminEmailProps {
+    customerName: string;
+    customerEmail: string;
+    orderId: string;
+    totalAmount: number;
+    paymentMethodName: string;
+    paymentDetails: string;
+    adminUrl: string;
+}
+
+export function PaymentSubmittedAdminEmail({
+    customerName,
+    customerEmail,
+    orderId,
+    totalAmount,
+    paymentMethodName,
+    paymentDetails,
+    adminUrl,
+}: PaymentSubmittedAdminEmailProps) {
+    const shortId = orderId.slice(-6).toUpperCase();
+
+    return (
+        <EmailLayout
+            preview={`Customer marked order #${shortId} as paid`}
+            eyebrow="Payment Submitted"
+            title={`Order #${shortId} — awaiting verification`}
+        >
+            <EmailParagraph>
+                <strong>{customerName}</strong> ({customerEmail}) clicked &quot;I have Paid&quot; for
+                order <strong style={{ color: t.ink }}>#{shortId}</strong>. Please verify the payment
+                and update the order status.
+            </EmailParagraph>
+
+            <EmailCard>
+                <EmailLabel>Order Total</EmailLabel>
+                <EmailValue>${totalAmount.toFixed(2)}</EmailValue>
+                <EmailLabel>Payment Method</EmailLabel>
+                <EmailValue>{paymentMethodName}</EmailValue>
+                <EmailLabel>Payment Detail</EmailLabel>
+                <Text
+                    style={{
+                        backgroundColor: t.elevated,
+                        border: `1px solid ${t.border}`,
+                        borderRadius: '8px',
+                        color: t.ink,
+                        display: 'inline-block',
+                        fontSize: '14px',
+                        fontWeight: 600,
+                        margin: '0 0 8px',
+                        padding: '10px 14px',
+                    }}
+                >
+                    {paymentDetails}
+                </Text>
+            </EmailCard>
+
+            <EmailButtonRow>
+                <EmailButton href={adminUrl}>Verify in Admin</EmailButton>
             </EmailButtonRow>
         </EmailLayout>
     );

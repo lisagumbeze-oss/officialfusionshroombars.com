@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { Resend } from 'resend';
 import { cookies } from 'next/headers';
+import { isBitcoinPaymentMethod } from '@/lib/bitcoin-payment';
 import {
     FROM_ORDERS,
     FROM_SYSTEM,
@@ -54,6 +54,23 @@ export async function POST(request: Request) {
 
         if (!customerEmail || !customerPhone?.trim() || !shippingAddress || !paymentMethodId || !items.length) {
             return NextResponse.json({ error: 'Missing required order fields' }, { status: 400 });
+        }
+
+        if (totalAmount < 100 && !isBitcoinPaymentMethod(paymentMethodId)) {
+            return NextResponse.json(
+                { error: 'Orders under $100 must be paid with Bitcoin.' },
+                { status: 400 },
+            );
+        }
+
+        if (totalAmount >= 100) {
+            const paymentMethod = await prisma.manualPaymentMethod.findUnique({
+                where: { id: paymentMethodId },
+            });
+
+            if (!paymentMethod || !paymentMethod.isActive) {
+                return NextResponse.json({ error: 'Invalid payment method' }, { status: 400 });
+            }
         }
 
         const order = await prisma.$transaction(async (tx) => {
@@ -157,6 +174,7 @@ export async function POST(request: Request) {
                             price: item.price,
                         })),
                         paymentMethodName: paymentMethod?.name || 'Manual Payment',
+                        paymentDetails: paymentMethod?.details || '',
                         adminUrl: siteUrl('/admin'),
                     }),
                 );

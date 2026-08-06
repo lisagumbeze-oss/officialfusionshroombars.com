@@ -48,9 +48,9 @@ const TRUST_SIGNALS = [
 
 const PAYMENT_METHODS = [
     {
-        title: 'Cryptocurrency',
-        subtitle: 'Bitcoin, Ethereum, USDT',
-        desc: 'The gold standard for discrete psychedelic commerce — cryptographic privacy for buyer and seller.',
+        title: 'Bitcoin',
+        subtitle: 'BTC wallet transfer',
+        desc: 'Send payment to our Bitcoin address — fast, secure, and discreet.',
     },
     {
         title: 'CashApp & Zelle',

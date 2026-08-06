@@ -17,7 +17,8 @@ import {
   ShoppingBag,
   Pencil,
 } from 'lucide-react';
-import PaymentMethodIcon, { CryptoIcons } from '@/components/checkout/PaymentMethodIcon';
+import PaymentMethodIcon from '@/components/checkout/PaymentMethodIcon';
+import { allowsAllPaymentMethods, isBitcoinPaymentMethod } from '@/lib/bitcoin-payment';
 import styles from './checkout.module.css';
 
 const STEPS = [
@@ -192,9 +193,9 @@ export default function CheckoutForm({
       return;
     }
 
-    if (total < 100) {
-      setFormError('Minimum order is $100 including shipping.');
-      showToast('Minimum order amount is $100.', 'error');
+    if (total < 100 && !isBitcoinPaymentMethod(selectedMethod)) {
+      setFormError('Orders under $100 must be paid with Bitcoin.');
+      showToast('Orders under $100 must be paid with Bitcoin.', 'error');
       return;
     }
 
@@ -247,39 +248,6 @@ export default function CheckoutForm({
         return;
       }
 
-      if (selectedMethod === 'CRYPTO') {
-        const cryptoRes = await fetch('/api/checkout/crypto-payment', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ orderId: data.id }),
-        });
-
-        if (cryptoRes.ok) {
-          let cryptoData;
-          try {
-            cryptoData = await cryptoRes.json();
-          } catch {
-            showToast('Payment gateway returned an invalid response.', 'error');
-            return;
-          }
-          clearCart();
-          showToast('Redirecting to secure crypto checkout…', 'info');
-          window.location.href = cryptoData.invoiceUrl;
-          return;
-        }
-
-        let cryptoErr = 'Failed to initiate crypto payment.';
-        try {
-          const parsed = await cryptoRes.json();
-          cryptoErr = parsed.error || cryptoErr;
-        } catch {
-          /* ignore */
-        }
-        setFormError(cryptoErr);
-        showToast(cryptoErr, 'error');
-        return;
-      }
-
       clearCart();
       showToast('Order placed successfully!', 'success');
       router.push(`/checkout/success?orderId=${data.id}`);
@@ -293,7 +261,33 @@ export default function CheckoutForm({
     }
   }
 
-  const selectedPaymentInfo = dbPaymentMethods.find((m) => m.id === selectedMethod);
+  const showAllPaymentMethods = allowsAllPaymentMethods(total);
+
+  const paymentMethods = useMemo(() => {
+    const bitcoin = dbPaymentMethods.find((m) => isBitcoinPaymentMethod(m.id));
+    const others = dbPaymentMethods.filter((m) => !isBitcoinPaymentMethod(m.id));
+
+    if (!showAllPaymentMethods) {
+      return bitcoin ? [bitcoin] : [];
+    }
+
+    return bitcoin ? [bitcoin, ...others] : dbPaymentMethods;
+  }, [dbPaymentMethods, showAllPaymentMethods]);
+
+  useEffect(() => {
+    if (paymentMethods.length === 0) {
+      if (selectedMethod) setSelectedMethod('');
+      return;
+    }
+
+    const selectedStillAvailable = paymentMethods.some((method) => method.id === selectedMethod);
+    if (!selectedStillAvailable) {
+      setSelectedMethod(paymentMethods[0].id);
+    }
+  }, [paymentMethods, selectedMethod]);
+
+  const selectedPaymentInfo = paymentMethods.find((m) => m.id === selectedMethod);
+  const isBitcoinSelected = isBitcoinPaymentMethod(selectedMethod);
 
   if (cart.length === 0) {
     return (
@@ -553,29 +547,16 @@ export default function CheckoutForm({
             {step === 2 && (
               <div className={styles.stepPanel}>
                 <h2 className={styles.sectionTitle}>Payment method</h2>
-                {dbPaymentMethods.length === 0 ? (
+                {!showAllPaymentMethods && (
+                  <p className={styles.sectionHint}>
+                    Orders under <strong>$100</strong> are available with Bitcoin only.
+                  </p>
+                )}
+                {paymentMethods.length === 0 ? (
                   <p className={styles.errorText}>No payment methods available. Please contact support.</p>
                 ) : (
                   <div className={styles.methodOptions}>
-                    <label className={`${styles.methodOption} ${selectedMethod === 'CRYPTO' ? styles.selected : ''}`}>
-                      <input
-                        type="radio"
-                        name="paymentMethod"
-                        value="CRYPTO"
-                        checked={selectedMethod === 'CRYPTO'}
-                        onChange={(e) => setSelectedMethod(e.target.value)}
-                      />
-                      <PaymentMethodIcon id="CRYPTO" name="Cryptocurrency" />
-                      <div className={styles.methodInfo}>
-                        <strong>Cryptocurrency</strong>
-                        <span className={styles.methodMeta}>Secure checkout via Plisio</span>
-                        <CryptoIcons />
-                      </div>
-                    </label>
-
-                    {dbPaymentMethods
-                      .filter((m) => m.id !== 'CRYPTO')
-                      .map((method) => (
+                    {paymentMethods.map((method) => (
                         <label
                           key={method.id}
                           className={`${styles.methodOption} ${selectedMethod === method.id ? styles.selected : ''}`}
@@ -599,32 +580,33 @@ export default function CheckoutForm({
                 {selectedPaymentInfo && (
                   <div className={styles.paymentInstructions}>
                     <div className={styles.paymentInstructionsHeader}>
-                      <p><strong>Pay to:</strong> {selectedPaymentInfo.details}</p>
+                      <p><strong>Pay to:</strong></p>
                       <button
                         type="button"
                         className={styles.copyBtn}
-                        onClick={() => copyPaymentDetails(selectedPaymentInfo.details)}
+                        onClick={() => copyPaymentDetails(selectedPaymentInfo.details.replace(/^BTC:\s*/i, ''))}
                       >
                         <Copy size={14} />
                         Copy
                       </button>
                     </div>
+                    <p className={isBitcoinSelected ? styles.bitcoinAddress : undefined}>
+                      {selectedPaymentInfo.details}
+                    </p>
+                    {isBitcoinSelected && (
+                      <p className={styles.paymentTotalHint}>
+                        Order total: <strong>${total.toFixed(2)} USD</strong>
+                      </p>
+                    )}
                     {selectedPaymentInfo.instructions && <p>{selectedPaymentInfo.instructions}</p>}
                     <p className={styles.noticeText}>
-                      Place your order first, then send payment. We process orders once payment is confirmed.
+                      {isBitcoinSelected
+                        ? 'Place your order first, send BTC to the address above, then click "I have Paid" on the confirmation page.'
+                        : 'Place your order first, then send payment. We process orders once payment is confirmed.'}
                     </p>
                   </div>
                 )}
 
-                {selectedMethod === 'CRYPTO' && (
-                  <div className={styles.paymentInstructions}>
-                    <p>
-                      <strong>Crypto checkout:</strong> You&apos;ll be redirected to Plisio&apos;s secure gateway
-                      after placing your order.
-                    </p>
-                    <p className={styles.noticeText}>Real-time exchange rates apply at checkout.</p>
-                  </div>
-                )}
               </div>
             )}
 
@@ -638,7 +620,7 @@ export default function CheckoutForm({
               <button
                 type="submit"
                 className={styles.primaryBtn}
-                disabled={isSubmitting || (step === 2 && (!selectedMethod || !shippingOption || total < 100))}
+                disabled={isSubmitting || (step === 2 && (!selectedMethod || !shippingOption))}
               >
                 {isSubmitting ? (
                   <>
@@ -710,9 +692,9 @@ export default function CheckoutForm({
             </div>
           </div>
 
-          {total < 100 && (
+          {!showAllPaymentMethods && (
             <div className={styles.minimumOrderWarning} role="status">
-              <p>Minimum order is <strong>$100</strong> including shipping.</p>
+              <p>Orders under <strong>$100</strong> checkout with Bitcoin only. All payment methods unlock at $100+.</p>
             </div>
           )}
         </aside>
